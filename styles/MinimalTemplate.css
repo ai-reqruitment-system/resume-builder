@@ -1,0 +1,123 @@
+/* MinimalTemplate.css */
+.container-minimal {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.header-minimal {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header-minimal h1 {
+    font-size: 36px;
+    margin: 0;
+    font-weight: 300;
+    color: #2c3e50;
+}
+
+.occupation {
+    font-size: 18px;
+    color: #7f8c8d;
+    margin: 8px 0;
+}
+
+.contact-minimal {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.contact-minimal span {
+    margin: 0 8px;
+}
+
+.section-minimal {
+    margin-bottom: 30px;
+}
+
+.section-minimal h2 {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.section-minimal h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    color: #34495e;
+}
+
+.experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+
+.date-minimal {
+    font-size: 14px;
+    color: #95a5a6;
+}
+
+.company-minimal {
+    font-size: 16px;
+    color: #3498db;
+    margin: 5px 0;
+}
+
+.description-minimal {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+.experience-item, .education-item {
+    margin-bottom: 25px;
+}
+
+.skills-container-minimal {
+    display: flex;
+    gap: 40px;
+}
+
+.skills-section-minimal {
+    flex: 1;
+}
+
+.skills-section-minimal h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.tags-minimal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-minimal {
+    background-color: #f7f9fc;
+    color: #2c3e50;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    border: 1px solid #e0e0e0;
+}
+
+@media print {
+    .container-minimal {
+        padding: 20px;
+    }
+
+    .tag-minimal {
+        border: 1px solid #ccc;
+        background-color: transparent;
+    }
+}
