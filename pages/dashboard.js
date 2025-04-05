@@ -10,10 +10,7 @@ import SalaryAnalyzer from '@/components/dashboard-sections/SalaryAnalyzer';
 import Profile from '@/pages/profile';
 import { useRouter } from 'next/router';
 import { formatDate } from '@/lib/utils';
-import { CheckCircle2, Clock, ExternalLink, FileText, Sparkles, Bell } from 'lucide-react';
-import { useToast } from '@/components/ui/ToastProvider';
-import FeedbackBanner, { FeedbackTypes } from '@/components/ui/FeedbackBanner';
-
+import { CheckCircle2, Clock, ExternalLink } from 'lucide-react';
 export default function Home() {
     const router = useRouter()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -23,10 +20,6 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
     const [activeProfileId, setActiveProfileId] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [feedbackMessage, setFeedbackMessage] = useState('');
-    const [feedbackType, setFeedbackType] = useState(FeedbackTypes.INFO);
-    const [showFeedback, setShowFeedback] = useState(false);
-    const toast = useToast();
 
     const fetchProfiles = async () => {
         setIsLoading(true);
@@ -77,55 +70,46 @@ export default function Home() {
 
     const handleActiveResume = (profile) => {
         localStorage.setItem('profileData', JSON.stringify(profile));
-        if (profile.id) {
-            setActiveProfileId(profile.id);
-            setActiveTab('Builder');
-            // No toast here as it's handled in the ResumesList component
-        } else {
-            // New resume
-            setActiveProfileId(null);
-            // Toast is handled in ResumesList component
-        }
+        setActiveProfileId(profile.id);
+        setActiveTab('Builder');
     };
 
     const handleDeleteResume = async (resumeId, e) => {
         e.stopPropagation(); // Prevent triggering the card click event
 
-        setIsDeleting(true);
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) return router.push('/login');
+        if (window.confirm('Are you sure you want to delete this resume?')) {
+            setIsDeleting(true);
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) return router.push('/login');
 
-            const formData = new FormData();
-            formData.append('resume_id', resumeId);
+                const formData = new FormData();
+                formData.append('resume_id', resumeId);
 
-            const response = await fetch('https://admin.hiremeai.in/api/delete-resume', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                body: formData
-            });
+                const response = await fetch('https://admin.hiremeai.in/api/delete-resume', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: formData
+                });
 
-            if (!response.ok) throw new Error('Failed to delete resume');
+                if (!response.ok) throw new Error('Failed to delete resume');
 
-            // Refresh the profiles list after successful deletion
-            await fetchProfiles();
+                // Refresh the profiles list after successful deletion
+                await fetchProfiles();
 
-            // If the deleted resume was active, clear the active profile
-            if (activeProfileId === resumeId) {
-                localStorage.removeItem('profileData');
-                setActiveProfileId(null);
+                // If the deleted resume was active, clear the active profile
+                if (activeProfileId === resumeId) {
+                    localStorage.removeItem('profileData');
+                    setActiveProfileId(null);
+                }
+            } catch (error) {
+                console.error('Error deleting resume:', error);
+                alert('Failed to delete resume. Please try again.');
+            } finally {
+                setIsDeleting(false);
             }
-
-            // Show success message
-            toast.success('Resume deleted successfully');
-
-        } catch (error) {
-            console.error('Error deleting resume:', error);
-            toast.error('Failed to delete resume. Please try again.');
-        } finally {
-            setIsDeleting(false);
         }
     };
 
@@ -134,18 +118,10 @@ export default function Home() {
     const [activeTab, setActiveTab] = useState('Dashboard');
 
     const handleLogout = () => {
-        // Show feedback before logout
-        setFeedbackMessage('Logging you out...');
-        setFeedbackType(FeedbackTypes.INFO);
-        setShowFeedback(true);
-
-        // Short delay for feedback visibility
-        setTimeout(() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('userData');
-            localStorage.removeItem('profileData');
-            router.push('/login');
-        }, 1000);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userData');
+        localStorage.removeItem('profileData');
+        router.push('/login');
     };
 
     // Sidebar is now handled by the Sidebar component
@@ -154,11 +130,18 @@ export default function Home() {
     if (showBuilder) {
         return (
             <Layout>
-                <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+                <div className="min-h-screen bg-background">
                     <div className="flex flex-col md:flex-row">
-                        {/* The Sidebar component will be conditionally rendered based on the Redux state */}
-                        {/* The right sidebar in Builder will control this visibility */}
-                        <Builder onClose={() => setShowBuilder(false)} />
+                        <Sidebar
+                            activeTab={activeTab}
+                            setActiveTab={setActiveTab}
+                            setShowBuilder={setShowBuilder}
+                            handleLogout={handleLogout}
+                        />
+                        {/* Main Content - Resume Builder */}
+                        <main className="flex-1 p-6 pb-24 md:pb-6">
+                            <Builder onClose={() => setShowBuilder(false)} />
+                        </main>
                     </div>
                 </div>
             </Layout>
@@ -167,7 +150,7 @@ export default function Home() {
 
     return (
         <Layout>
-            <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+            <div className="min-h-screen bg-background">
                 <div className="flex flex-col md:flex-row">
                     <Sidebar
                         activeTab={activeTab}
@@ -176,50 +159,21 @@ export default function Home() {
                         handleLogout={handleLogout}
                     />
 
-                    {/* Main Content - Enhanced with better spacing and visual elements */}
-                    <main className="p-4 sm:p-5 md:p-8 pb-24 md:pb-8 flex justify-center md:justify-start flex-1 overflow-x-hidden transition-all duration-300 ease-in-out">
+                    {/* Main Content - adjust padding for mobile */}
+                    <main className="p-3 sm:p-4 md:p-6 pb-24 md:pb-6 flex justify-center md:justify-start flex-1 overflow-x-hidden">
                         {(() => {
                             switch (activeTab) {
                                 case 'Dashboard':
                                     return (
-                                        <div className="w-full max-w-7xl mx-auto">
-                                            <div className="mb-8">
-                                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-                                                    <div>
-                                                        <h2 className="text-3xl font-bold text-gray-800 mb-2">Your Resumes</h2>
-                                                        <p className="text-gray-600">Create, manage and track your professional resumes</p>
-                                                    </div>
-                                                    <div className="mt-4 sm:mt-0 flex space-x-2">
-                                                        <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200">
-                                                            <Bell size={20} className="text-gray-600" />
-                                                        </button>
-                                                        <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200">
-                                                            <Sparkles size={20} className="text-gray-600" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <div className="border-b border-gray-200">
+                                        <div>
+                                            <div className="mb-6">
+                                                <h2 className="text-2xl font-semibold mb-4">Resumes</h2>
+                                                <div className="border-b">
                                                     <div className="flex gap-6">
-                                                        <button className="px-4 py-3 text-teal-600 border-b-2 border-teal-600 font-medium flex items-center">
-                                                            <FileText className="w-4 h-4 mr-2" />
-                                                            Resumes
-                                                        </button>
+                                                        <button className="px-4 py-2 text-teal-600 border-b-2 border-teal-600">Resumes</button>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            {showFeedback && (
-                                                <div className="mb-6">
-                                                    <FeedbackBanner
-                                                        message={feedbackMessage}
-                                                        type={feedbackType}
-                                                        onClose={() => setShowFeedback(false)}
-                                                        autoClose={true}
-                                                        duration={5000}
-                                                    />
-                                                </div>
-                                            )}
 
                                             <ResumesList
                                                 activeProfileId={activeProfileId}
@@ -227,8 +181,6 @@ export default function Home() {
                                                 handleDeleteResume={handleDeleteResume}
                                                 setShowBuilder={setShowBuilder}
                                                 profiles={profiles}
-                                                isLoading={isLoading}
-                                                isDeleting={isDeleting}
                                             />
                                         </div>
                                     );
