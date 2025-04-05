@@ -3,7 +3,7 @@ import FormField from "@/components/FormField";
 import Editor from "react-simple-wysiwyg";
 import { ChevronDown, Trash2, Plus } from 'lucide-react';
 import SmartInputField from "@/components/SmartInputField";
-import SuggestionDropdown from "@/components/SuggestionDropdown";
+import EnhancedSuggestionDropdown from "@/components/EnhancedSuggestionDropdown";
 
 const Education = ({ formData, updateFormData }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -186,7 +186,16 @@ const Education = ({ formData, updateFormData }) => {
                                 <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
                                     <div className="flex items-center justify-between mb-2">
                                         <label className="text-sm text-gray-600">Description</label>
-                                        <SuggestionDropdown onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)} />
+                                        <EnhancedSuggestionDropdown
+                                            onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
+                                            title={`${formData.degree[index] || 'education'} description`}
+                                            customPrompt="Provide a list of educational achievements and experiences for a resume:"
+                                            isSuggestionSelected={(suggestion) => {
+                                                const currentContent = formData.college_description[index] || '';
+                                                return currentContent.includes(suggestion);
+                                            }}
+                                            buttonClassName="mt-2"
+                                        />
                                     </div>
                                     <Editor
                                         value={formData.college_description[index] || ''}

@@ -7,6 +7,7 @@ const initialState = {
     showDownloadSection: false,
     isMobileMenuOpen: false,
     isSidebarOpen: true,
+    isRightSidebarOpen: true,
     activeTab: 'styles',
     isHovered: false,
 };
@@ -45,6 +46,20 @@ export const uiSlice = createSlice({
         setIsHovered: (state, action) => {
             state.isHovered = action.payload;
         },
+        setIsRightSidebarOpen: (state, action) => {
+            state.isRightSidebarOpen = action.payload;
+            // When right sidebar is open, close the left sidebar
+            if (action.payload === true) {
+                state.isSidebarOpen = false;
+            } else {
+                state.isSidebarOpen = true;
+            }
+        },
+        toggleRightSidebar: (state) => {
+            state.isRightSidebarOpen = !state.isRightSidebarOpen;
+            // Toggle left sidebar in opposite direction
+            state.isSidebarOpen = !state.isRightSidebarOpen;
+        },
     },
 });
 
@@ -59,6 +74,8 @@ export const {
     toggleSidebar,
     setActiveTab,
     setIsHovered,
+    setIsRightSidebarOpen,
+    toggleRightSidebar,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

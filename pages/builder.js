@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Briefcase, Check, Eye, Download, GraduationCap, Plus, Trophy, UserCircle2, X, Menu } from 'lucide-react';
+import { Briefcase, Check, Eye, Download, GraduationCap, Plus, Trophy, UserCircle2, X, Menu, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import PersonalInfo from '../components/sections/PersonalInfo';
@@ -10,10 +10,11 @@ import Others from "@/components/sections/Others";
 import { uuid } from "uuidv4";
 import ResumeModal from "@/components/ResumeModal";
 import DownloadSection from "@/components/DownloadSection";
+import BuilderRightSidebar from "@/components/dashboard-sections/BuilderRightSidebar";
 // Redux imports
 import { useSelector, useDispatch } from 'react-redux';
 import { setFormData, updateFormField, setProfileData, setUserData } from '@/store/slices/resumeSlice';
-import { setCurrentSection, setCurrentSectionIndex, setIsModalOpen, setShowDownloadSection, setIsMobileMenuOpen, toggleMobileMenu } from '@/store/slices/uiSlice';
+import { setCurrentSection, setCurrentSectionIndex, setIsModalOpen, setShowDownloadSection, setIsMobileMenuOpen, toggleMobileMenu, toggleRightSidebar, setIsRightSidebarOpen } from '@/store/slices/uiSlice';
 import { setSelectedTemplate, setFontStyles, updateFontStyle } from '@/store/slices/templateSlice';
 // UI components
 import {
@@ -30,7 +31,7 @@ export default function Builder() {
 
     // Get state from Redux store
     const { formData, profileData, userData, defaultData } = useSelector(state => state.resume);
-    const { currentSection, currentSectionIndex, isModalOpen, showDownloadSection, isMobileMenuOpen } = useSelector(state => state.ui);
+    const { currentSection, currentSectionIndex, isModalOpen, showDownloadSection, isMobileMenuOpen, isRightSidebarOpen, isSidebarOpen } = useSelector(state => state.ui);
     const { selectedTemplate, fontStyles } = useSelector(state => state.template);
     const handleTemplateChange = (template) => {
         dispatch(setSelectedTemplate(template));
@@ -115,29 +116,27 @@ export default function Builder() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 min-w-full">
-            {/* Navigation Tabs */}
-            <nav className="bg-white shadow-sm sticky top-0 z-20 transition-all duration-300 py-2 px-2 sm:px-4 md:px-6">
+        <div className="min-h-screen bg-gray-50 min-w-full relative">
+            {/* Top Navigation - Mobile Only */}
+            <nav className="md:hidden bg-white shadow-sm sticky top-0 z-20 transition-all duration-300 py-2 px-2 sm:px-4">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-lg font-medium text-gray-800">Resume Builder</h1>
+                    <button
+                        onClick={() => dispatch(toggleMobileMenu())}
+                        className="p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none"
+                    >
+                        {isMobileMenuOpen ? (
+                            <X className="h-6 w-6" />
+                        ) : (
+                            <Menu className="h-6 w-6" />
+                        )}
+                    </button>
+                </div>
 
-                <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:justify-between">
-                    {/* Mobile Menu Button */}
-                    <div className="flex items-center justify-between md:hidden">
-                        <h1 className="text-lg font-medium text-gray-800">Resume Builder</h1>
-                        <button
-                            onClick={() => dispatch(toggleMobileMenu())}
-                            className="p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none"
-                        >
-                            {isMobileMenuOpen ? (
-                                <X className="h-6 w-6" />
-                            ) : (
-                                <Menu className="h-6 w-6" />
-                            )}
-                        </button>
-                    </div>
-
-                    {/* Navigation Tabs */}
-                    <div className={`${isMobileMenuOpen ? 'flex' : 'hidden'} md:flex overflow-x-auto hide-scrollbar md:mx-0 md:px-0 w-full flex-col md:flex-row transition-all duration-300 ease-in-out`}>
-                        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 w-full space-x-2">
+                {/* Mobile Navigation Menu */}
+                {isMobileMenuOpen && (
+                    <div className="mt-4 pb-2">
+                        <div className="flex flex-col space-y-2">
                             {sections.map((section, index) => {
                                 const Icon = section.icon;
                                 return (
@@ -149,61 +148,64 @@ export default function Builder() {
                                             dispatch(setIsMobileMenuOpen(false));
                                         }}
                                         className={`
-                                                relative py-2.5 px-4 rounded-lg transition-all duration-300 transform
-                                                flex items-center justify-between gap-2 md:min-w-0
-                                                
-                                                ${currentSection === section.id
-                                                ? 'bg-teal-100 text-gray-600 font-medium scale-[1.02] shadow-sm'
+                                            relative py-2.5 px-4 rounded-lg transition-all duration-300 transform
+                                            flex items-center justify-between gap-2
+                                            
+                                            ${currentSection === section.id
+                                                ? 'bg-teal-100 text-gray-600 font-medium shadow-sm'
                                                 : index <= currentSectionIndex
-                                                    ? 'text-gray-700 hover:bg-teal-100 hover:scale-[1.02]'
-                                                    : 'text-gray-500 hover:bg-teal-200 hover:scale-[1.02]'
+                                                    ? 'text-gray-700 hover:bg-teal-100'
+                                                    : 'text-gray-500 hover:bg-teal-200'
                                             }
-                                            `}
+                                        `}
                                     >
-
-                                        <Icon className={`w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 ${currentSection === section.id ? 'scale-110' : ''}`} />
+                                        <Icon className={`w-5 h-5 transition-transform duration-300 ${currentSection === section.id ? 'scale-110' : ''}`} />
                                         <span className="text-sm whitespace-nowrap font-medium">{section.title}</span>
                                         {index < currentSectionIndex && (
                                             <Check className="w-3 h-3 text-green-500 transition-opacity duration-300" />
                                         )}
-
                                     </button>
                                 );
                             })}
                         </div>
 
-                        {/* Mobile Action Buttons */}
-                        <div className="flex flex-col space-y-2 mt-4 md:hidden px-2">
+                        <div className="mt-4">
                             <button
                                 onClick={() => {
                                     dispatch(setIsModalOpen(true));
                                     dispatch(setIsMobileMenuOpen(false));
                                 }}
-                                className="flex items-center gap-2 px-4 py-2.5 text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all duration-300 text-sm font-medium justify-center"
+                                className="w-full flex items-center gap-2 px-4 py-2.5 text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all duration-300 text-sm font-medium justify-center"
                             >
                                 <Eye className="w-4 h-4" />
                                 <span>Preview</span>
                             </button>
                         </div>
                     </div>
-                    {/* Action Buttons - Only visible on desktop */}
-                    <div className="hidden md:flex items-center gap-3 pt-2 md:pt-0 border-t md:border-t-0">
-                        <button
-                            onClick={() => dispatch(setIsModalOpen(true))}
-                            className="flex items-center gap-2 px-4 py-2.5 text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all duration-300 text-sm font-medium min-w-[100px] justify-center"
-                        >
-                            <Eye className="w-4 h-4" />
-                            <span>Preview</span>
-                        </button>
-                    </div>
-                </div>
-
+                )}
             </nav>
 
-            {/* Main Content */}
-            <div className="w-full mx-auto mb-10">
-                <div className="w-full">
-                    {formData && renderSection()}
+            <div className="flex h-[calc(100vh-56px)] md:h-screen relative">
+                {/* Right Sidebar - Navigation */}
+                {isRightSidebarOpen && <BuilderRightSidebar />}
+
+                {/* Toggle Right Sidebar Button - Desktop Only */}
+                <button
+                    onClick={() => dispatch(toggleRightSidebar())}
+                    className="hidden md:flex fixed right-4 top-4 z-30 items-center justify-center h-10 w-10 bg-white rounded-full shadow-md hover:bg-gray-50 transition-all duration-300"
+                >
+                    {isRightSidebarOpen ? (
+                        <ChevronRight className="h-5 w-5 text-gray-600" />
+                    ) : (
+                        <ChevronLeft className="h-5 w-5 text-gray-600" />
+                    )}
+                </button>
+
+                {/* Main Content */}
+                <div className={`flex-1 overflow-auto transition-all duration-300 ease-in-out ${isRightSidebarOpen ? 'md:mr-16 lg:mr-64' : ''}`}>
+                    <div className="p-4 sm:p-6 md:p-8">
+                        {formData && renderSection()}
+                    </div>
                 </div>
             </div>
 

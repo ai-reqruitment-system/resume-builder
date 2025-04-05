@@ -4,7 +4,7 @@ import Editor from "react-simple-wysiwyg";
 import { ChevronDown, Trash2, Plus } from 'lucide-react';
 import SmartInputField from "@/components/SmartInputField";
 import MonthYearSelector from "@/components/MonthYearSelector";
-import SuggestionDropdown from "@/components/SuggestionDropdown";
+import EnhancedSuggestionDropdown from "@/components/EnhancedSuggestionDropdown";
 
 const Experience = ({ formData, updateFormData }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -200,11 +200,12 @@ const Experience = ({ formData, updateFormData }) => {
                                     <div className="flex items-center justify-between mb-3 z-10 relative">
                                         <label className="text-sm font-medium text-gray-600">Description</label>
                                         <div className="relative z-30">
-                                            <SuggestionDropdown
+                                            <EnhancedSuggestionDropdown
                                                 onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
                                                 title={`${formData.job_title[index] || 'job'} experience`}
                                                 customPrompt="Provide a list of job responsibilities and achievements for a resume based on this role:"
                                                 isSuggestionSelected={(suggestion) => isSuggestionSelected(suggestion, index)}
+                                                buttonClassName="mt-2"
                                             />
                                         </div>
                                     </div>

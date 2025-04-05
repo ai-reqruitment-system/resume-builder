@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import FormField from "@/components/FormField";
 import Editor from "react-simple-wysiwyg";
 import SmartInputField from "@/components/SmartInputField";
-import SuggestionDropdown from "@/components/SuggestionDropdown";
+import EnhancedSuggestionDropdown from "@/components/EnhancedSuggestionDropdown";
 
 const PersonalInfo = ({ formData, updateFormData }) => {
     const handleSuggestionClick = (suggestion) => {
@@ -111,10 +111,15 @@ const PersonalInfo = ({ formData, updateFormData }) => {
                 <div className="p-4 bg-gray-50/70 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
                     <div className="flex items-center justify-between mb-3">
                         <label className="text-sm font-medium text-gray-700">Professional Summary</label>
-                        <SuggestionDropdown 
-                            onSuggestionClick={handleSuggestionClick} 
-                            title={formData.professional_summary || 'professional summary'} 
-                            customPrompt="provide a professional summary based on this title:" 
+                        <EnhancedSuggestionDropdown
+                            onSuggestionClick={handleSuggestionClick}
+                            title={formData.professional_summary || 'professional summary'}
+                            customPrompt="provide a professional summary based on this title:"
+                            isSuggestionSelected={(suggestion) => {
+                                const currentContent = formData.professional_description || '';
+                                return currentContent.includes(suggestion);
+                            }}
+                            buttonClassName="mt-2"
                         />
                     </div>
                     <div className="relative bg-white rounded-lg shadow-sm overflow-hidden">
