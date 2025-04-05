@@ -15,7 +15,37 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
             {/* New Resume Card - Enhanced with better visuals */}
             <div
                 onClick={() => {
-                    handleActiveResume({});
+                    // Reset form data to initial empty state when creating new resume
+                    handleActiveResume({
+                        first_name: '',
+                        last_name: '',
+                        email: '',
+                        phone: '',
+                        occupation: '',
+                        city: '',
+                        country: '',
+                        pincode: '',
+                        dob: '',
+                        professional_description: '',
+                        job_title: [],
+                        employer: [],
+                        job_begin: [],
+                        job_end: [],
+                        job_description: [],
+                        college: [],
+                        degree: [],
+                        college_begin: [],
+                        college_end: [],
+                        college_description: [],
+                        language: [],
+                        skill: [],
+                        internship_title: [],
+                        internship_summary: [],
+                        certificate_title: [],
+                        certificate_description: [],
+                        other_title: [],
+                        other_description: [],
+                    });
                     setShowBuilder(true);
                     toast.success('Creating new resume');
                 }}
