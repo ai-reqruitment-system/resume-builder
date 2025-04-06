@@ -127,25 +127,11 @@ export default function Home() {
     // Sidebar is now handled by the Sidebar component
 
 
+    // We no longer need this block as we're using the new resume-builder page
+    // The showBuilder state is kept for backward compatibility
     if (showBuilder) {
-        return (
-            <Layout>
-                <div className="min-h-screen bg-background">
-                    <div className="flex flex-col md:flex-row">
-                        <Sidebar
-                            activeTab={activeTab}
-                            setActiveTab={setActiveTab}
-                            setShowBuilder={setShowBuilder}
-                            handleLogout={handleLogout}
-                        />
-                        {/* Main Content - Resume Builder */}
-                        <main className="flex-1 p-6 pb-24 md:pb-6">
-                            <Builder onClose={() => setShowBuilder(false)} />
-                        </main>
-                    </div>
-                </div>
-            </Layout>
-        );
+        router.push('/resume-builder');
+        return null;
     }
 
     return (

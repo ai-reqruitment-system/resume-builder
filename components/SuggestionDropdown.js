@@ -83,7 +83,7 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                             <X className="w-4 h-4" />
                         </button>
                     </div>
-                    
+
                     <div className="p-2 border-b">
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -97,29 +97,20 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                                 onChange={(e) => {
                                     const newSearchTerm = e.target.value;
                                     setSearchTerm(newSearchTerm);
-                                    
-                                    if (typingTimeout) {
-                                        clearTimeout(typingTimeout);
+
+                                    // Direct call to generateSuggestions which now has debounce built-in
+                                    if (newSearchTerm.trim()) {
+                                        const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
+                                        generateSuggestions(newSearchTerm, promptType);
+                                    } else if (title) {
+                                        const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
+                                        generateSuggestions(title, promptType);
                                     }
-                                    
-                                    const newTimeout = setTimeout(() => {
-                                        if (newSearchTerm.trim()) {
-                                            setSuggestions([]);
-                                            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
-                                            generateSuggestions(newSearchTerm, promptType);
-                                        } else if (title) {
-                                            setSuggestions([]);
-                                            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
-                                            generateSuggestions(title, promptType);
-                                        }
-                                    }, 500);
-                                    
-                                    setTypingTimeout(newTimeout);
                                 }}
                             />
                         </div>
                     </div>
-                    
+
                     <div className="p-2 space-y-1 max-h-60 overflow-y-auto">
                         {isLoading ? (
                             <div className="flex justify-center items-center py-4">
@@ -128,7 +119,7 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                             </div>
                         ) : suggestions.length > 0 ? (
                             suggestions
-                                .filter(suggestion => 
+                                .filter(suggestion =>
                                     searchTerm === '' || suggestion.toLowerCase().includes(searchTerm.toLowerCase())
                                 )
                                 .map((suggestion, index) => {

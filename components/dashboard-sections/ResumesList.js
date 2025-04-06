@@ -4,12 +4,14 @@ import { formatDate } from '@/lib/utils';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/ToastProvider';
 import FeedbackBanner, { FeedbackTypes } from '@/components/ui/FeedbackBanner';
+import { useRouter } from 'next/router';
 
 
 export default function ResumesList({ profiles, isLoading, activeProfileId, handleActiveResume, handleDeleteResume, isDeleting, setShowBuilder }) {
     const [deleteConfirmId, setDeleteConfirmId] = useState(null);
     const [hoveredCard, setHoveredCard] = useState(null);
     const toast = useToast();
+    const router = useRouter();
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto px-2 sm:px-0">
             {/* New Resume Card - Enhanced with better visuals */}
@@ -46,7 +48,7 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                         other_title: [],
                         other_description: [],
                     });
-                    setShowBuilder(true);
+                    router.push('/resume-builder');
                     toast.success('Creating new resume');
                 }}
                 onMouseEnter={() => setHoveredCard('new')}
@@ -85,6 +87,7 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                         key={profile.id}
                         onClick={() => {
                             handleActiveResume(profile);
+                            router.push('/resume-builder');
                             toast.success(`"${profile.first_name} ${profile.last_name}" resume activated`);
                         }}
                         onMouseEnter={() => setHoveredCard(profile.id)}
@@ -137,9 +140,11 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
 
                             <div className="mt-8 flex items-center justify-between">
                                 <button
-                                    onClick={() => {
-                                        handleActiveResume(profile);
-                                        setShowBuilder(true);
+                                    onClick={async () => {
+                                        // First set the form data and handle active resume
+                                        await handleActiveResume(profile);
+                                        // Then navigate to resume builder
+                                        router.push('/resume-builder');
                                     }}
                                     className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-teal-600 rounded-xl hover:from-teal-600 hover:to-teal-700 transition-all duration-300 shadow-sm hover:shadow-md transform hover:translate-y-[-1px] group"
                                 >

@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import axios from 'axios';
+import debounce from 'lodash/debounce';
 
 export const useSuggestionGenerator = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const generateSuggestions = async (title, customPrompt) => {
+    // Create a ref to store the debounced function
+    // This ensures it persists between renders
+    const debouncedFetchRef = useRef(null);
+
+    // The actual API call function
+    const fetchSuggestions = useCallback(async (title, customPrompt) => {
         setIsLoading(true);
         try {
             const response = await axios.post(
@@ -51,7 +57,38 @@ export const useSuggestionGenerator = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
+
+    // Initialize the debounced function once
+    if (!debouncedFetchRef.current) {
+        debouncedFetchRef.current = debounce((title, customPrompt) => {
+            fetchSuggestions(title, customPrompt);
+        }, 2000); // 2 seconds delay
+    }
+
+    // The public API that components will call
+    const generateSuggestions = useCallback((title, customPrompt) => {
+        // Clear previous suggestions and show loading state immediately
+        setSuggestions([]);
+        setIsLoading(true);
+
+        // Use the debounced function
+        debouncedFetchRef.current(title, customPrompt);
+    }, []);
+
+    // Memoize setSuggestions to avoid unnecessary re-renders
+    const memoizedSetSuggestions = useCallback((data) => {
+        setSuggestions(data);
+    }, []);
+
+    // Clean up the debounced function on unmount
+    useCallback(() => {
+        return () => {
+            if (debouncedFetchRef.current && debouncedFetchRef.current.cancel) {
+                debouncedFetchRef.current.cancel();
+            }
+        };
+    }, []);
 
     return {
         suggestions,
@@ -59,6 +96,6 @@ export const useSuggestionGenerator = () => {
         searchTerm,
         setSearchTerm,
         generateSuggestions,
-        setSuggestions
+        setSuggestions: memoizedSetSuggestions
     };
 };

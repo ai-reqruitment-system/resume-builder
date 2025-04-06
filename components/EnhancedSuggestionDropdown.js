@@ -99,23 +99,19 @@ export default function EnhancedSuggestionDropdown({
         };
     }, [typingTimeout]);
 
-    // Debounced search function
-    const debouncedSearch = debounce((searchValue) => {
-        if (searchValue.trim()) {
-            setSuggestions([]);
-            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
-            generateSuggestions(searchValue, promptType);
-        } else if (title) {
-            setSuggestions([]);
-            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
-            generateSuggestions(title, promptType);
-        }
-    }, 500);
-
+    // Handle search input changes
     const handleSearchChange = (e) => {
         const newSearchTerm = e.target.value;
         setSearchTerm(newSearchTerm);
-        debouncedSearch(newSearchTerm);
+
+        // Direct call to generateSuggestions which now has debounce built-in
+        if (newSearchTerm.trim()) {
+            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
+            generateSuggestions(newSearchTerm, promptType);
+        } else if (title) {
+            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
+            generateSuggestions(title, promptType);
+        }
     };
 
     return (

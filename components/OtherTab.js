@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import ContentItem from "@/components/ContentItem";
 import Editor from "react-simple-wysiwyg";
 import SmartInputField from "@/components/SmartInputField";
-import SuggestionDropdown from "@/components/SuggestionDropdown";
+import WritingAssistantButton from "@/components/WritingAssistantButton";
 
 const OtherTab = ({
     formData,
@@ -57,7 +57,7 @@ const OtherTab = ({
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-4">
             {formData.other_title.map((_, index) => (
                 <ContentItem
                     key={index}
@@ -67,28 +67,27 @@ const OtherTab = ({
                     onDelete={(e) => removeItem(index, 'other', e)}
                     onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                 >
-                    <div className="p-3 bg-white space-y-3">
-                        <div className="grid grid-cols-1 gap-3">
-                            <SmartInputField
-                                label="Other Achievement Title"
-                                value={formData.other_title[index] || ''}
-                                onChange={(e) => {
-                                    const newArray = [...formData.other_title];
-                                    newArray[index] = e.target.value;
-                                    updateFormData('other_title', newArray);
-                                }}
-                                currentDescription={formData.other_description}
-                                onDescriptionChange={(e) => updateFormData('other_description', e.target.value)}
-                                placeholder="e.g., Leadership Award"
-                                className="bg-white"
-                                promptType="provide details for this achievement:"
-                                index={index}
-                            />
+                    <div className="p-5 bg-white space-y-5">
+                        <div className="grid grid-cols-1 gap-5">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Achievement Title</label>
+                                <input
+                                    value={formData.other_title[index] || ''}
+                                    onChange={(e) => {
+                                        const newArray = [...formData.other_title];
+                                        newArray[index] = e.target.value;
+                                        updateFormData('other_title', newArray);
+                                    }}
+                                    placeholder="e.g., Leadership Award"
+                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
+                                    outline-none transition-colors hover:border-teal-400 focus:border-teal-500"
+                                />
+                            </div>
                         </div>
-                        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                            <div className="flex items-center justify-between mb-2">
-                                <label className="text-sm text-gray-600">Description</label>
-                                <SuggestionDropdown
+                        <div className="p-4 bg-gray-50 border border-gray-100 rounded-lg">
+                            <div className="flex items-center justify-between mb-3">
+                                <label className="text-sm font-medium text-gray-700">Description</label>
+                                <WritingAssistantButton
                                     onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
                                     title={formData.other_title[index] || 'achievement'}
                                     customPrompt="provide detailed descriptions and impact of this achievement:"
@@ -105,8 +104,9 @@ const OtherTab = ({
                                     newArray[index] = e.target.value;
                                     updateFormData('other_description', newArray);
                                 }}
-                                className="w-full min-h-[120px] border border-gray-200 rounded-lg
-                                    focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500"
+                                className="w-full min-h-[150px] border border-gray-200 rounded-lg
+                                    focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500
+                                    transition-all duration-300"
                             />
                         </div>
                     </div>

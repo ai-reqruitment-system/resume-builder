@@ -5,11 +5,11 @@ import SmartInputField from "@/components/SmartInputField";
 import SuggestionDropdown from "@/components/SuggestionDropdown";
 
 const CertificateTab = ({
-                            formData,
-                            updateFormData,
-                            activeIndex,
-                            setActiveIndex
-                        }) => {
+    formData,
+    updateFormData,
+    activeIndex,
+    setActiveIndex
+}) => {
     useEffect(() => {
         if (!formData.certificate_title?.length) {
             initializeEmptyCertificate();
@@ -57,7 +57,7 @@ const CertificateTab = ({
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-4">
             {formData.certificate_title.map((_, index) => (
                 <ContentItem
                     key={index}
@@ -67,31 +67,30 @@ const CertificateTab = ({
                     onDelete={(e) => removeItem(index, 'certificate', e)}
                     onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                 >
-                    <div className="p-3 bg-white space-y-3">
-                        <div className="grid grid-cols-1 gap-3">
-                            <SmartInputField
-                                label="Certificate Title"
-                                value={formData.certificate_title[index] || ''}
-                                onChange={(e) => {
-                                    const newArray = [...formData.certificate_title];
-                                    newArray[index] = e.target.value;
-                                    updateFormData('certificate_title', newArray);
-                                }}
-                                currentDescription={formData.certificate_description}
-                                onDescriptionChange={(e) => updateFormData('certificate_description', e.target.value)}
-                                placeholder="e.g., AWS Certified Solutions Architect"
-                                className="bg-white"
-                                promptType="provide a certificate details based on this title:"
-                                index={index}
-                            />
+                    <div className="p-5 bg-white space-y-5">
+                        <div className="grid grid-cols-1 gap-5">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Title</label>
+                                <input
+                                    value={formData.certificate_title[index] || ''}
+                                    onChange={(e) => {
+                                        const newArray = [...formData.certificate_title];
+                                        newArray[index] = e.target.value;
+                                        updateFormData('certificate_title', newArray);
+                                    }}
+                                    placeholder="e.g., AWS Certified Solutions Architect"
+                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
+                                    outline-none transition-colors hover:border-teal-400 focus:border-teal-500"
+                                />
+                            </div>
                         </div>
-                        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                            <div className="flex items-center justify-between mb-2">
-                                <label className="text-sm text-gray-600">Description</label>
+                        <div className="p-4 bg-gray-50 border border-gray-100 rounded-lg">
+                            <div className="flex items-center justify-between mb-3">
+                                <label className="text-sm font-medium text-gray-700">Description</label>
                                 <SuggestionDropdown
                                     onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
                                     title={formData.certificate_title[index] || 'certificate'}
-                                    customPrompt="provide detailed descriptions and achievements related to this certificate:"
+                                    customPrompt="provide detailed descriptions of this certification and its value:"
                                     isSuggestionSelected={(suggestion) => {
                                         const content = formData.certificate_description[index] || '';
                                         return content.includes(suggestion);
@@ -105,8 +104,9 @@ const CertificateTab = ({
                                     newArray[index] = e.target.value;
                                     updateFormData('certificate_description', newArray);
                                 }}
-                                className="w-full min-h-[120px] border border-gray-200 rounded-lg
-                                    focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500"
+                                className="w-full min-h-[150px] border border-gray-200 rounded-lg
+                                    focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500
+                                    transition-all duration-300"
                             />
                         </div>
                     </div>

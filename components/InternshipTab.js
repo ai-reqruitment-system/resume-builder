@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import Editor from "react-simple-wysiwyg";
 import ContentItem from "@/components/ContentItem";
 import SmartInputField from "@/components/SmartInputField";
-import SuggestionDropdown from "@/components/SuggestionDropdown";
+import WritingAssistantButton from "@/components/WritingAssistantButton";
 
 const InternshipTab = ({
-                           formData,
-                           updateFormData,
-                           activeIndex,
-                           setActiveIndex
-                       }) => {
+    formData,
+    updateFormData,
+    activeIndex,
+    setActiveIndex
+}) => {
     useEffect(() => {
         if (!formData.internship_title?.length) {
             initializeEmptyInternship();
@@ -69,7 +69,7 @@ const InternshipTab = ({
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-4">
             {formData.internship_title.map((_, index) => (
                 <ContentItem
                     key={index}
@@ -79,28 +79,27 @@ const InternshipTab = ({
                     onDelete={(e) => removeItem(index, 'internship', e)}
                     onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                 >
-                    <div className="p-3 bg-white space-y-3">
-                        <div className="grid grid-cols-1 gap-3">
-                            <SmartInputField
-                                label="Internship Title"
-                                value={formData.internship_title[index] || ''}
-                                onChange={(e) => {
-                                    const newArray = [...formData.internship_title];
-                                    newArray[index] = e.target.value;
-                                    updateFormData('internship_title', newArray);
-                                }}
-                                currentDescription={formData.internship_summary}
-                                onDescriptionChange={(e) => updateFormData('internship_summary', e.target.value)}
-                                placeholder="e.g., UI/UX Design Intern"
-                                className="bg-white"
-                                promptType="provide a internship details based on this title:"
-                                index={index}
-                            />
+                    <div className="p-5 bg-white space-y-5">
+                        <div className="grid grid-cols-1 gap-5">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Internship Title</label>
+                                <input
+                                    value={formData.internship_title[index] || ''}
+                                    onChange={(e) => {
+                                        const newArray = [...formData.internship_title];
+                                        newArray[index] = e.target.value;
+                                        updateFormData('internship_title', newArray);
+                                    }}
+                                    placeholder="e.g., UI/UX Design Intern"
+                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
+                                    outline-none transition-colors hover:border-teal-400 focus:border-teal-500"
+                                />
+                            </div>
                         </div>
-                        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                            <div className="flex items-center justify-between mb-2">
-                                <label className="text-sm text-gray-600">Description</label>
-                                <SuggestionDropdown 
+                        <div className="p-4 bg-gray-50 border border-gray-100 rounded-lg">
+                            <div className="flex items-center justify-between mb-3">
+                                <label className="text-sm font-medium text-gray-700">Description</label>
+                                <WritingAssistantButton
                                     onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
                                     title={formData.internship_title[index] || 'internship'}
                                     customPrompt="Provide a comprehensive list of detailed professional descriptions and achievements for this internship role:"
@@ -114,8 +113,9 @@ const InternshipTab = ({
                                     newArray[index] = e.target.value;
                                     updateFormData('internship_summary', newArray);
                                 }}
-                                className="w-full min-h-[120px] border border-gray-200 rounded-lg
-                                    focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500"
+                                className="w-full min-h-[150px] border border-gray-200 rounded-lg
+                                    focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500
+                                    transition-all duration-300"
                             />
                         </div>
                     </div>
