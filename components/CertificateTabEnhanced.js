@@ -93,70 +93,15 @@ const CertificateTabEnhanced = ({
         setActiveIndex(formData.certificate_title?.length || 0);
     };
 
-    // Step 1: Basic certificate information
-    if (step === 1) {
-        return (
-            <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
-                    <div>
-                        <h2 className="text-xl font-semibold text-gray-800">Achievements & Certifications</h2>
-                        <p className="text-gray-500 text-sm">Add your certifications and professional achievements</p>
-                    </div>
-                    <button
-                        onClick={addCertificate}
-                        className="w-full sm:w-auto px-4 py-2 bg-teal-50 text-teal-600 rounded-lg
-                        hover:bg-teal-100 transition-all duration-300 flex items-center justify-center
-                        gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
-                    >
-                        <Plus className="w-4 h-4" />
-                        Add Certificate
-                    </button>
-                </div>
-                {formData.certificate_title.map((_, index) => (
-                    <ContentItem
-                        key={index}
-                        title={formData.certificate_title[index] || 'New Certificate'}
-                        isActive={activeIndex === index}
-                        canDelete={formData.certificate_title.length > 1}
-                        onDelete={(e) => removeItem(index, 'certificate', e)}
-                        onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
-                    >
-                        <div className="p-5 bg-white space-y-5">
-                            <div className="grid grid-cols-1 gap-5">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Title</label>
-                                    <input
-                                        value={formData.certificate_title[index] || ''}
-                                        onChange={(e) => {
-                                            const newArray = [...formData.certificate_title];
-                                            newArray[index] = e.target.value;
-                                            updateFormData('certificate_title', newArray);
-                                        }}
-                                        placeholder="e.g., AWS Certified Solutions Architect"
-                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
-                                        outline-none transition-colors hover:border-teal-400 focus:border-teal-500"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </ContentItem>
-                ))}
-            </div>
-        );
-    }
-
-    // Step 2: Description editor with suggestions
+    // Combined view with both basic information and description editor
     return (
         <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
-                <div>
-                    <h2 className="text-xl font-semibold text-gray-800">Achievements & Certifications</h2>
-                    <p className="text-gray-500 text-sm">Add your certifications and professional achievements</p>
-                </div>
+            <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-3 mb-4">
+
                 <button
                     onClick={addCertificate}
-                    className="w-full sm:w-auto px-4 py-2 bg-teal-50 text-teal-600 rounded-lg
-                    hover:bg-teal-100 transition-all duration-300 flex items-center justify-center
+                    className="w-full sm:w-auto px-4 py-2 bg-blue-50 text-blue-600 rounded-lg
+                    hover:bg-blue-100 transition-all duration-300 flex items-center justify-center
                     gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
                 >
                     <Plus className="w-4 h-4" />

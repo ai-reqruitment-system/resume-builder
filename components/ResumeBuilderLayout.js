@@ -36,7 +36,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
 
     // Define the sections for the sidebar
     const sections = [
-        { id: 'header', title: 'Header', completed: false },
+        { id: 'heading', title: 'Header', completed: false },
         { id: 'experience', title: 'Experience', completed: false },
         { id: 'education', title: 'Education', completed: false },
         { id: 'skills', title: 'Skills', completed: false },
@@ -51,18 +51,18 @@ const ResumeBuilderLayout = ({ onClose }) => {
     };
 
     // State for step and active index in enhanced UI components
-    const [step, setStep] = useState(1);
+    // Remove step state
     const [activeIndex, setActiveIndex] = useState(0);
 
     // Render the current section content
     const renderSection = () => {
         switch (currentSection) {
             case 'header':
-                return <PersonalInfoEnhanced formData={formData} updateFormData={updateFormDataHandler} step={step} />;
+                return <PersonalInfoEnhanced formData={formData} updateFormData={updateFormDataHandler} />;
             case 'experience':
-                return <ExperienceEnhanced formData={formData} updateFormData={updateFormDataHandler} step={step} />;
+                return <ExperienceEnhanced formData={formData} updateFormData={updateFormDataHandler} />;
             case 'education':
-                return <EducationEnhanced formData={formData} updateFormData={updateFormDataHandler} step={step} />;
+                return <EducationEnhanced formData={formData} updateFormData={updateFormDataHandler} />;
             case 'skills':
                 return <Skills formData={formData} updateFormData={updateFormDataHandler} />;
             case 'internship':
@@ -71,7 +71,6 @@ const ResumeBuilderLayout = ({ onClose }) => {
                     updateFormData={updateFormDataHandler}
                     activeIndex={activeIndex}
                     setActiveIndex={setActiveIndex}
-                    step={step}
                 />;
             case 'achievements':
                 return <CertificateTabEnhanced
@@ -79,7 +78,6 @@ const ResumeBuilderLayout = ({ onClose }) => {
                     updateFormData={updateFormDataHandler}
                     activeIndex={activeIndex}
                     setActiveIndex={setActiveIndex}
-                    step={step}
                 />;
             case 'additional':
                 return <OtherTabEnhanced
@@ -87,7 +85,6 @@ const ResumeBuilderLayout = ({ onClose }) => {
                     updateFormData={updateFormDataHandler}
                     activeIndex={activeIndex}
                     setActiveIndex={setActiveIndex}
-                    step={step}
                 />;
             case 'summary':
             case 'finalize':
@@ -96,55 +93,26 @@ const ResumeBuilderLayout = ({ onClose }) => {
                     updateFormData={updateFormDataHandler}
                     activeIndex={activeIndex}
                     setActiveIndex={setActiveIndex}
-                    step={step}
                 />;
             default:
-                return <PersonalInfoEnhanced formData={formData} updateFormData={updateFormDataHandler} step={step} />;
+                return <PersonalInfoEnhanced formData={formData} updateFormData={updateFormDataHandler} />;
         }
     };
 
-    // Handle navigation between sections
+    // Simplified navigation handlers
     const handleNext = () => {
-        if (currentSection === 'skills') {
-            // For skills section, skip step 2 and move directly to next section
-            const nextIndex = currentSectionIndex + 1;
-            if (nextIndex < sections.length) {
-                dispatch(setCurrentSection(sections[nextIndex].id));
-                dispatch(setCurrentSectionIndex(nextIndex));
-                setStep(1); // Reset to step 1 for the next section
-            }
-        } else if (step === 1) {
-            // Move to step 2 (enhanced description editor)
-            setStep(2);
-        } else {
-            // Reset to step 1 and move to next section
-            setStep(1);
-            const nextIndex = currentSectionIndex + 1;
-            if (nextIndex < sections.length) {
-                dispatch(setCurrentSection(sections[nextIndex].id));
-                dispatch(setCurrentSectionIndex(nextIndex));
-            }
+        const nextIndex = currentSectionIndex + 1;
+        if (nextIndex < sections.length) {
+            dispatch(setCurrentSection(sections[nextIndex].id));
+            dispatch(setCurrentSectionIndex(nextIndex));
         }
     };
 
     const handlePrevious = () => {
-        if (step === 2) {
-            // Move back to step 1 (basic information)
-            setStep(1);
-        } else {
-            // Move to previous section
-            const prevIndex = currentSectionIndex - 1;
-            if (prevIndex >= 0) {
-                dispatch(setCurrentSection(sections[prevIndex].id));
-                dispatch(setCurrentSectionIndex(prevIndex));
-                // If coming from skills to a previous section, set to step 1
-                // Otherwise show the enhanced editor for the previous section
-                if (sections[prevIndex].id === 'skills') {
-                    setStep(1);
-                } else {
-                    setStep(2);
-                }
-            }
+        const prevIndex = currentSectionIndex - 1;
+        if (prevIndex >= 0) {
+            dispatch(setCurrentSection(sections[prevIndex].id));
+            dispatch(setCurrentSectionIndex(prevIndex));
         }
     };
 
@@ -183,17 +151,18 @@ const ResumeBuilderLayout = ({ onClose }) => {
             )}
 
             {/* Left Sidebar */}
-            <div className={`${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative top-0 left-0 h-full z-50 w-[280px] md:w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl transition-transform duration-300 ease-in-out`}>
+            <div className={`${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative top-0 left-0 h-full z-50 w-[240px] xs:w-[280px] md:w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl transition-transform duration-300 ease-in-out`}>
                 {/* Mobile Close Button */}
-                <div className="md:hidden flex justify-between items-center p-4 bg-blue-950/50 border-b border-blue-700/30">
-                    <span className="font-semibold">Resume Builder</span>
+                <div className="md:hidden flex justify-between items-center p-3 sm:p-4 bg-blue-950/50 border-b border-blue-700/30">
+                    <span className="text-sm font-semibold">Resume Builder</span>
                     <button
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="p-1.5 rounded-lg bg-blue-600/40 hover:bg-blue-600/60 transition-colors"
+                        className="p-1 rounded-lg bg-blue-600/40 hover:bg-blue-600/60 transition-colors"
                     >
-                        <X className="h-5 w-5" />
+                        <X className="h-4 w-4" />
                     </button>
                 </div>
+
                 {/* Progress Indicator - Moved to top */}
                 <div className="p-4 bg-blue-950/50 border-b border-blue-700/30">
                     <div className="flex items-center justify-between mb-1">
@@ -283,11 +252,9 @@ const ResumeBuilderLayout = ({ onClose }) => {
             <div className="flex-1 flex flex-col overflow-auto w-full">
                 {/* Header - Hidden on mobile */}
                 <div className="hidden md:block bg-gradient-to-r from-blue-700 to-blue-800 p-4 lg:p-6 text-white shadow-md">
-
-
-                    <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
-                        <div className="flex-1">
-                            <h1 className="text-2xl font-bold mb-1">
+                    <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 max-w-screen-xl mx-auto">
+                        <div className="flex-1 max-w-[600px]">
+                            <h1 className="text-xl md:text-2xl font-bold mb-1">
                                 {currentSection === 'experience' && 'Add details about your work experience'}
                                 {currentSection === 'education' && 'Add your education background'}
                                 {currentSection === 'skills' && 'What skills do you have?'}
@@ -312,7 +279,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                         </div>
 
                         {/* AI Helper Icon */}
-                        <div className="flex items-center space-x-2 lg:space-x-3 flex-wrap">
+                        <div className="flex items-center space-x-2 lg:space-x-3 flex-wrap gap-2">
                             <button
                                 onClick={() => {
                                     setIsAiModalOpen(true);
@@ -329,11 +296,11 @@ const ResumeBuilderLayout = ({ onClose }) => {
                             >
                                 <div className="flex items-center space-x-2">
                                     <div className="bg-blue-500 p-2 rounded-lg shadow-inner group-hover:bg-blue-400 transition-colors">
-                                        <Sparkles className="h-5 w-5 text-blue-900" />
+                                        <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-blue-900" />
                                     </div>
-                                    <div className="text-sm">
-                                        <p className="font-medium">AI Writing Assistant</p>
-                                        <p className="text-blue-100 text-xs">Get help with phrasing and content suggestions</p>
+                                    <div className="text-xs md:text-sm">
+                                        <p className="font-medium">AI Assistant</p>
+                                        <p className="text-blue-100 text-[0.7rem] md:text-xs">Phrasing help</p>
                                     </div>
                                 </div>
                             </button>
@@ -358,50 +325,27 @@ const ResumeBuilderLayout = ({ onClose }) => {
                 </div>
 
                 {/* Form Content */}
-                <div className="flex-1 p-3 sm:p-4 overflow-auto bg-gray-50/50">
-                    {/* Step Indicator */}
-                    <div className="flex items-center mb-4 px-2">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                            1
-                        </div>
-                        <div className="h-1 w-12 bg-gray-200 mx-2"></div>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 2 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}>
-                            2
-                        </div>
-                        <div className="ml-4 text-sm text-gray-600">
-                            {step === 1 ? 'Basic Information' : 'Enhanced Description Editor'}
-                        </div>
-                    </div>
-
-                    <div className="w-full bg-white p-5 rounded-xl shadow-sm">
+                <div className="flex-1 p-2 sm:p-4 overflow-auto bg-gray-50/50">
+                    <div className="w-full bg-white rounded-lg md:rounded-xl shadow-sm">
                         {renderSection()}
                     </div>
                 </div>
 
                 {/* Navigation Buttons */}
-                <div className="p-3 sm:p-4 border-t border-gray-200 bg-white shadow-md z-10">
-                    <div className="w-full flex justify-between">
+                <div className="p-2 sm:p-4 border-t border-gray-200 bg-white shadow-md z-10">
+                    <div className="w-full flex justify-between space-x-2">
                         <button
-                            onClick={handlePrevious}
-                            disabled={currentSectionIndex === 0}
-                            className={`px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg flex items-center space-x-1 sm:space-x-2 transition-all duration-300 text-sm sm:text-base ${currentSectionIndex === 0 ? 'text-gray-400 bg-gray-100 cursor-not-allowed' : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:shadow-md transform hover:-translate-y-0.5'}`}
+                            className={`px-2 sm:px-6 py-2 sm:py-3 rounded-md md:rounded-lg flex items-center space-x-1 sm:space-x-2 text-xs sm:text-base ${currentSectionIndex === 0 ? 'text-gray-400 bg-gray-100 cursor-not-allowed' : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:shadow-md'}`}
                         >
-                            <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4" />
                             <span>Back</span>
                         </button>
 
                         <button
-                            onClick={handleNext}
-                            className="px-3 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-all duration-300 flex items-center space-x-1 sm:space-x-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 text-sm sm:text-base"
+                            className="px-2 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-md md:rounded-lg hover:bg-blue-500 flex items-center space-x-1 sm:space-x-2 text-xs sm:text-base shadow-md hover:shadow-lg"
                         >
-                            <span>
-                                {step === 1
-                                    ? 'Next: Description Editor'
-                                    : currentSectionIndex === sections.length - 1
-                                        ? 'Finish'
-                                        : 'Next Section'}
-                            </span>
-                            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            <span>{currentSectionIndex === sections.length - 1 ? 'Finish' : 'Next'}</span>
+                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                         </button>
                     </div>
                 </div>

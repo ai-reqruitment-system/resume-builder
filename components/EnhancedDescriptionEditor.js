@@ -75,7 +75,7 @@ const EnhancedDescriptionEditor = ({
     };
 
     return (
-        <div className="p-2 sm:p-3 md:p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+        <div className="p-2 sm:p-3 md:p-2 border-gray-200 rounded-xltransition-all duration-300">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <label className="text-sm sm:text-base font-medium text-gray-800">{title || 'Description'}</label>
                 {showWritingAssistant && (

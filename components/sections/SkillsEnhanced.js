@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Loader2, Search, Plus } from 'lucide-react';
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
 
-const SkillsEnhanced = ({ formData, updateFormData, step = 1 }) => {
+const SkillsEnhanced = ({ formData, updateFormData }) => {
     // State for skills
     const [searchSkills, setSearchSkills] = useState('');
     const [suggestedSkills, setSuggestedSkills] = useState([]);
@@ -91,159 +91,179 @@ const SkillsEnhanced = ({ formData, updateFormData, step = 1 }) => {
         return currentContent.includes(suggestion);
     };
 
-    // Step 1: Basic skills selection
-    if (step === 1) {
-        return (
-            <div className="w-full space-y-5">
-                <div className="mb-4">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-1">Skills & Languages</h2>
-                    <p className="text-gray-500 text-sm">Add your key skills and languages to showcase your expertise.</p>
-                </div>
-
-                <div className="space-y-5">
-                    {/* Skills Section */}
-                    <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
-                        <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Skills</h3>
-                        <div className="relative">
-                            <input
-                                type="text"
-                                value={searchSkills}
-                                onChange={(e) => setSearchSkills(e.target.value)}
-                                placeholder="Type to search for skills (e.g., web development)"
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-300"
-                            />
-                            {loadingSkills && (
-                                <div className="absolute inset-y-0 right-3 flex items-center">
-                                    <Loader2 className="h-5 w-5 text-teal-500 animate-spin" />
-                                </div>
-                            )}
-                        </div>
-                        {errorSkills && (
-                            <p className="text-sm text-red-500 mt-1">{errorSkills}</p>
-                        )}
-
-                        {/* Suggested Skills */}
-                        {searchSkills.length > 0 && (
-                            <div className="mt-2 max-h-36 overflow-y-auto border border-gray-200 rounded-lg">
-                                {skillSuggestions
-                                    .filter(skill => skill.toLowerCase().includes(searchSkills.toLowerCase()))
-                                    .map((skill, index) => (
-                                        <div
-                                            key={index}
-                                            onClick={() => handleSkillSelect(skill)}
-                                            className="cursor-pointer px-3 py-1.5 hover:bg-gray-50 text-sm text-gray-700 transition-all duration-300"
-                                        >
-                                            {skill}
-                                        </div>
-                                    ))}
-                            </div>
-                        )}
-
-                        {/* Selected Skills */}
-                        {selectedSkills.length > 0 && (
-                            <div className="mt-3">
-                                <div className="flex flex-wrap gap-1.5">
-                                    {selectedSkills.map((skill, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center gap-1 bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full text-sm font-medium transition-all duration-300 hover:bg-teal-100"
-                                        >
-                                            {skill}
-                                            <button
-                                                onClick={() => handleSkillRemove(skill)}
-                                                className="hover:text-teal-900 ml-0.5"
-                                            >
-                                                <X className="h-3.5 w-3.5" />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Languages Section */}
-                    <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
-                        <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Languages</h3>
-                        <div className="relative">
-                            <input
-                                type="text"
-                                value={searchLanguages}
-                                onChange={(e) => setSearchLanguages(e.target.value)}
-                                placeholder="Type to search for languages"
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-300"
-                            />
-                        </div>
-
-                        {/* Suggested Languages */}
-                        {searchLanguages.length > 0 && (
-                            <div className="mt-2 max-h-36 overflow-y-auto border border-gray-200 rounded-lg">
-                                {languages
-                                    .filter(lang => lang.toLowerCase().includes(searchLanguages.toLowerCase()))
-                                    .map((lang, index) => (
-                                        <div
-                                            key={index}
-                                            onClick={() => handleLanguageSelect(lang)}
-                                            className="cursor-pointer px-3 py-1.5 hover:bg-gray-50 text-sm text-gray-700 transition-all duration-300"
-                                        >
-                                            {lang}
-                                        </div>
-                                    ))}
-                            </div>
-                        )}
-
-                        {/* Selected Languages */}
-                        {selectedLanguages.length > 0 && (
-                            <div className="mt-3">
-                                <div className="flex flex-wrap gap-1.5">
-                                    {selectedLanguages.map((lang, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center gap-1 bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full text-sm font-medium transition-all duration-300 hover:bg-teal-100"
-                                        >
-                                            {lang}
-                                            <button
-                                                onClick={() => handleLanguageRemove(lang)}
-                                                className="hover:text-teal-900 ml-0.5"
-                                            >
-                                                <X className="h-3.5 w-3.5" />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    // Step 2: Description editor with suggestions
+    // Combined view with both skills selection and description editor
     return (
         <div className="w-full space-y-5">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
-                <div>
-                    <h2 className="text-xl font-semibold text-gray-800 mb-1">Skills Description</h2>
-                    <p className="text-gray-500 text-sm">Add detailed descriptions of your skills and expertise</p>
+            <div className="mb-4">
+                <h2 className="text-xl font-semibold text-gray-800 mb-1">Skills & Languages</h2>
+                <p className="text-gray-500 text-sm">Add your key skills and languages to showcase your expertise.</p>
+            </div>
+
+            <div className="space-y-5">
+                {/* Skills Section */}
+                <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
+                    <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Skills</h3>
+                    <div className="relative">
+                        <input
+                            type="text"
+                            value={searchSkills}
+                            onChange={(e) => setSearchSkills(e.target.value)}
+                            placeholder="Type to search for skills (e.g., web development)"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-300"
+                        />
+                        {loadingSkills && (
+                            <div className="absolute inset-y-0 right-3 flex items-center">
+                                <Loader2 className="h-5 w-5 text-teal-500 animate-spin" />
+                            </div>
+                        )}
+                    </div>
+                    {errorSkills && (
+                        <p className="text-sm text-red-500 mt-1">{errorSkills}</p>
+                    )}
+
+                    {/* Suggested Skills */}
+                    {searchSkills.length > 0 && (
+                        <div className="mt-2 max-h-36 overflow-y-auto border border-gray-200 rounded-lg">
+                            {skillSuggestions
+                                .filter(skill => skill.toLowerCase().includes(searchSkills.toLowerCase()))
+                                .map((skill, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleSkillSelect(skill)}
+                                        className="cursor-pointer px-3 py-1.5 hover:bg-gray-50 text-sm text-gray-700 transition-all duration-300"
+                                    >
+                                        {skill}
+                                    </div>
+                                ))}
+                        </div>
+                    )}
+
+                    {/* Selected Skills */}
+                    {selectedSkills.length > 0 && (
+                        <div className="mt-3">
+                            <div className="flex flex-wrap gap-1.5">
+                                {selectedSkills.map((skill, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex items-center gap-1 bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full text-sm font-medium transition-all duration-300 hover:bg-teal-100"
+                                    >
+                                        {skill}
+                                        <button
+                                            onClick={() => handleSkillRemove(skill)}
+                                            className="hover:text-teal-900 ml-0.5"
+                                        >
+                                            <X className="h-3.5 w-3.5" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Languages Section */}
+                <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
+                    <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Languages</h3>
+                    <div className="relative">
+                        <input
+                            type="text"
+                            value={searchLanguages}
+                            onChange={(e) => setSearchLanguages(e.target.value)}
+                            placeholder="Type to search for languages"
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-300"
+                        />
+                    </div>
+
+                    {/* Suggested Languages */}
+                    {searchLanguages.length > 0 && (
+                        <div className="mt-2 max-h-36 overflow-y-auto border border-gray-200 rounded-lg">
+                            {languages
+                                .filter(lang => lang.toLowerCase().includes(searchLanguages.toLowerCase()))
+                                .map((lang, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleLanguageSelect(lang)}
+                                        className="cursor-pointer px-3 py-1.5 hover:bg-gray-50 text-sm text-gray-700 transition-all duration-300"
+                                    >
+                                        {lang}
+                                    </div>
+                                ))}
+                        </div>
+                    )}
+
+                    {/* Selected Languages */}
+                    {selectedLanguages.length > 0 && (
+                        <div className="mt-3">
+                            <div className="flex flex-wrap gap-1.5">
+                                {selectedLanguages.map((lang, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex items-center gap-1 bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full text-sm font-medium transition-all duration-300 hover:bg-teal-100"
+                                    >
+                                        {lang}
+                                        <button
+                                            onClick={() => handleLanguageRemove(lang)}
+                                            className="hover:text-teal-900 ml-0.5"
+                                        >
+                                            <X className="h-3.5 w-3.5" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
-            <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
-                <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Technical Expertise</h3>
 
-                <EnhancedDescriptionEditor
-                    value={formData.skill_description || ''}
-                    onChange={(e) => updateFormData('skill_description', e.target.value)}
-                    title="Skills Description"
-                    customPrompt="Provide detailed descriptions of your technical skills and expertise:"
-                    suggestions={skillSuggestions}
-                    onSuggestionClick={handleSuggestionClick}
-                    isSuggestionSelected={isSuggestionSelected}
-                    showWritingAssistant={true}
-                />
+            {/* Skills Description Section */}
+            <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
+                <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Skills Description</h3>
+                <div>
+                    <h2 className="text-xl font-semibold text-gray-800 mb-1">Technical Expertise</h2>
+                    <p className="text-gray-500 text-sm">Add detailed descriptions of your skills and expertise</p>
+                </div>
+
+                <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
+                    <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Technical Expertise</h3>
+
+                    <EnhancedDescriptionEditor
+                        value={formData.skill_description || ''}
+                        onChange={(e) => updateFormData('skill_description', e.target.value)}
+                        title="Skills Description"
+                        customPrompt="Provide detailed descriptions of your technical skills and expertise:"
+                        suggestions={skillSuggestions}
+                        onSuggestionClick={handleSuggestionClick}
+                        isSuggestionSelected={isSuggestionSelected}
+                        showWritingAssistant={true}
+                    />
+                </div>
             </div>
-        </div>
+
+            {/* Skills Description Section */}
+            <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
+                <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Skills Description</h3>
+                <div>
+                    <h2 className="text-xl font-semibold text-gray-800 mb-1">Technical Expertise</h2>
+                    <p className="text-gray-500 text-sm">Add detailed descriptions of your skills and expertise</p>
+                </div>
+
+                <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
+                    <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Technical Expertise</h3>
+
+                    <EnhancedDescriptionEditor
+                        value={formData.skill_description || ''}
+                        onChange={(e) => updateFormData('skill_description', e.target.value)}
+                        title="Skills Description"
+                        customPrompt="Provide detailed descriptions of your technical skills and expertise:"
+                        suggestions={skillSuggestions}
+                        onSuggestionClick={handleSuggestionClick}
+                        isSuggestionSelected={isSuggestionSelected}
+                        showWritingAssistant={true}
+                    />
+                </div>
+            </div>
+        </div >
     );
 };
 

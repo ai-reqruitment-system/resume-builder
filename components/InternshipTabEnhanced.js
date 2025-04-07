@@ -93,70 +93,14 @@ const InternshipTabEnhanced = ({
         setActiveIndex(formData.internship_title?.length || 0);
     };
 
-    // Step 1: Basic internship information
-    if (step === 1) {
-        return (
-            <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
-                    <div>
-                        <h2 className="text-xl font-semibold text-gray-800">Internships</h2>
-                        <p className="text-gray-500 text-sm">Add your internship experiences</p>
-                    </div>
-                    <button
-                        onClick={addInternship}
-                        className="w-full sm:w-auto px-4 py-2 bg-teal-50 text-teal-600 rounded-lg
-                        hover:bg-teal-100 transition-all duration-300 flex items-center justify-center
-                        gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
-                    >
-                        <Plus className="w-4 h-4" />
-                        Add Internship
-                    </button>
-                </div>
-                {formData.internship_title.map((_, index) => (
-                    <ContentItem
-                        key={index}
-                        title={formData.internship_title[index] || 'New Internship'}
-                        isActive={activeIndex === index}
-                        canDelete={formData.internship_title.length > 1}
-                        onDelete={(e) => removeItem(index, 'internship', e)}
-                        onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
-                    >
-                        <div className="p-5 bg-white space-y-5">
-                            <div className="grid grid-cols-1 gap-5">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Internship Title</label>
-                                    <input
-                                        value={formData.internship_title[index] || ''}
-                                        onChange={(e) => {
-                                            const newArray = [...formData.internship_title];
-                                            newArray[index] = e.target.value;
-                                            updateFormData('internship_title', newArray);
-                                        }}
-                                        placeholder="e.g., UI/UX Design Intern"
-                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
-                                        outline-none transition-colors hover:border-teal-400 focus:border-teal-500"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </ContentItem>
-                ))}
-            </div>
-        );
-    }
-
-    // Step 2: Description editor with suggestions
     return (
         <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
-                <div>
-                    <h2 className="text-xl font-semibold text-gray-800">Internships</h2>
-                    <p className="text-gray-500 text-sm">Add your internship experiences</p>
-                </div>
+            <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-3 mb-4">
+
                 <button
                     onClick={addInternship}
-                    className="w-full sm:w-auto px-4 py-2 bg-teal-50 text-teal-600 rounded-lg
-                    hover:bg-teal-100 transition-all duration-300 flex items-center justify-center
+                    className="w-full sm:w-auto px-4 py-2 bg-blue-50 text-blue-600 rounded-lg
+                    hover:bg-blue-100 transition-all duration-300 flex items-center justify-center
                     gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
                 >
                     <Plus className="w-4 h-4" />
@@ -173,6 +117,25 @@ const InternshipTabEnhanced = ({
                     onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                 >
                     <div className="p-5 bg-white space-y-5">
+                        {/* Basic Information Section */}
+                        <div className="grid grid-cols-1 gap-5">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Internship Title</label>
+                                <input
+                                    value={formData.internship_title[index] || ''}
+                                    onChange={(e) => {
+                                        const newArray = [...formData.internship_title];
+                                        newArray[index] = e.target.value;
+                                        updateFormData('internship_title', newArray);
+                                    }}
+                                    placeholder="e.g., UI/UX Design Intern"
+                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
+                                    outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Description Editor Section */}
                         <EnhancedDescriptionEditor
                             value={formData.internship_summary[index] || ''}
                             onChange={(e) => {

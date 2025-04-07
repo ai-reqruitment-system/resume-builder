@@ -113,10 +113,6 @@ const Skills = ({ formData, updateFormData }) => {
 
     return (
         <div className="w-full space-y-6">
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-800">Skills & Languages</h2>
-                <p className="text-gray-500 text-sm">Add your key skills and languages to showcase your expertise.</p>
-            </div>
 
             <div className="space-y-8">
                 {/* Skills Section */}
@@ -128,11 +124,11 @@ const Skills = ({ formData, updateFormData }) => {
                             value={searchSkills}
                             onChange={(e) => handleSkillSearch(e.target.value)}
                             placeholder="Type to search for skills (e.g., web development)"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-300"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
                         />
                         {loadingSkills && (
                             <div className="absolute inset-y-0 right-3 flex items-center">
-                                <Loader2 className="h-5 w-5 text-teal-500 animate-spin" />
+                                <Loader2 className="h-5 w-5 text-blue-500 animate-spin" />
                             </div>
                         )}
                     </div>
@@ -162,12 +158,12 @@ const Skills = ({ formData, updateFormData }) => {
                                 {selectedSkills.map((skill, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-2 bg-teal-50 text-teal-700 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-teal-100"
+                                        className="flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-blue-100"
                                     >
                                         {skill}
                                         <button
                                             onClick={() => handleSkillRemove(skill)}
-                                            className="hover:text-teal-900"
+                                            className="hover:text-blue-900"
                                         >
                                             <X className="h-4 w-4" />
                                         </button>
@@ -187,7 +183,7 @@ const Skills = ({ formData, updateFormData }) => {
                             value={searchLanguages}
                             onChange={(e) => setSearchLanguages(e.target.value)}
                             placeholder="Type to search for languages"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-300"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300"
                         />
                     </div>
 
@@ -215,12 +211,12 @@ const Skills = ({ formData, updateFormData }) => {
                                 {selectedLanguages.map((lang, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-center gap-2 bg-teal-50 text-teal-700 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-teal-100"
+                                        className="flex items-center gap-2 bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-blue-100"
                                     >
                                         {lang}
                                         <button
                                             onClick={() => handleLanguageRemove(lang)}
-                                            className="hover:text-teal-900"
+                                            className="hover:text-blue-900"
                                         >
                                             <X className="h-4 w-4" />
                                         </button>
