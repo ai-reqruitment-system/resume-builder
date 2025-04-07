@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { UserCircle2, Mail, Phone, Loader2, ArrowLeft } from 'lucide-react';
+import { UserCircle2, Mail, Phone, Loader2, ArrowLeft, MapPin, Briefcase, GraduationCap } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -12,10 +12,26 @@ const CompleteProfilePage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+
+    // Updated formData structure
     const [formData, setFormData] = useState({
         name: '',
+        email: '',
         phone: '',
-        email: ''
+        location: '',
+        targetRoles: [''],  // Array to store multiple job preferences
+        selectedLocations: [''], // Array to store multiple preferred locations
+        workExperience: [
+            {
+                jobTitle: '',
+                employer: '',
+                startDate: '',
+                endDate: '',
+                city: '',
+                description: '',
+            },
+        ],
+        skills: [],
     });
 
     useEffect(() => {
@@ -83,10 +99,49 @@ const CompleteProfilePage = () => {
         }
     };
 
+    // Add Work Experience Field
+    const addWorkExperience = () => {
+        setFormData(prev => ({
+            ...prev,
+            workExperience: [...prev.workExperience, {
+                jobTitle: '',
+                employer: '',
+                startDate: '',
+                endDate: '',
+                city: '',
+                description: '',
+            }],
+        }));
+    };
+
+    // Remove Work Experience Field
+    const removeWorkExperience = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            workExperience: prev.workExperience.filter((_, i) => i !== index),
+        }));
+    };
+
+    // Add Skill Field
+    const addSkill = () => {
+        setFormData(prev => ({
+            ...prev,
+            skills: [...prev.skills, { skill: '', level: '' }],
+        }));
+    };
+
+    // Remove Skill Field
+    const removeSkill = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            skills: prev.skills.filter((_, i) => i !== index),
+        }));
+    };
+
     return (
         <Layout>
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="w-full max-w-md px-4 py-8 sm:px-6 lg:px-8">
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="w-full max-w-2xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
                     {/* Back Button */}
                     <Link
                         href="/verify-otp"
@@ -96,76 +151,442 @@ const CompleteProfilePage = () => {
                         Back to Verification
                     </Link>
 
-                    <div className="text-center mb-8">
-                        <h1 className="text-4xl font-bold text-gray-900 mb-3">
-                            Complete Profile
+                    <div className="bg-white rounded-lg shadow-md p-6 text-center">
+                        <h1 className="text-3xl font-bold text-gray-900 mb-3">
+                            Complete Your Profile
                         </h1>
                         <p className="text-lg text-gray-600">
-                            Please provide your details to continue
+                            Help us personalize your job search experience
                         </p>
                     </div>
 
                     {/* Alert Messages */}
                     <AlertMessage error={error} success={success} showAlert={showAlert} />
 
-                    <form onSubmit={handleCompleteProfile} className="space-y-6">
-                        {/* Email Address (Disabled) */}
-                        <InputWithIcon
-                            label="Email Address"
-                            icon={Mail}
-                            type="email"
-                            value={formData.email}
-                            disabled={true}
-                        />
+                    <form onSubmit={handleCompleteProfile} className="space-y-8">
+                        <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                                <UserCircle2 className="w-5 h-5 mr-2 text-blue-500" />
+                                Personal Information
+                            </h2>
 
-                        {/* Full Name */}
-                        <InputWithIcon
-                            label="Full Name"
-                            icon={UserCircle2}
-                            type="text"
-                            value={formData.name}
-                            onChange={(e) => setFormData(prev => ({
-                                ...prev,
-                                name: e.target.value
-                            }))}
-                            placeholder="Enter your full name"
-                            required={true}
-                        />
+                            {/* Email Address (Disabled) */}
+                            <InputWithIcon
+                                label="Email Address"
+                                icon={Mail}
+                                type="email"
+                                value={formData.email}
+                                disabled={true}
+                                className="bg-gray-50"
+                            />
 
-                        {/* Phone Number (Optional) */}
-                        <InputWithIcon
-                            label="Phone Number (Optional)"
-                            icon={Phone}
-                            type="tel"
-                            value={formData.phone}
-                            onChange={(e) => {
-                                const value = e.target.value.replace(/\D/g, '');
-                                if (value.length <= 10) {
-                                    setFormData(prev => ({
-                                        ...prev,
-                                        phone: value
-                                    }));
-                                }
-                            }}
-                            placeholder="Enter your phone number"
-                            maxLength="10"
-                            error={formData.phone && !validatePhone(formData.phone) ? "Please enter a valid 10-digit phone number" : null}
-                        />
+                            {/* Full Name */}
+                            <InputWithIcon
+                                label="Full Name"
+                                icon={UserCircle2}
+                                type="text"
+                                value={formData.name}
+                                onChange={(e) => setFormData(prev => ({
+                                    ...prev,
+                                    name: e.target.value
+                                }))}
+                                placeholder="Enter your full name"
+                                required={true}
+                            />
+
+                            {/* Phone Number (Optional) */}
+                            <InputWithIcon
+                                label="Phone Number (Optional)"
+                                icon={Phone}
+                                type="tel"
+                                value={formData.phone}
+                                onChange={(e) => {
+                                    const value = e.target.value.replace(/\D/g, '');
+                                    if (value.length <= 10) {
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            phone: value
+                                        }));
+                                    }
+                                }}
+                                placeholder="Enter your phone number"
+                                maxLength="10"
+                                error={formData.phone && !validatePhone(formData.phone) ? "Please enter a valid 10-digit phone number" : null}
+                            />
+                        </div>
+
+                        <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                                <MapPin className="w-5 h-5 mr-2 text-blue-500" />
+                                Location Details
+                            </h2>
+
+                            <div>
+                                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Current Location
+                                </label>
+                                <div className="relative rounded-md shadow-sm">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <MapPin className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="location"
+                                        value={formData.location}
+                                        onChange={(e) => setFormData(prev => ({
+                                            ...prev,
+                                            location: e.target.value,
+                                        }))}
+                                        className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                        placeholder="e.g., Houston, TX"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                                <Briefcase className="w-5 h-5 mr-2 text-blue-500" />
+                                Job Preferences
+                            </h2>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Desired Roles (Max 5)
+                                </label>
+                                {formData.targetRoles.map((role, index) => (
+                                    <div key={index} className="flex items-center gap-2 mb-2">
+                                        <div className="relative flex-1 rounded-md shadow-sm">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <Briefcase className="h-5 w-5 text-gray-400" />
+                                            </div>
+                                            <input
+                                                type="text"
+                                                value={role}
+                                                onChange={(e) => {
+                                                    const newRoles = [...formData.targetRoles];
+                                                    newRoles[index] = e.target.value;
+                                                    setFormData(prev => ({ ...prev, targetRoles: newRoles }));
+                                                }}
+                                                className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                                placeholder="e.g., Software Engineer"
+                                            />
+                                        </div>
+                                        {formData.targetRoles.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newRoles = formData.targetRoles.filter((_, i) => i !== index);
+                                                    setFormData(prev => ({ ...prev, targetRoles: newRoles }));
+                                                }}
+                                                className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
+                                            >
+                                                ×
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                                {formData.targetRoles.length < 5 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({
+                                            ...prev,
+                                            targetRoles: [...prev.targetRoles, '']
+                                        }))}
+                                        className="mt-2 text-sm text-blue-500 hover:text-blue-700"
+                                    >
+                                        + Add another role
+                                    </button>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Preferred Locations (Max 5)
+                                </label>
+                                {formData.selectedLocations.map((location, index) => (
+                                    <div key={index} className="flex items-center gap-2 mb-2">
+                                        <div className="relative flex-1 rounded-md shadow-sm">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <MapPin className="h-5 w-5 text-gray-400" />
+                                            </div>
+                                            <input
+                                                type="text"
+                                                value={location}
+                                                onChange={(e) => {
+                                                    const newLocations = [...formData.selectedLocations];
+                                                    newLocations[index] = e.target.value;
+                                                    setFormData(prev => ({ ...prev, selectedLocations: newLocations }));
+                                                }}
+                                                className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                                placeholder="e.g., London or Remote"
+                                            />
+                                        </div>
+                                        {formData.selectedLocations.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newLocations = formData.selectedLocations.filter((_, i) => i !== index);
+                                                    setFormData(prev => ({ ...prev, selectedLocations: newLocations }));
+                                                }}
+                                                className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
+                                            >
+                                                ×
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                                {formData.selectedLocations.length < 5 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({
+                                            ...prev,
+                                            selectedLocations: [...prev.selectedLocations, '']
+                                        }))}
+                                        className="mt-2 text-sm text-blue-500 hover:text-blue-700"
+                                    >
+                                        + Add another location
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Work Experience */}
+                        <div>
+                            <h2 className="text-xl font-bold mb-2">Work Experience</h2>
+                            {formData.workExperience.map((experience, index) => (
+                                <div key={index} className="mb-6 bg-gray-50 rounded-lg p-4">
+                                    <div className="flex justify-between items-center border-b pb-3 mb-4">
+                                        <span>Experience {index + 1}</span>
+                                        {formData.workExperience.length > 1 && (
+                                            <button
+                                                onClick={() => removeWorkExperience(index)}
+                                                className="text-red-500 hover:text-red-700"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label htmlFor={`jobTitle-${index}`} className="block text-sm font-medium text-gray-700">
+                                                Job Title
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id={`jobTitle-${index}`}
+                                                value={experience.jobTitle}
+                                                onChange={(e) => {
+                                                    const newExperience = [...formData.workExperience];
+                                                    newExperience[index].jobTitle = e.target.value;
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        workExperience: newExperience,
+                                                    }));
+                                                }}
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                                placeholder="Enter job title"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor={`employer-${index}`} className="block text-sm font-medium text-gray-700">
+                                                Employer
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id={`employer-${index}`}
+                                                value={experience.employer}
+                                                onChange={(e) => {
+                                                    const newExperience = [...formData.workExperience];
+                                                    newExperience[index].employer = e.target.value;
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        workExperience: newExperience,
+                                                    }));
+                                                }}
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                                placeholder="Enter employer"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4 mt-4">
+                                        <div>
+                                            <label htmlFor={`startDate-${index}`} className="block text-sm font-medium text-gray-700">
+                                                Start Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id={`startDate-${index}`}
+                                                value={experience.startDate}
+                                                onChange={(e) => {
+                                                    const newExperience = [...formData.workExperience];
+                                                    newExperience[index].startDate = e.target.value;
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        workExperience: newExperience,
+                                                    }));
+                                                }}
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor={`endDate-${index}`} className="block text-sm font-medium text-gray-700">
+                                                End Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                id={`endDate-${index}`}
+                                                value={experience.endDate}
+                                                onChange={(e) => {
+                                                    const newExperience = [...formData.workExperience];
+                                                    newExperience[index].endDate = e.target.value;
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        workExperience: newExperience,
+                                                    }));
+                                                }}
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label htmlFor={`city-${index}`} className="block text-sm font-medium text-gray-700">
+                                            City
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id={`city-${index}`}
+                                            value={experience.city}
+                                            onChange={(e) => {
+                                                const newExperience = [...formData.workExperience];
+                                                newExperience[index].city = e.target.value;
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    workExperience: newExperience,
+                                                }));
+                                            }}
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                            placeholder="Enter city"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor={`description-${index}`} className="block text-sm font-medium text-gray-700">
+                                            Description
+                                        </label>
+                                        <textarea
+                                            id={`description-${index}`}
+                                            value={experience.description}
+                                            onChange={(e) => {
+                                                const newExperience = [...formData.workExperience];
+                                                newExperience[index].description = e.target.value;
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    workExperience: newExperience,
+                                                }));
+                                            }}
+                                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                            rows="4"
+                                            placeholder="Describe your role and achievements"
+                                        ></textarea>
+                                    </div>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={addWorkExperience}
+                                className="text-blue-500 hover:text-blue-700"
+                            >
+                                Add Another Experience
+                            </button>
+                        </div>
+
+                        {/* Skills */}
+                        <div>
+                            <h2 className="text-xl font-bold mb-2">Skills</h2>
+                            {formData.skills.map((skill, index) => (
+                                <div key={index} className="mb-6 bg-gray-50 rounded-lg p-4">
+                                    <div className="flex justify-between items-center border-b pb-3 mb-4">
+                                        <span>Skill {index + 1}</span>
+                                        {formData.skills.length > 1 && (
+                                            <button
+                                                onClick={() => removeSkill(index)}
+                                                className="text-red-500 hover:text-red-700"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label htmlFor={`skill-${index}`} className="block text-sm font-medium text-gray-700">
+                                                Skill
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id={`skill-${index}`}
+                                                value={skill.skill}
+                                                onChange={(e) => {
+                                                    const newSkills = [...formData.skills];
+                                                    newSkills[index].skill = e.target.value;
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        skills: newSkills,
+                                                    }));
+                                                }}
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                                placeholder="Enter skill"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor={`level-${index}`} className="block text-sm font-medium text-gray-700">
+                                                Level
+                                            </label>
+                                            <select
+                                                id={`level-${index}`}
+                                                value={skill.level}
+                                                onChange={(e) => {
+                                                    const newSkills = [...formData.skills];
+                                                    newSkills[index].level = e.target.value;
+                                                    setFormData(prev => ({
+                                                        ...prev,
+                                                        skills: newSkills,
+                                                    }));
+                                                }}
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                            >
+                                                <option value="">Select Level</option>
+                                                <option value="Beginner">Beginner</option>
+                                                <option value="Intermediate">Intermediate</option>
+                                                <option value="Advanced">Advanced</option>
+                                                <option value="Expert">Expert</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={addSkill}
+                                className="text-blue-500 hover:text-blue-700"
+                            >
+                                Add Another Skill
+                            </button>
+                        </div>
 
                         {/* Submit Button */}
-                        <button
-                            type="submit"
-                            disabled={loading || !formData.name || (formData.phone && !validatePhone(formData.phone))}
-                            className="w-full py-3.5 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600
-                            transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                            flex items-center justify-center space-x-2"
-                        >
-                            {loading ? (
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                            ) : (
-                                <span>Complete Registration</span>
-                            )}
-                        </button>
+                        <div className="bg-white rounded-lg shadow-md p-6">
+                            <button
+                                type="submit"
+                                disabled={loading || !formData.name || (formData.phone && !validatePhone(formData.phone))}
+                                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                            >
+                                {loading ? (
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : (
+                                    'Complete Profile'
+                                )}
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

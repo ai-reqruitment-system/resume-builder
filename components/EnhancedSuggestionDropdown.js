@@ -119,18 +119,18 @@ export default function EnhancedSuggestionDropdown({
             <button
                 ref={buttonRef}
                 onClick={handleDropdownToggle}
-                className={`flex items-center gap-2 px-4 py-2 text-sm text-teal-600 bg-teal-50 rounded-lg hover:bg-teal-100 transition-all duration-300 ${buttonClassName}`}
+                className={`flex items-center gap-0.5 xxs:gap-1 xs:gap-1.5 sm:gap-2 px-1 xxs:px-2 xs:px-3 sm:px-4 py-0.5 xxs:py-1 xs:py-1.5 sm:py-2 text-[8px] xxs:text-xs xs:text-sm text-teal-600 bg-teal-50 rounded-lg hover:bg-teal-100 transition-all duration-300 ${buttonClassName}`}
                 aria-expanded={isDropdownOpen}
                 aria-haspopup="true"
                 aria-label="Open suggestions dropdown"
             >
-                <Plus className="w-4 h-4" />
-                Get help with writing
-                <ChevronDown className={`w-4 h-4 transform transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <Plus className="w-2 h-2 xxs:w-3 xxs:h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4" />
+                <span className="whitespace-nowrap">Get help with writing</span>
+                <ChevronDown className={`w-2 h-2 xxs:w-3 xxs:h-3 xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4 transform transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             <div
-                className={`absolute mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 overflow-hidden ${isDropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
+                className={`absolute mt-2 w-48 xxs:w-56 xs:w-64 sm:w-72 md:w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 transition-all duration-300 overflow-hidden ${isDropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}
                 style={{
                     top: dropdownPosition.top,
                     right: dropdownPosition.right,
@@ -141,14 +141,14 @@ export default function EnhancedSuggestionDropdown({
                 role="dialog"
                 aria-label="Suggestions dropdown"
             >
-                <div className="flex justify-between items-center p-3 border-b sticky top-0 bg-white z-10">
-                    <span className="text-sm font-medium text-gray-700">Suggestions for {title}</span>
+                <div className="flex justify-between items-center p-2 xxs:p-3 border-b sticky top-0 bg-white z-10">
+                    <span className="text-xs xxs:text-sm font-medium text-gray-700">Suggestions for {title}</span>
                     <button
                         onClick={() => setIsDropdownOpen(false)}
                         className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100 transition-colors"
                         aria-label="Close suggestions"
                     >
-                        <X className="w-4 h-4" />
+                        <X className="w-3 h-3 xxs:w-4 xxs:h-4" />
                     </button>
                 </div>
 

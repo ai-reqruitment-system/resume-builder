@@ -119,7 +119,7 @@ export default function AiWritingAssistantModal({
 
     // Categorize suggestions with more meaningful categories
     const categories = [
-        { id: 'all', name: 'All Suggestions', icon: Sparkles, color: 'teal' },
+        { id: 'all', name: 'All Suggestions', icon: Sparkles, color: 'blue' },
         { id: 'professional', name: 'Professional', icon: Briefcase, color: 'blue' },
         { id: 'concise', name: 'Concise', icon: Zap, color: 'amber' },
         { id: 'creative', name: 'Creative', icon: Lightbulb, color: 'purple' },
@@ -153,7 +153,7 @@ export default function AiWritingAssistantModal({
                             initial={{ y: -20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.1 }}
-                            className="flex justify-between items-center p-3 sm:p-5 border-b sticky top-0 bg-white z-10 rounded-t-xl bg-gradient-to-r from-teal-700 to-teal-800 text-white"
+                            className="flex justify-between items-center p-3 sm:p-5 border-b sticky top-0 bg-white z-10 rounded-t-xl bg-gradient-to-r from-blue-700 to-blue-800 text-white"
                         >
                             <div className="flex items-center space-x-3">
                                 <motion.div
@@ -165,20 +165,20 @@ export default function AiWritingAssistantModal({
                                         damping: 20,
                                         delay: 0.2
                                     }}
-                                    className="bg-teal-500 p-2 rounded-lg shadow-inner"
+                                    className="bg-blue-500 p-2 rounded-lg shadow-inner"
                                 >
-                                    <Sparkles className="h-5 w-5 text-teal-900" />
+                                    <Sparkles className="h-5 w-5 text-blue-900" />
                                 </motion.div>
                                 <div>
                                     <h3 className="text-lg font-bold">AI Writing Assistant</h3>
-                                    <p className="text-sm text-teal-100">Smart suggestions for {title}</p>
+                                    <p className="text-sm text-blue-100">Smart suggestions for {title}</p>
                                 </div>
                             </div>
                             <motion.button
                                 whileHover={{ rotate: 90, scale: 1.1 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
                                 onClick={onClose}
-                                className="text-teal-100 hover:text-white p-2 rounded-full hover:bg-teal-600/30 transition-colors"
+                                className="text-blue-100 hover:text-white p-2 rounded-full hover:bg-blue-600/30 transition-colors"
                                 aria-label="Close modal"
                             >
                                 <X className="w-5 h-5" />
@@ -210,7 +210,7 @@ export default function AiWritingAssistantModal({
                                 <input
                                     ref={inputRef}
                                     type="text"
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all shadow-sm"
+                                    className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all shadow-sm"
                                     placeholder="Search for suggestions or describe what you need..."
                                     value={searchTerm}
                                     onChange={handleSearchChange}
@@ -244,7 +244,7 @@ export default function AiWritingAssistantModal({
                                             whileTap={{ y: 0 }}
                                             onClick={() => setActiveCategory(category.id)}
                                             className={`px-4 py-2 rounded-full text-sm font-medium flex items-center space-x-2 transition-all border ${isActive ?
-                                                category.id === 'all' ? 'bg-teal-100 text-teal-800 border-teal-200' :
+                                                category.id === 'all' ? 'bg-blue-100 text-blue-800 border-blue-200' :
                                                     category.id === 'professional' ? 'bg-blue-100 text-blue-800 border-blue-200' :
                                                         category.id === 'concise' ? 'bg-amber-100 text-amber-800 border-amber-200' :
                                                             category.id === 'creative' ? 'bg-purple-100 text-purple-800 border-purple-200' :
@@ -253,7 +253,7 @@ export default function AiWritingAssistantModal({
                                                 : 'text-gray-600 hover:bg-gray-100 border-transparent'} ${isActive ? 'shadow-sm' : ''}`}
                                         >
                                             <Icon className={`w-4 h-4 ${isActive ?
-                                                category.id === 'all' ? 'text-teal-500' :
+                                                category.id === 'all' ? 'text-blue-500' :
                                                     category.id === 'professional' ? 'text-blue-500' :
                                                         category.id === 'concise' ? 'text-amber-500' :
                                                             category.id === 'creative' ? 'text-purple-500' :
@@ -294,9 +294,9 @@ export default function AiWritingAssistantModal({
                                                 ease: "linear"
                                             }}
                                         >
-                                            <Loader2 className="w-8 h-8 text-teal-500" />
+                                            <Loader2 className="w-8 h-8 text-blue-500" />
                                         </motion.div>
-                                        <div className="absolute inset-0 rounded-full animate-ping bg-teal-200 opacity-30"></div>
+                                        <div className="absolute inset-0 rounded-full animate-ping bg-blue-200 opacity-30"></div>
                                     </div>
                                     <motion.span
                                         animate={{
@@ -324,7 +324,7 @@ export default function AiWritingAssistantModal({
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.1 + (index * 0.05) }}
                                                 whileHover={{ scale: 1.01 }}
-                                                className={`group p-4 rounded-lg border transition-all duration-200 hover:shadow-md ${isSelected ? 'bg-teal-50 border-teal-200' : 'border-gray-200 hover:border-teal-200'}`}
+                                                className={`group p-4 rounded-lg border transition-all duration-200 hover:shadow-md ${isSelected ? 'bg-blue-50 border-blue-200' : 'border-gray-200 hover:border-blue-200'}`}
                                             >
                                                 <div className="flex justify-between items-start">
                                                     <p className="text-gray-800 flex-1">{suggestion}</p>
@@ -345,8 +345,8 @@ export default function AiWritingAssistantModal({
                                                             whileTap={{ scale: 0.95 }}
                                                             onClick={() => onSuggestionClick(suggestion)}
                                                             className={`p-2 rounded-full transition-all ${isSelected
-                                                                ? 'bg-teal-500 text-white'
-                                                                : 'bg-gray-100 text-gray-500 hover:bg-teal-100 hover:text-teal-600'}`}
+                                                                ? 'bg-blue-500 text-white'
+                                                                : 'bg-gray-100 text-gray-500 hover:bg-blue-100 hover:text-blue-600'}`}
                                                             aria-label={isSelected ? "Suggestion selected" : "Use this suggestion"}
                                                         >
                                                             {isSelected ? (

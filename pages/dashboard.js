@@ -156,7 +156,7 @@ export default function Home() {
                                                 <h2 className="text-2xl font-semibold mb-4">Resumes</h2>
                                                 <div className="border-b">
                                                     <div className="flex gap-6">
-                                                        <button className="px-4 py-2 text-teal-600 border-b-2 border-teal-600">Resumes</button>
+                                                        <button className="px-4 py-2 text-blue-600 border-b-2 border-blue-600">Resumes</button>
                                                     </div>
                                                 </div>
                                             </div>

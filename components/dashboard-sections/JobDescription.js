@@ -21,7 +21,7 @@ const JobDescription = ({ job, onClose }) => {
                     {/* Job header information */}
                     <div className="space-y-2">
                         <h1 className="text-2xl font-bold text-gray-900">{job.title}</h1>
-                        <p className="text-teal-600 font-medium">{job.company}</p>
+                        <p className="text-blue-600 font-medium">{job.company}</p>
                         <div className="flex items-center text-gray-600">
                             <span className="text-sm">{job.location}</span>
                             <span className="mx-2">•</span>
@@ -64,7 +64,7 @@ const JobDescription = ({ job, onClose }) => {
             {/* Footer with action buttons */}
             <div className="p-6 border-t border-gray-100 sticky bottom-0 bg-white z-10">
                 <div className="flex gap-4">
-                    <button className="flex-1 px-6 py-3 bg-teal-400 text-white rounded-lg hover:bg-teal-500 transition-all duration-300 font-medium shadow-sm hover:shadow transform hover:translate-y-[-1px]">
+                    <button className="flex-1 px-6 py-3 bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-all duration-300 font-medium shadow-sm hover:shadow transform hover:translate-y-[-1px]">
                         Apply Now
                     </button>
                     <button className="flex-1 px-6 py-3 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">

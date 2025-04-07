@@ -48,7 +48,7 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
                             setActiveTab(item.text);
                             setShowBuilder(false);
                         }}
-                        className={`flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-2 sm:px-3 py-3 rounded-lg ${activeTab === item.text ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white font-medium shadow-md' : 'text-gray-600 hover:bg-gray-100'} mx-1 sm:mx-2 md:mx-0 mb-1 md:mb-0 transition-all duration-300 ease-in-out transform hover:scale-[1.02]`}
+                        className={`flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-2 sm:px-3 py-3 rounded-lg ${activeTab === item.text ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium shadow-md' : 'text-gray-600 hover:bg-gray-100'} mx-1 sm:mx-2 md:mx-0 mb-1 md:mb-0 transition-all duration-300 ease-in-out transform hover:scale-[1.02]`}
                     >
                         <item.icon size={20} className={`${activeTab === item.text ? 'text-white' : ''} sm:w-6 sm:h-6 md:w-5 md:h-5 lg:w-6 lg:h-6`} />
                         <span className={`text-xs mt-1 md:hidden ${isRightSidebarOpen ? 'lg:hidden' : 'lg:inline-block'} lg:text-sm lg:mt-0 font-medium`}>{item.text}</span>

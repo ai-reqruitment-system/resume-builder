@@ -5,6 +5,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import LoadingScreen from '@/components/LoadingScreen';
 
 const ProfilePage = () => {
     const router = useRouter();
@@ -116,12 +117,14 @@ const ProfilePage = () => {
             {/* Sidebar Navigation */}
 
 
+
             {/* Main Content */}
             <div className="flex-1 p-4 md:p-8 pb-24 md:pb-8">
+
                 <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
                     {/* Header with breadcrumb */}
-                    <div className="bg-teal-600 px-6 py-5 text-white rounded-t-2xl">
-                        <div className="flex items-center text-sm text-teal-100 mb-2">
+                    <div className="bg-blue-600 px-6 py-5 text-white rounded-t-2xl">
+                        <div className="flex items-center text-sm text-blue-100 mb-2">
                             <Link href="/dashboard" className="hover:text-white transition-colors duration-200">Dashboard</Link>
                             <ChevronRight className="w-4 h-4 mx-2" />
                             <span>Profile</span>
@@ -129,13 +132,13 @@ const ProfilePage = () => {
                         <div className="flex justify-between items-center">
                             <div>
                                 <h1 className="text-2xl sm:text-3xl font-bold mb-1">Profile Settings</h1>
-                                <p className="text-teal-100">Update your personal information</p>
+                                <p className="text-blue-100">Update your personal information</p>
                             </div>
                             <button
                                 onClick={() => setIsEditing(!isEditing)}
                                 className={`px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-[1.02] ${isEditing
-                                    ? 'bg-white text-teal-600 hover:bg-teal-50'
-                                    : 'bg-teal-400 text-white hover:bg-teal-300'
+                                    ? 'bg-white text-blue-600 hover:bg-blue-50'
+                                    : 'bg-blue-400 text-white hover:bg-blue-300'
                                     } ${loading ? 'opacity-50 cursor-not-allowed' : ''} shadow-sm`}
                                 disabled={loading}
                             >
@@ -156,7 +159,7 @@ const ProfilePage = () => {
                             </Alert>
                         )}
                         {success && (
-                            <Alert className="bg-teal-50 text-teal-700 border-teal-200">
+                            <Alert className="bg-blue-50 text-blue-700 border-blue-200">
                                 <AlertTitle className="flex items-center">
                                     <span className="mr-2">✅</span> Success
                                 </AlertTitle>
@@ -175,7 +178,7 @@ const ProfilePage = () => {
                                 } ${!isEditing ? 'bg-gray-50' : 'hover:border-blue-400 focus-within:border-blue-500'} 
                             transition-colors`}>
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                                    <UserCircle2 className={`w-5 h-5 ${isEditing ? 'text-teal-500' : 'text-gray-400'}`} />
+                                    <UserCircle2 className={`w-5 h-5 ${isEditing ? 'text-blue-500' : 'text-gray-400'}`} />
                                 </div>
                                 <input
                                     type="text"
@@ -203,7 +206,7 @@ const ProfilePage = () => {
                                 } ${!isEditing ? 'bg-gray-50' : 'hover:border-blue-400 focus-within:border-blue-500'} 
                             transition-colors`}>
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                                    <Mail className={`w-5 h-5 ${isEditing ? 'text-teal-500' : 'text-gray-400'}`} />
+                                    <Mail className={`w-5 h-5 ${isEditing ? 'text-blue-500' : 'text-gray-400'}`} />
                                 </div>
                                 <input
                                     type="email"
@@ -231,7 +234,7 @@ const ProfilePage = () => {
                                 } ${!isEditing ? 'bg-gray-50' : 'hover:border-blue-400 focus-within:border-blue-500'} 
                             transition-colors`}>
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                                    <Phone className={`w-5 h-5 ${isEditing ? 'text-teal-500' : 'text-gray-400'}`} />
+                                    <Phone className={`w-5 h-5 ${isEditing ? 'text-blue-500' : 'text-gray-400'}`} />
                                 </div>
                                 <input
                                     type="tel"
@@ -260,10 +263,10 @@ const ProfilePage = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="px-6 py-3.5 bg-teal-500 text-white rounded-lg hover:bg-teal-600
+                                    className="px-6 py-3.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600
                                     transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed
                                     flex items-center justify-center min-w-[140px] transform hover:scale-[1.02]
-                                    shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
+                                    shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                                 >
                                     {loading ? (
                                         <Loader2 className="w-5 h-5 animate-spin" />

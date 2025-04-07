@@ -204,7 +204,7 @@ const Education = ({ formData, updateFormData }) => {
                                         }}
                                         className="w-full min-h-[150px] border border-gray-200 rounded-lg
                                             focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500
-                                            transition-all duration-300"
+        transition-all duration-300"
                                     />
                                 </div>
                             </div>
