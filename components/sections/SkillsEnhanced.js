@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Loader2, Search, Plus } from 'lucide-react';
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
+import EnhancedTipTapEditor from '../enhancedtiptapeditor';
 
 const SkillsEnhanced = ({ formData, updateFormData }) => {
     // State for skills
@@ -251,7 +252,7 @@ const SkillsEnhanced = ({ formData, updateFormData }) => {
                 <div className="p-5 bg-white rounded-xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-all duration-300">
                     <h3 className="text-md font-medium text-gray-700 border-b border-gray-100 pb-3 mb-1">Technical Expertise</h3>
 
-                    <EnhancedDescriptionEditor
+                    <EnhancedTipTapEditor
                         value={formData.skill_description || ''}
                         onChange={(e) => updateFormData('skill_description', e.target.value)}
                         title="Skills Description"

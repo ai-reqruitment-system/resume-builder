@@ -74,6 +74,7 @@ const ResumeModal = ({
             if (!validateFormData(setSaveError)) return;
 
             const resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+            console.log(localStorage.getItem("profileData"), "from the Resume Modal compnent ")
 
             // Prepare payload with all required fields from the API
             const payload = {

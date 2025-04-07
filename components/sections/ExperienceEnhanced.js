@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import FormField from "@/components/FormField";
 import { ChevronDown, Trash2, Plus } from 'lucide-react';
 import MonthYearSelector from "@/components/MonthYearSelector";
-import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
+import EnhancedTipTapEditor from "../enhancedtiptapeditor";
 
 const ExperienceEnhanced = ({ formData, updateFormData }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -213,7 +213,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
 
                                 {/* Description Editor Section */}
                                 <div className="mt-4 border-t border-gray-100">
-                                    <EnhancedDescriptionEditor
+                                    <EnhancedTipTapEditor
                                         value={formData.job_description[index] || ''}
                                         onChange={(e) => {
                                             const newArray = [...formData.job_description];

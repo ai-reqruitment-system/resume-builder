@@ -25,6 +25,14 @@ const DownloadSection = ({ formData, fontStyles, templateName }) => {
             setIsLoading(true);
             setError(null);
 
+            const sendingDAtaTOBackend = {
+                ...formData,
+                ...fontStyles,
+                templateName: templateName,
+            };
+            console.log(sendingDAtaTOBackend, "fromt eh download section")
+
+
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/generate-resume`, {
                 method: 'POST',
                 headers: {
@@ -37,6 +45,7 @@ const DownloadSection = ({ formData, fontStyles, templateName }) => {
                     templateName: templateName,
                 })
             });
+
 
             // Check if response is JSON (error) or blob (PDF)
             const contentType = response.headers.get('content-type');

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ContentItem from "@/components/ContentItem";
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
 import { Plus } from 'lucide-react';
+import EnhancedTipTapEditor from "./enhancedtiptapeditor";
 
 const OtherTabEnhanced = ({
     formData,
@@ -135,7 +136,7 @@ const OtherTabEnhanced = ({
                                 />
                             </div>
                         </div>
-                        <EnhancedDescriptionEditor
+                        <EnhancedTipTapEditor
                             value={formData.other_description[index] || ''}
                             onChange={(e) => {
                                 const newArray = [...formData.other_description];

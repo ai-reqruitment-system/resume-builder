@@ -32,7 +32,7 @@ const ModernTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) => 
           <div>
             <h1 className={`font-bold mb-2 ${isModalView ? 'text-2xl' : 'text-lg'}`}>{`${mergedData.first_name} ${mergedData.last_name}`}</h1>
             <div className={`text-teal-600 font-medium ${isModalView ? 'text-xl' : 'text-lg'}`}>
-              {mergedData.occupation}
+              {mergedData.professional_summary}
             </div>
           </div>
           <div className={`text-right text-gray-600 ${isModalView ? 'text-lg' : 'text-sm'}`}>

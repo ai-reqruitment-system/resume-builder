@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import FormField from "@/components/FormField";
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
+import EnhancedTipTapEditor from '../enhancedtiptapeditor';
 
 const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
     // Common professional summary suggestions
@@ -126,10 +127,10 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                 </div>
 
                 {/* Professional Summary Description with Enhanced UI */}
-                <div className=" bg-white rounded-xl shadow-sm border border-gray-100 space-y-3 hover:shadow-md transition-all duration-300">
+                <div className="rounded-xl space-y-3 transition-all duration-300">
 
 
-                    <EnhancedDescriptionEditor
+                    <EnhancedTipTapEditor
                         value={formData.professional_description || ''}
                         onChange={(e) => updateFormData('professional_description', e.target.value)}
                         title="Description"

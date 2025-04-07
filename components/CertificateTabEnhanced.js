@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ContentItem from "@/components/ContentItem";
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
 import { Plus } from 'lucide-react';
+import EnhancedTipTapEditor from "./enhancedtiptapeditor";
 
 const CertificateTabEnhanced = ({
     formData,
@@ -109,6 +110,7 @@ const CertificateTabEnhanced = ({
                 </button>
             </div>
             {formData.certificate_title.map((_, index) => (
+
                 <ContentItem
                     key={index}
                     title={formData.certificate_title[index] || 'New Certificate'}
@@ -117,8 +119,25 @@ const CertificateTabEnhanced = ({
                     onDelete={(e) => removeItem(index, 'certificate', e)}
                     onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                 >
+
                     <div className="p-5 bg-white space-y-5">
-                        <EnhancedDescriptionEditor
+                        <div className="grid grid-cols-1 gap-5">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Certificate Title</label>
+                                <input
+                                    value={formData.certificate_title[index] || ''}
+                                    onChange={(e) => {
+                                        const newArray = [...formData.certificate_title];
+                                        newArray[index] = e.target.value;
+                                        updateFormData('certificate_title', newArray);
+                                    }}
+                                    placeholder="e.g., AWS Certified Solutions Architect"
+                                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
+                                    outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
+                                />
+                            </div>
+                        </div>
+                        <EnhancedTipTapEditor
                             value={formData.certificate_description[index] || ''}
                             onChange={(e) => {
                                 const newArray = [...formData.certificate_description];
