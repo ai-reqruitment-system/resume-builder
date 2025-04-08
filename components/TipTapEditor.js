@@ -4,7 +4,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { Bold, Italic, List, ListOrdered, Link as LinkIcon, Undo, Redo } from 'lucide-react';
 
-const TipTapEditor = ({ value, onChange, className }) => {
+const TipTapEditor = ({ value, onChange, className, toolbarButtons }) => {
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -77,70 +77,71 @@ const TipTapEditor = ({ value, onChange, className }) => {
 
     return (
         <div className={`tiptap-editor-wrapper border border-gray-200 rounded-xl overflow-hidden bg-white ${className}`}>
-            <div className="flex flex-wrap items-center gap-0.5 p-1 border-b border-gray-200 bg-gray-50">
-                <button
-                    onClick={undo}
-                    className={`p-1.5 rounded hover:bg-gray-200 transition-colors`}
-                    title="Undo"
-                >
-                    <Undo className="w-4 h-4 text-gray-700" />
-                </button>
-                <button
-                    onClick={redo}
-                    className={`p-1.5 rounded hover:bg-gray-200 transition-colors`}
-                    title="Redo"
-                >
-                    <Redo className="w-4 h-4 text-gray-700" />
-                </button>
+            <div className="flex flex-wrap items-center justify-between gap-1 p-2 sm:p-1 border-b border-gray-200 bg-gray-50">
+                <div className="flex flex-wrap items-center gap-1 sm:gap-0.5">
+                    <button
+                        onClick={undo}
+                        className={`p-1 sm:p-1.5 rounded hover:bg-gray-200 transition-colors`}
+                        title="Undo"
+                    >
+                        <Undo className="w-4 h-4 text-gray-700" />
+                    </button>
+                    <button
+                        onClick={redo}
+                        className={`p-1.5 rounded hover:bg-gray-200 transition-colors`}
+                        title="Redo"
+                    >
+                        <Redo className="w-4 h-4 text-gray-700" />
+                    </button>
 
-                <div className="w-px h-5 bg-gray-300 mx-1"></div>
+                    <div className="w-px h-6 sm:h-5 bg-gray-300 mx-2 sm:mx-1"></div>
 
-                <button
-                    onClick={toggleBold}
-                    className={`p-1.5 rounded ${editor.isActive('bold') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
-                    title="Bold"
-                >
-                    <Bold className="w-4 h-4" />
-                </button>
-                <button
-                    onClick={toggleItalic}
-                    className={`p-1.5 rounded ${editor.isActive('italic') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
-                    title="Italic"
-                >
-                    <Italic className="w-4 h-4" />
-                </button>
+                    <button
+                        onClick={toggleBold}
+                        className={`p-1.5 rounded ${editor.isActive('bold') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        title="Bold"
+                    >
+                        <Bold className="w-4 h-4" />
+                    </button>
+                    <button
+                        onClick={toggleItalic}
+                        className={`p-1.5 rounded ${editor.isActive('italic') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        title="Italic"
+                    >
+                        <Italic className="w-4 h-4" />
+                    </button>
 
-                <div className="w-px h-5 bg-gray-300 mx-1"></div>
+                    <div className="w-px h-6 sm:h-5 bg-gray-300 mx-2 sm:mx-1"></div>
 
-                <button
-                    onClick={toggleBulletList}
-                    className={`p-1.5 rounded ${editor.isActive('bulletList') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
-                    title="Bullet List"
-                >
-                    <List className="w-4 h-4" />
-                </button>
-                <button
-                    onClick={toggleOrderedList}
-                    className={`p-1.5 rounded ${editor.isActive('orderedList') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
-                    title="Numbered List"
-                >
-                    <ListOrdered className="w-4 h-4" />
-                </button>
+                    <button
+                        onClick={toggleBulletList}
+                        className={`p-1.5 rounded ${editor.isActive('bulletList') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        title="Bullet List"
+                    >
+                        <List className="w-4 h-4" />
+                    </button>
+                    <button
+                        onClick={toggleOrderedList}
+                        className={`p-1.5 rounded ${editor.isActive('orderedList') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        title="Numbered List"
+                    >
+                        <ListOrdered className="w-4 h-4" />
+                    </button>
 
-                <div className="w-px h-5 bg-gray-300 mx-1"></div>
+                    {/* Link button removed as requested */}
+                </div>
 
-                <button
-                    onClick={setLink}
-                    className={`p-1.5 rounded ${editor.isActive('link') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
-                    title="Add Link"
-                >
-                    <LinkIcon className="w-4 h-4" />
-                </button>
+                {/* Additional toolbar buttons */}
+                {toolbarButtons && (
+                    <div className="flex items-center gap-1">
+                        {toolbarButtons}
+                    </div>
+                )}
             </div>
 
             <EditorContent
                 editor={editor}
-                className="p-3 min-h-[250px] sm:min-h-[280px] md:min-h-[300px] focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-300 prose prose-sm max-w-none focus:outline-none"
+                className="p-2 sm:p-3 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-300 prose prose-xs max-w-none focus:outline-none h-full overflow-y-auto"
             />
 
             <style jsx global>{`
@@ -148,6 +149,19 @@ const TipTapEditor = ({ value, onChange, className }) => {
           outline: none;
           height: 100%;
           min-height: 200px;
+          max-height: 100%;
+          overflow-y: auto;
+          font-size: 0.875rem;
+          line-height: 1.4;
+        }
+        .tiptap-editor-wrapper .ProseMirror p {
+          font-size: 1rem;
+          line-height: 1.5;
+          @media (min-width: 640px) {
+            font-size: 0.875rem;
+            line-height: 1.4;
+          }
+          margin: 0.5em 0;
         }
         .tiptap-editor-wrapper .ProseMirror p.is-editor-empty:first-child::before {
           content: attr(data-placeholder);
@@ -155,16 +169,30 @@ const TipTapEditor = ({ value, onChange, className }) => {
           color: #adb5bd;
           pointer-events: none;
           height: 0;
+          font-size: 0.875rem;
         }
         .tiptap-editor-wrapper .ProseMirror ul,
         .tiptap-editor-wrapper .ProseMirror ol {
-          padding: 0 1rem;
+          padding: 0 1.25rem;
+          font-size: 1rem;
+          @media (min-width: 640px) {
+            padding: 0 1rem;
+            font-size: 0.875rem;
+          }
         }
         .tiptap-editor-wrapper .ProseMirror ul li {
           list-style-type: disc;
+          font-size: 1rem;
+          @media (min-width: 640px) {
+            font-size: 0.875rem;
+          }
         }
         .tiptap-editor-wrapper .ProseMirror ol li {
           list-style-type: decimal;
+          font-size: 1rem;
+          @media (min-width: 640px) {
+            font-size: 0.875rem;
+          }
         }
       `}</style>
         </div>

@@ -26,7 +26,7 @@ export default function AiWritingAssistantModal({
         setSuggestions
     } = useSuggestionGenerator();
 
-    // Generate suggestions when modal is opened
+    // Only focus the input when modal is opened, but don't auto-generate suggestions
     useEffect(() => {
         if (isOpen) {
             // Focus the search input when modal opens
@@ -36,12 +36,12 @@ export default function AiWritingAssistantModal({
                 }
             }, 100);
 
-            // Generate initial suggestions
+            // Clear previous suggestions
             setSuggestions([]);
-            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
-            generateSuggestions(title, promptType);
+            // No longer auto-generating suggestions when modal opens
+            // User must type in search field or click generate button to get suggestions
         }
-    }, [isOpen, title, customPrompt]); // Removed generateSuggestions and setSuggestions from dependencies
+    }, [isOpen, setSuggestions]); // Only depend on isOpen and setSuggestions
 
     // Handle click outside to close modal
     useEffect(() => {

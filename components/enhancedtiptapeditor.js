@@ -47,11 +47,12 @@ const EnhancedTipTapEditor = ({
         }
     }, [searchTerm, suggestions, aiSuggestions]);
 
-    // Auto-generate suggestions when title changes
+    // Store the title without auto-generating suggestions
     useEffect(() => {
         if (title && title !== previousTitle) {
             setPreviousTitle(title);
-            handleGenerateSuggestions();
+            // Removed automatic suggestion generation when title changes
+            // Now suggestions will only be generated when user types or clicks the generate button
         }
     }, [title]);
 
@@ -134,23 +135,14 @@ const EnhancedTipTapEditor = ({
 
     return (
         <div className="transition-all duration-300">
-            <div className="flex flex-wrap items-center justify-between gap-1 xxs:gap-2 mb-2 xxs:mb-3">
+            <div className="flex flex-wrap items-center justify-end gap-1 xxs:gap-2 mb-2 xxs:mb-3">
                 <button
                     onClick={toggleExpand}
-                    className="flex items-center gap-0.5 xxs:gap-1 px-2 xxs:px-3 py-1 xxs:py-1.5 text-[10px] xxs:text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200"
+                    className="flex items-center gap-0.5 xxs:gap-1 px-2 xxs:px-3 py-1 xxs:py-1.5 text-[10px] xxs:text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 animate-pulse hover:animate-none transform hover:scale-105 hover:-translate-y-0.5"
                 >
                     <Maximize2 className="h-3 w-3 xxs:h-3.5 xxs:w-3.5" />
                     <span>Expand Editor</span>
                 </button>
-
-                {showWritingAssistant && (
-                    <WritingAssistantButton
-                        onSuggestionClick={onSuggestionClick}
-                        title={title || 'description'}
-                        customPrompt={customPrompt || "Provide detailed descriptions:"}
-                        isSuggestionSelected={isSuggestionSelected}
-                    />
-                )}
             </div>
 
             <div className="flex flex-col md:flex-row gap-2 xxs:gap-3 sm:gap-4">
@@ -255,11 +247,27 @@ const EnhancedTipTapEditor = ({
 
                 {/* Right panel - Editor */}
                 <div className="w-full md:w-1/2 mt-2 xxs:mt-3 md:mt-0" ref={editorRef}>
-                    <TipTapEditor
-                        value={value}
-                        onChange={onChange}
-                        className="min-h-[280px] xxs:min-h-[300px] sm:min-h-[320px] md:min-h-[350px] lg:min-h-[380px]"
-                    />
+                    <div className="h-[280px] xxs:h-[300px] sm:h-[320px] md:h-[350px] lg:h-[380px]">
+                        <TipTapEditor
+                            value={value}
+                            onChange={onChange}
+                            className="h-full"
+                            toolbarButtons={
+                                showWritingAssistant && (
+                                    <div className="flex items-center">
+                                        <div className="w-px h-5 bg-gray-300 mx-1"></div>
+                                        <WritingAssistantButton
+                                            onSuggestionClick={onSuggestionClick}
+                                            title={title || 'description'}
+                                            customPrompt={customPrompt || "Provide detailed descriptions:"}
+                                            isSuggestionSelected={isSuggestionSelected}
+                                            buttonClassName="text-[8px] xxs:text-[10px] xs:text-xs"
+                                        />
+                                    </div>
+                                )
+                            }
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -274,7 +282,7 @@ const EnhancedTipTapEditor = ({
                             <h3 className="text-sm xxs:text-base sm:text-lg font-medium text-gray-800">{title || 'Enhanced Editor'}</h3>
                             <button
                                 onClick={toggleExpand}
-                                className="p-1.5 xxs:p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+                                className="p-1.5 xxs:p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                             >
                                 <Minimize2 className="h-4 w-4 xxs:h-5 xxs:w-5" />
                             </button>
@@ -380,12 +388,28 @@ const EnhancedTipTapEditor = ({
                             </div>
 
                             {/* Editor panel in modal */}
-                            <div className="w-full lg:w-1/2 h-[400px] lg:h-full overflow-hidden">
-                                <TipTapEditor
-                                    value={value}
-                                    onChange={onChange}
-                                    className="h-full min-h-[400px] lg:min-h-full"
-                                />
+                            <div className="w-full lg:w-1/2 h-[400px] lg:h-full">
+                                <div className="h-full">
+                                    <TipTapEditor
+                                        value={value}
+                                        onChange={onChange}
+                                        className="h-full min-h-[400px] lg:min-h-full max-h-[calc(100vh-150px)]"
+                                        toolbarButtons={
+                                            showWritingAssistant && (
+                                                <div className="flex items-center">
+                                                    <div className="w-px h-5 bg-gray-300 mx-1"></div>
+                                                    <WritingAssistantButton
+                                                        onSuggestionClick={onSuggestionClick}
+                                                        title={title || 'description'}
+                                                        customPrompt={customPrompt || "Provide detailed descriptions:"}
+                                                        isSuggestionSelected={isSuggestionSelected}
+                                                        buttonClassName="text-xs"
+                                                    />
+                                                </div>
+                                            )
+                                        }
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>

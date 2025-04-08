@@ -46,7 +46,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
 
             <div className="space-y-3 xxs:space-y-4 sm:space-y-5">
                 {/* Name and Contact Section tera*/}
-                <div className="p-2 xxs:p-3 sm:p-4 md:p-5 bg-white rounded-lg xxs:rounded-xl shadow-sm border border-gray-100 space-y-2 xxs:space-y-3 sm:space-y-4 hover:shadow-md transition-all duration-300">
+                <div className="p-2 bg-white rounded-lg xxs:rounded-xl  space-y-2 xxs:space-y-3 sm:space-y-4 hover:shadow-md transition-all duration-300">
                     <h3 className="text-xs xxs:text-sm sm:text-md font-medium text-gray-700 border-b border-gray-100 pb-1.5 xxs:pb-2 sm:pb-3 mb-1">Contact Details</h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xxs:gap-4">
@@ -113,7 +113,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
 
                 {/* Professional Summary Title */}
                 <div className="p-2 sm:p-3 bg-white rounded-xl shadow-sm border border-gray-100 space-y-3 hover:shadow-md transition-all duration-300">
-                    <h3 className="text-sm sm:text-md font-medium text-gray-700 border-b border-gray-100 pb-2 sm:pb-3 mb-1">Professional Summary</h3>
+                    <h3 className="text-sm sm:text-md font-medium text-gray-700 border-b border-gray-100 pb-2 sm:pb-3 mb-1">Occupation Title</h3>
 
                     <div>
                         <input

@@ -191,11 +191,11 @@ const ResumeBuilderLayout = ({ onClose }) => {
                 </div>
 
                 {/* Progress Steps */}
-                <div className="flex-1 p-4 overflow-y-auto">
-                    <div className="mb-4">
-                        <h3 className="text-blue-200 text-xs font-semibold uppercase tracking-wider mb-2">Resume Sections</h3>
+                <div className="flex-1 p-2 xxs:p-3 sm:p-4 overflow-y-auto">
+                    <div className="mb-2 xxs:mb-3 sm:mb-4">
+                        <h3 className="text-blue-200 text-[10px] xxs:text-xs sm:text-sm font-semibold uppercase tracking-wider">Resume Sections</h3>
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="space-y-1 xxs:space-y-1.5 sm:space-y-2">
                         {sections.map((section, index) => {
                             const isActive = currentSection === section.id;
                             const isPast = index < currentSectionIndex;
@@ -207,7 +207,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                             dispatch(setCurrentSection(section.id));
                                             dispatch(setCurrentSectionIndex(index));
                                         }}
-                                        className={`flex items-center w-full py-3 px-4 rounded-lg transition-all duration-300 
+                                        className={`flex items-center w-full py-2 xxs:py-2.5 sm:py-3 px-2 xxs:px-3 sm:px-4 rounded-lg transition-all duration-300 
                                             ${isActive
                                                 ? 'bg-blue-600/40 shadow-inner border-l-4 border-blue-300'
                                                 : isPast
@@ -216,7 +216,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                             transform hover:translate-x-1`}
                                     >
                                         <div
-                                            className={`h-6 w-6 rounded-full flex items-center justify-center mr-2.5 shadow-md 
+                                            className={`h-4 w-4 xxs:h-5 xxs:w-5 sm:h-6 sm:w-6 rounded-full flex items-center justify-center mr-1.5 xxs:mr-2 sm:mr-2.5 shadow-md 
                                                 ${isActive
                                                     ? 'bg-blue-400 text-blue-900'
                                                     : isPast
@@ -229,7 +229,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                                 <span className="text-xs font-medium">{index + 1}</span>
                                             )}
                                         </div>
-                                        <span className={`text-sm ${isActive ? 'font-medium text-white' : isPast ? 'text-blue-100' : 'text-blue-300'}`}>
+                                        <span className={`text-[10px] xxs:text-xs sm:text-sm ${isActive ? 'font-medium text-white' : isPast ? 'text-blue-100' : 'text-blue-300'}`}>
                                             {section.title}
                                         </span>
                                     </button>
@@ -249,10 +249,10 @@ const ResumeBuilderLayout = ({ onClose }) => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col overflow-auto w-full">
+            <div className="flex-1 flex flex-col overflow-auto  w-full">
                 {/* Header - Hidden on mobile */}
-                <div className="hidden md:block bg-gradient-to-r from-blue-700 to-blue-800 p-4 lg:p-6 text-white shadow-md">
-                    <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 max-w-screen-xl mx-auto">
+                <div className="hidden md:block bg-gradient-to-r from-blue-700 to-blue-800 p-4 lg:p-5 text-white shadow-md">
+                    <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 ">
                         <div className="flex-1 max-w-[600px]">
                             <h1 className="text-xl md:text-2xl font-bold mb-1">
                                 {currentSection === 'experience' && 'Add details about your work experience'}
@@ -335,6 +335,8 @@ const ResumeBuilderLayout = ({ onClose }) => {
                 <div className="p-2 sm:p-4 border-t border-gray-200 bg-white shadow-md z-10">
                     <div className="w-full flex justify-between space-x-2">
                         <button
+                            onClick={handlePrevious}
+                            disabled={currentSectionIndex === 0}
                             className={`px-2 sm:px-6 py-2 sm:py-3 rounded-md md:rounded-lg flex items-center space-x-1 sm:space-x-2 text-xs sm:text-base ${currentSectionIndex === 0 ? 'text-gray-400 bg-gray-100 cursor-not-allowed' : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 hover:shadow-md'}`}
                         >
                             <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -342,6 +344,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                         </button>
 
                         <button
+                            onClick={handleNext}
                             className="px-2 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-md md:rounded-lg hover:bg-blue-500 flex items-center space-x-1 sm:space-x-2 text-xs sm:text-base shadow-md hover:shadow-lg"
                         >
                             <span>{currentSectionIndex === sections.length - 1 ? 'Finish' : 'Next'}</span>
