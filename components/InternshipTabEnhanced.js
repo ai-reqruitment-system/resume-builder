@@ -95,16 +95,16 @@ const InternshipTabEnhanced = ({
     };
 
     return (
-        <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-3 mb-4">
+        <div className="space-y-2 xxs:space-y-3 sm:space-y-4">
+            <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2 xxs:gap-3 mb-2 xxs:mb-3 sm:mb-4">
 
                 <button
                     onClick={addInternship}
-                    className="w-full sm:w-auto px-4 py-2 bg-blue-50 text-blue-600 rounded-lg
+                    className="w-full sm:w-auto px-3 xxs:px-4 py-1.5 xxs:py-2 bg-blue-50 text-blue-600 rounded-lg
                     hover:bg-blue-100 transition-all duration-300 flex items-center justify-center
-                    gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
+                    gap-1 xxs:gap-2 text-xs xxs:text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
                 >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-3 h-3 xxs:w-4 xxs:h-4" />
                     Add Internship
                 </button>
             </div>

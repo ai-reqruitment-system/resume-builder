@@ -130,6 +130,7 @@ const CertificateTabEnhanced = ({
                                         const newArray = [...formData.certificate_title];
                                         newArray[index] = e.target.value;
                                         updateFormData('certificate_title', newArray);
+                                        // Title has changed, this will trigger suggestion generation in EnhancedTipTapEditor
                                     }}
                                     placeholder="e.g., AWS Certified Solutions Architect"
                                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg

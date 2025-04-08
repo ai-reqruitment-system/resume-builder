@@ -91,7 +91,7 @@ const EducationEnhanced = ({ formData, updateFormData }) => {
 
     // Combined view with both basic information and description editor
     return (
-        <div className="w-full space-y-6">
+        <div className="w-full space-y-3 xxs:space-y-4 sm:space-y-5 md:space-y-6">
             <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-3 mb-4">
 
                 <button
@@ -107,7 +107,7 @@ const EducationEnhanced = ({ formData, updateFormData }) => {
 
             <div className="space-y-4">
                 {formData.college.map((_, index) => (
-                    <div key={index} className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                    <div key={index} className="border border-gray-100 rounded-lg xxs:rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300">
                         <div
                             onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                             className="w-full flex items-center justify-between p-4 bg-gray-50

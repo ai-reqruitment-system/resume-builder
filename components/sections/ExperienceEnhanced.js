@@ -100,7 +100,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
 
     // Combined view with both basic information and description editor
     return (
-        <div className="w-full space-y-5">
+        <div className="w-full space-y-3 xxs:space-y-4 sm:space-y-5">
             <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-1 xxs:gap-2 mb-2 xxs:mb-3">
 
                 <button
@@ -116,7 +116,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
 
             <div className="space-y-3">
                 {formData.job_title.map((_, index) => (
-                    <div key={index} className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                    <div key={index} className="border border-gray-100 rounded-lg xxs:rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300">
                         <div
                             onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                             className="w-full flex items-center justify-between p-2 xxs:p-3 sm:p-4 bg-gray-50

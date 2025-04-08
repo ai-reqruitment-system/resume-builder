@@ -122,22 +122,22 @@ const ResumeBuilderLayout = ({ onClose }) => {
     return (
         <div className="flex flex-col md:flex-row h-screen bg-white relative">
             {/* Mobile Header */}
-            <div className="md:hidden bg-gradient-to-r from-blue-400 to-blue-600 p-3 flex items-center justify-between text-white shadow-md">
-                <div className="flex items-center space-x-2">
+            <div className="md:hidden bg-gradient-to-r from-blue-400 to-blue-600 p-2 xxs:p-2.5 flex items-center justify-between text-white shadow-md">
+                <div className="flex items-center space-x-1 xxs:space-x-1.5">
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        className="p-2 rounded-lg bg-blue-600/40 hover:bg-blue-600/60 transition-colors"
+                        className="p-1 xxs:p-1.5 rounded-lg bg-blue-600/40 hover:bg-blue-600/60 transition-colors"
                     >
-                        <Menu className="h-5 w-5" />
+                        <Menu className="h-3.5 w-3.5 xxs:h-4 xxs:w-4" />
                     </button>
-                    <span className="font-semibold">Resume Builder</span>
+                    <span className="text-xs xxs:text-sm font-medium">Resume Builder</span>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1 xxs:space-x-1.5">
                     <button
                         onClick={() => dispatch(setIsModalOpen(true))}
-                        className="p-2 rounded-lg bg-blue-600/40 hover:bg-blue-600/60 transition-colors"
+                        className="p-1 xxs:p-1.5 rounded-lg bg-blue-600/40 hover:bg-blue-600/60 transition-colors"
                     >
-                        <Eye className="h-5 w-5" />
+                        <Eye className="h-3.5 w-3.5 xxs:h-4 xxs:w-4" />
                     </button>
                 </div>
             </div>
@@ -151,7 +151,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
             )}
 
             {/* Left Sidebar */}
-            <div className={`${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative top-0 left-0 h-full z-50 w-[240px] xs:w-[280px] md:w-64 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl transition-transform duration-300 ease-in-out`}>
+            <div className={`${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative top-0 left-0 h-full z-50 w-[200px] xxs:w-[220px] xs:w-[240px] md:w-52 bg-gradient-to-b from-blue-800 to-blue-900 text-white flex flex-col shadow-xl transition-transform duration-300 ease-in-out`}>
                 {/* Mobile Close Button */}
                 <div className="md:hidden flex justify-between items-center p-3 sm:p-4 bg-blue-950/50 border-b border-blue-700/30">
                     <span className="text-sm font-semibold">Resume Builder</span>
@@ -216,7 +216,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                             transform hover:translate-x-1`}
                                     >
                                         <div
-                                            className={`h-7 w-7 rounded-full flex items-center justify-center mr-3 shadow-md 
+                                            className={`h-6 w-6 rounded-full flex items-center justify-center mr-2.5 shadow-md 
                                                 ${isActive
                                                     ? 'bg-blue-400 text-blue-900'
                                                     : isPast
