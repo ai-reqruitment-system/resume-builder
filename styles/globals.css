@@ -154,7 +154,6 @@ li {
 
 .shadow-t-lg {
   box-shadow: 0 -10px 15px -3px rgb(0 0 0 / 0.1), 0 -4px 6px -4px rgb(0 0 0 / 0.1);
-<<<<<<< HEAD
 }
 
 
@@ -167,6 +166,4 @@ li {
     .mobile-menu-overlay {
         display: none !important;
     }
-=======
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 }
