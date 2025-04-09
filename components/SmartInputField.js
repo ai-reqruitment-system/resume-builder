@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from 'react';
 import { useSuggestionGenerator } from '@/hooks/useSuggestionGenerator';
 import { Plus, Loader2, Check, Search, X } from 'lucide-react';
@@ -24,6 +25,24 @@ const SmartInputField = ({
     const suggestionsRef = useRef(null);
     const toast = useToast();
 
+=======
+import React, { useState, useEffect } from 'react';
+import { useSuggestionGenerator } from '@/hooks/useSuggestionGenerator';
+import { Plus, Loader2 } from 'lucide-react';
+
+const SmartInputField = ({
+                             value = '',
+                             onChange,
+                             label,
+                             placeholder = "",
+                             className = "",
+                             currentDescription = [],
+                             onDescriptionChange,
+                             promptType,
+                             index = null, // null indicates single field, number indicates array field
+                         }) => {
+    const [typingTimeout, setTypingTimeout] = useState(null);
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     const {
         suggestions,
         isLoading,
@@ -39,12 +58,20 @@ const SmartInputField = ({
 
         const newTimeout = setTimeout(() => {
             const inputValue = e.target.value.trim();
+<<<<<<< HEAD
             if (inputValue && inputValue.length > 2) {
                 setShowSuggestions(true);
                 const prompt = promptType + inputValue;
                 generateSuggestions(prompt);
             }
         }, 800); // Reduced from 1000ms to 800ms for better responsiveness
+=======
+            if (inputValue) {
+                const prompt = promptType + inputValue;
+                generateSuggestions(prompt);
+            }
+        }, 1000);
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
         setTypingTimeout(newTimeout);
     };
@@ -56,9 +83,14 @@ const SmartInputField = ({
             : (currentDescription || '');
 
         let newValue;
+<<<<<<< HEAD
         const isAlreadySelected = currentContent.includes(`<li>${suggestion}</li>`);
 
         if (isAlreadySelected) {
+=======
+
+        if (currentContent.includes(`<li>${suggestion}</li>`)) {
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
             // Remove the suggestion if it already exists
             let updatedContent = currentContent
                 .replace(`<li>${suggestion}</li>`, '')
@@ -73,8 +105,11 @@ const SmartInputField = ({
                 // Single field case
                 newValue = updatedContent;
             }
+<<<<<<< HEAD
 
             toast.info('Item removed from description');
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
         } else {
             // Add the suggestion as a list item
             const listItem = `<li>${suggestion}</li>`;
@@ -97,13 +132,17 @@ const SmartInputField = ({
                 // Single field case - preserve existing items
                 newValue = newContent;
             }
+<<<<<<< HEAD
 
             toast.success('Item added to description');
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
         }
 
         onDescriptionChange({ target: { value: newValue } });
     };
 
+<<<<<<< HEAD
     // Handle click outside to close suggestions
     useEffect(() => {
         function handleClickOutside(event) {
@@ -116,6 +155,10 @@ const SmartInputField = ({
         document.addEventListener("mousedown", handleClickOutside);
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
+=======
+    useEffect(() => {
+        return () => {
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
             if (typingTimeout) {
                 clearTimeout(typingTimeout);
             }
@@ -124,6 +167,7 @@ const SmartInputField = ({
 
     const isSelected = (suggestion) => {
         const currentContent = index !== null
+<<<<<<< HEAD
             ? (currentDescription[index] || '')
             : (currentDescription || '');
 
@@ -187,10 +231,36 @@ const SmartInputField = ({
                         <div className="absolute inset-0 rounded-full animate-ping bg-teal-200 opacity-30"></div>
                     </div>
                     <span>Generating smart suggestions...</span>
+=======
+            ? currentDescription[index]
+            : currentDescription;
+        return currentContent?.includes(`<li>${suggestion}</li>`);
+    };
+
+    return (
+        <div className={`${className} relative`}>
+            <label className="absolute -top-2.5 left-2 bg-white px-1 text-sm text-gray-600">
+                {label}
+            </label>
+            <input
+                type="text"
+                value={value}
+                onChange={handleInputChange}
+                placeholder={placeholder}
+                className="w-full px-4 py-3.5 bg-white border border-gray-300 rounded-lg
+                        outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
+            />
+
+            {isLoading && value.trim() && (
+                <div className="flex items-center gap-2 p-2 text-sm text-gray-600">
+                    <Loader2 className="w-4 h-4 animate-spin text-blue-600"/>
+                    <span>Generating suggestions...</span>
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                 </div>
             )}
 
             {!isLoading && suggestions.length > 0 && (
+<<<<<<< HEAD
                 <div className="relative">
                     <button
                         onClick={() => setShowSuggestions(!showSuggestions)}
@@ -303,6 +373,27 @@ const SmartInputField = ({
                     animation: fadeIn 0.2s ease-out forwards;
                 }
             `}</style>
+=======
+                <div className="max-h-48 overflow-y-auto divide-y divide-gray-100 bg-white shadow-lg rounded-lg mt-1 border border-gray-200">
+                    {suggestions.map((suggestion, idx) => (
+                        <button
+                            key={idx}
+                            onClick={() => handleSuggestionSelect(suggestion)}
+                            className="w-full text-left hover:bg-gray-50 flex items-start gap-2 p-2 transition-colors"
+                        >
+                            <div className="flex-shrink-0 mt-0.5">
+                                <div className={`w-4 h-4 rounded-full ${
+                                    isSelected(suggestion) ? 'bg-blue-100' : 'bg-blue-50'
+                                } flex items-center justify-center`}>
+                                    <Plus className="w-3 h-3 text-blue-600"/>
+                                </div>
+                            </div>
+                            <p className="text-sm text-gray-600 leading-5">{suggestion}</p>
+                        </button>
+                    ))}
+                </div>
+            )}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
         </div>
     );
 };

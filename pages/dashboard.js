@@ -127,11 +127,33 @@ export default function Home() {
     // Sidebar is now handled by the Sidebar component
 
 
+<<<<<<< HEAD
     // We no longer need this block as we're using the new resume-builder page
     // The showBuilder state is kept for backward compatibility
     if (showBuilder) {
         router.push('/resume-builder');
         return null;
+=======
+    if (showBuilder) {
+        return (
+            <Layout>
+                <div className="min-h-screen bg-background">
+                    <div className="flex flex-col md:flex-row">
+                        <Sidebar
+                            activeTab={activeTab}
+                            setActiveTab={setActiveTab}
+                            setShowBuilder={setShowBuilder}
+                            handleLogout={handleLogout}
+                        />
+                        {/* Main Content - Resume Builder */}
+                        <main className="flex-1 p-6 pb-24 md:pb-6">
+                            <Builder onClose={() => setShowBuilder(false)} />
+                        </main>
+                    </div>
+                </div>
+            </Layout>
+        );
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     }
 
     return (
@@ -156,17 +178,31 @@ export default function Home() {
                                                 <h2 className="text-2xl font-semibold mb-4">Resumes</h2>
                                                 <div className="border-b">
                                                     <div className="flex gap-6">
+<<<<<<< HEAD
                                                         <button className="px-4 py-2 text-blue-600 border-b-2 border-blue-600">Resumes</button>
+=======
+                                                        <button className="px-4 py-2 text-teal-600 border-b-2 border-teal-600">Resumes</button>
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <ResumesList
+<<<<<<< HEAD
                                                 activeProfileId={activeProfileId}
                                                 handleActiveResume={handleActiveResume}
                                                 handleDeleteResume={handleDeleteResume}
                                                 setShowBuilder={setShowBuilder}
                                                 profiles={profiles}
+=======
+                                                profiles={profiles}
+                                                isLoading={isLoading}
+                                                activeProfileId={activeProfileId}
+                                                handleActiveResume={handleActiveResume}
+                                                handleDeleteResume={handleDeleteResume}
+                                                isDeleting={isDeleting}
+                                                setShowBuilder={setShowBuilder}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                             />
                                         </div>
                                     );
@@ -191,4 +227,10 @@ export default function Home() {
             </div >
         </Layout >
     );
+<<<<<<< HEAD
 }
+=======
+}
+
+
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935

@@ -1,18 +1,27 @@
+<<<<<<< HEAD
 import { useState, useCallback, useRef } from 'react';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
+=======
+import { useState } from 'react';
+import axios from 'axios';
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
 export const useSuggestionGenerator = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
+<<<<<<< HEAD
     // Create a ref to store the debounced function
     // This ensures it persists between renders
     const debouncedFetchRef = useRef(null);
 
     // The actual API call function
     const fetchSuggestions = useCallback(async (title, customPrompt) => {
+=======
+    const generateSuggestions = async (title, customPrompt) => {
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
         setIsLoading(true);
         try {
             const response = await axios.post(
@@ -57,6 +66,7 @@ export const useSuggestionGenerator = () => {
         } finally {
             setIsLoading(false);
         }
+<<<<<<< HEAD
     }, []);
 
     // Initialize the debounced function once
@@ -89,6 +99,9 @@ export const useSuggestionGenerator = () => {
             }
         };
     }, []);
+=======
+    };
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
     return {
         suggestions,
@@ -96,6 +109,10 @@ export const useSuggestionGenerator = () => {
         searchTerm,
         setSearchTerm,
         generateSuggestions,
+<<<<<<< HEAD
         setSuggestions: memoizedSetSuggestions
+=======
+        setSuggestions
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     };
 };

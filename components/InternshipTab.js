@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Editor from "react-simple-wysiwyg";
 import ContentItem from "@/components/ContentItem";
 import SmartInputField from "@/components/SmartInputField";
+<<<<<<< HEAD
 import WritingAssistantButton from "@/components/WritingAssistantButton";
 
 const InternshipTab = ({
@@ -10,6 +11,16 @@ const InternshipTab = ({
     activeIndex,
     setActiveIndex
 }) => {
+=======
+import SuggestionDropdown from "@/components/SuggestionDropdown";
+
+const InternshipTab = ({
+                           formData,
+                           updateFormData,
+                           activeIndex,
+                           setActiveIndex
+                       }) => {
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     useEffect(() => {
         if (!formData.internship_title?.length) {
             initializeEmptyInternship();
@@ -69,7 +80,11 @@ const InternshipTab = ({
     }
 
     return (
+<<<<<<< HEAD
         <div className="space-y-4">
+=======
+        <div className="space-y-3">
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
             {formData.internship_title.map((_, index) => (
                 <ContentItem
                     key={index}
@@ -79,6 +94,7 @@ const InternshipTab = ({
                     onDelete={(e) => removeItem(index, 'internship', e)}
                     onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                 >
+<<<<<<< HEAD
                     <div className="p-5 bg-white space-y-5">
                         <div className="grid grid-cols-1 gap-5">
                             <div>
@@ -100,6 +116,30 @@ const InternshipTab = ({
                             <div className="flex items-center justify-between mb-3">
                                 <label className="text-sm font-medium text-gray-700">Description</label>
                                 <WritingAssistantButton
+=======
+                    <div className="p-3 bg-white space-y-3">
+                        <div className="grid grid-cols-1 gap-3">
+                            <SmartInputField
+                                label="Internship Title"
+                                value={formData.internship_title[index] || ''}
+                                onChange={(e) => {
+                                    const newArray = [...formData.internship_title];
+                                    newArray[index] = e.target.value;
+                                    updateFormData('internship_title', newArray);
+                                }}
+                                currentDescription={formData.internship_summary}
+                                onDescriptionChange={(e) => updateFormData('internship_summary', e.target.value)}
+                                placeholder="e.g., UI/UX Design Intern"
+                                className="bg-white"
+                                promptType="provide a internship details based on this title:"
+                                index={index}
+                            />
+                        </div>
+                        <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                            <div className="flex items-center justify-between mb-2">
+                                <label className="text-sm text-gray-600">Description</label>
+                                <SuggestionDropdown 
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
                                     title={formData.internship_title[index] || 'internship'}
                                     customPrompt="Provide a comprehensive list of detailed professional descriptions and achievements for this internship role:"
@@ -113,9 +153,14 @@ const InternshipTab = ({
                                     newArray[index] = e.target.value;
                                     updateFormData('internship_summary', newArray);
                                 }}
+<<<<<<< HEAD
                                 className="w-full min-h-[150px] border border-gray-200 rounded-lg
                                     focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500
                                     transition-all duration-300"
+=======
+                                className="w-full min-h-[120px] border border-gray-200 rounded-lg
+                                    focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500"
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                             />
                         </div>
                     </div>

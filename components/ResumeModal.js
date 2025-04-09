@@ -5,10 +5,13 @@ import TemplateSelector from "@/components/TemplateSelector";
 import SidebarControls from "@/components/SidebarControls";
 import DownloadSection from "@/components/DownloadSection";
 import { useRouter } from "next/router";
+<<<<<<< HEAD
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsModalOpen } from '@/store/slices/uiSlice';
 import { updateResumeList, markResumeListAsUpdated } from '@/store/slices/resumeSlice';
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
 const ResumeModal = ({
     isOpen,
@@ -20,7 +23,10 @@ const ResumeModal = ({
     defaultData,
     onDownload
 }) => {
+<<<<<<< HEAD
     const dispatch = useDispatch();
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     const [fontStyles, setFontStyles] = useState(initialFontStyles);
     const [mobileView, setMobileView] = useState('preview');
     const [isDownloading, setIsDownloading] = useState(false);
@@ -55,6 +61,7 @@ const ResumeModal = ({
         return true;
     };
 
+<<<<<<< HEAD
     // Use Redux to close the modal
     const handleCloseModal = () => {
         dispatch(setIsModalOpen(false));
@@ -63,6 +70,8 @@ const ResumeModal = ({
         }
     };
 
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     // Save resume function without retry capability
     const handleSaveResume = async () => {
         try {
@@ -74,7 +83,10 @@ const ResumeModal = ({
             if (!validateFormData(setSaveError)) return;
 
             const resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+<<<<<<< HEAD
             console.log(localStorage.getItem("profileData"), "from the Resume Modal compnent ")
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
             // Prepare payload with all required fields from the API
             const payload = {
@@ -176,6 +188,7 @@ const ResumeModal = ({
 
             const data = await response.json();
 
+<<<<<<< HEAD
             // Update the Redux store with the saved resume data
             // This will ensure the dashboard is updated without requiring a refresh
             if (data && data.data) {
@@ -184,6 +197,8 @@ const ResumeModal = ({
                 dispatch(markResumeListAsUpdated());
             }
 
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
             // Show success message
             setSaveSuccess(true);
             setIsSaving(false);
@@ -287,7 +302,11 @@ const ResumeModal = ({
         return (
             <div className="h-full flex flex-col bg-gray-50">
                 {/* Header */}
+<<<<<<< HEAD
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-3 sm:px-4 md:px-3 py-3 sm:py-4 bg-white border-b">
+=======
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-3 sm:px-4 md:px-6 py-3 sm:py-4 bg-white border-b">
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     <div className="mb-2 sm:mb-0 w-full sm:w-auto">
                         {saveSuccess && (
                             <span className="text-green-500 text-sm">Resume saved successfully!</span>
@@ -303,7 +322,11 @@ const ResumeModal = ({
                         <button
                             onClick={handleSaveResume}
                             disabled={isSaving}
+<<<<<<< HEAD
                             className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-xs sm:text-sm ${isSaving ? 'opacity-75 cursor-not-allowed' : ''}`}
+=======
+                            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors text-xs sm:text-sm ${isSaving ? 'opacity-75 cursor-not-allowed' : ''}`}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                         >
                             <Save className={`w-3 h-3 sm:w-4 sm:h-4 ${isSaving ? 'animate-bounce' : ''}`} />
                             <span>{isSaving ? 'Saving...' : 'Save'}</span>
@@ -311,13 +334,21 @@ const ResumeModal = ({
                         <button
                             onClick={handleDirectDownload}
                             disabled={isDownloading}
+<<<<<<< HEAD
                             className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-xs sm:text-sm ${isDownloading ? 'opacity-75 cursor-not-allowed' : ''}`}
+=======
+                            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors text-xs sm:text-sm ${isDownloading ? 'opacity-75 cursor-not-allowed' : ''}`}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                         >
                             <Download className={`w-3 h-3 sm:w-4 sm:h-4 ${isDownloading ? 'animate-bounce' : ''}`} />
                             <span>{isDownloading ? 'Downloading...' : 'Download'}</span>
                         </button>
                         <button
+<<<<<<< HEAD
                             onClick={handleCloseModal}
+=======
+                            onClick={onRequestClose}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                             className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors"
                             aria-label="Close"
                         >
@@ -332,7 +363,11 @@ const ResumeModal = ({
                         {/* Preview container */}
                         <div className="relative">
                             <div className="transform scale-[0.65] sm:scale-[0.7] md:scale-75 origin-top w-full">
+<<<<<<< HEAD
                                 <div className="lg:pd-4">
+=======
+                                <div className="p-4 sm:p-6 md:p-8">
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     <div className="relative z-10"> {/* Add z-index to ensure content is selectable */}
                                         <TemplateComponent
                                             data={formData}
@@ -415,7 +450,11 @@ const ResumeModal = ({
                                             : 'Download Resume'}
                                 </h2>
                                 <button
+<<<<<<< HEAD
                                     onClick={handleCloseModal}
+=======
+                                    onClick={() => setMobileView('preview')}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg"
                                 >
                                     <X className="w-4 h-4 sm:w-5 sm:h-5" />

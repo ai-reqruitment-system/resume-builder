@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { UserCircle2, Mail, Phone, Loader2, ArrowLeft, MapPin, Briefcase, GraduationCap } from 'lucide-react';
+=======
+import { UserCircle2, Mail, Phone, Loader2, ArrowLeft } from 'lucide-react';
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -12,6 +16,7 @@ const CompleteProfilePage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+<<<<<<< HEAD
 
     // Updated formData structure
     const [formData, setFormData] = useState({
@@ -23,6 +28,12 @@ const CompleteProfilePage = () => {
         selectedLocations: [''], // Array to store multiple preferred locations
 
         skills: [],
+=======
+    const [formData, setFormData] = useState({
+        name: '',
+        phone: '',
+        email: ''
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     });
 
     useEffect(() => {
@@ -90,6 +101,7 @@ const CompleteProfilePage = () => {
         }
     };
 
+<<<<<<< HEAD
     // Add Work Experience Field
     const addWorkExperience = () => {
         setFormData(prev => ({
@@ -133,6 +145,12 @@ const CompleteProfilePage = () => {
         <Layout>
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
                 <div className="w-full max-w-2xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+=======
+    return (
+        <Layout>
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="w-full max-w-md px-4 py-8 sm:px-6 lg:px-8">
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     {/* Back Button */}
                     <Link
                         href="/verify-otp"
@@ -142,18 +160,28 @@ const CompleteProfilePage = () => {
                         Back to Verification
                     </Link>
 
+<<<<<<< HEAD
                     <div className="bg-white rounded-lg shadow-md p-6 text-center">
                         <h1 className="text-3xl font-bold text-gray-900 mb-3">
                             Complete Your Profile
                         </h1>
                         <p className="text-lg text-gray-600">
                             Help us personalize your job search experience
+=======
+                    <div className="text-center mb-8">
+                        <h1 className="text-4xl font-bold text-gray-900 mb-3">
+                            Complete Profile
+                        </h1>
+                        <p className="text-lg text-gray-600">
+                            Please provide your details to continue
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                         </p>
                     </div>
 
                     {/* Alert Messages */}
                     <AlertMessage error={error} success={success} showAlert={showAlert} />
 
+<<<<<<< HEAD
                     <form onSubmit={handleCompleteProfile} className="space-y-8">
                         <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
                             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
@@ -430,6 +458,66 @@ const CompleteProfilePage = () => {
                                 )}
                             </button>
                         </div>
+=======
+                    <form onSubmit={handleCompleteProfile} className="space-y-6">
+                        {/* Email Address (Disabled) */}
+                        <InputWithIcon
+                            label="Email Address"
+                            icon={Mail}
+                            type="email"
+                            value={formData.email}
+                            disabled={true}
+                        />
+
+                        {/* Full Name */}
+                        <InputWithIcon
+                            label="Full Name"
+                            icon={UserCircle2}
+                            type="text"
+                            value={formData.name}
+                            onChange={(e) => setFormData(prev => ({
+                                ...prev,
+                                name: e.target.value
+                            }))}
+                            placeholder="Enter your full name"
+                            required={true}
+                        />
+
+                        {/* Phone Number (Optional) */}
+                        <InputWithIcon
+                            label="Phone Number (Optional)"
+                            icon={Phone}
+                            type="tel"
+                            value={formData.phone}
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, '');
+                                if (value.length <= 10) {
+                                    setFormData(prev => ({
+                                        ...prev,
+                                        phone: value
+                                    }));
+                                }
+                            }}
+                            placeholder="Enter your phone number"
+                            maxLength="10"
+                            error={formData.phone && !validatePhone(formData.phone) ? "Please enter a valid 10-digit phone number" : null}
+                        />
+
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            disabled={loading || !formData.name || (formData.phone && !validatePhone(formData.phone))}
+                            className="w-full py-3.5 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600
+                            transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+                            flex items-center justify-center space-x-2"
+                        >
+                            {loading ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                            ) : (
+                                <span>Complete Registration</span>
+                            )}
+                        </button>
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     </form>
                 </div>
             </div>

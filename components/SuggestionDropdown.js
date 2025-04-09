@@ -83,7 +83,11 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                             <X className="w-4 h-4" />
                         </button>
                     </div>
+<<<<<<< HEAD
 
+=======
+                    
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     <div className="p-2 border-b">
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -97,6 +101,7 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                                 onChange={(e) => {
                                     const newSearchTerm = e.target.value;
                                     setSearchTerm(newSearchTerm);
+<<<<<<< HEAD
 
                                     // Direct call to generateSuggestions which now has debounce built-in
                                     if (newSearchTerm.trim()) {
@@ -106,11 +111,35 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                                         const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
                                         generateSuggestions(title, promptType);
                                     }
+=======
+                                    
+                                    if (typingTimeout) {
+                                        clearTimeout(typingTimeout);
+                                    }
+                                    
+                                    const newTimeout = setTimeout(() => {
+                                        if (newSearchTerm.trim()) {
+                                            setSuggestions([]);
+                                            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
+                                            generateSuggestions(newSearchTerm, promptType);
+                                        } else if (title) {
+                                            setSuggestions([]);
+                                            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
+                                            generateSuggestions(title, promptType);
+                                        }
+                                    }, 500);
+                                    
+                                    setTypingTimeout(newTimeout);
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                 }}
                             />
                         </div>
                     </div>
+<<<<<<< HEAD
 
+=======
+                    
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     <div className="p-2 space-y-1 max-h-60 overflow-y-auto">
                         {isLoading ? (
                             <div className="flex justify-center items-center py-4">
@@ -119,7 +148,11 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                             </div>
                         ) : suggestions.length > 0 ? (
                             suggestions
+<<<<<<< HEAD
                                 .filter(suggestion =>
+=======
+                                .filter(suggestion => 
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     searchTerm === '' || suggestion.toLowerCase().includes(searchTerm.toLowerCase())
                                 )
                                 .map((suggestion, index) => {

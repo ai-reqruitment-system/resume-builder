@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Check } from 'lucide-react';
 import { templates } from '@/lib/constants/templates';
+<<<<<<< HEAD
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelectedTemplate } from '@/store/slices/templateSlice';
@@ -22,6 +23,12 @@ export default function TemplateSelector({ selectedTemplate: propSelectedTemplat
             propSetSelectedTemplate(key);
         }
 
+=======
+
+export default function TemplateSelector({ selectedTemplate, setSelectedTemplate, onTemplateSelect }) {
+    const handleTemplateClick = (key) => {
+        setSelectedTemplate(key);
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
         if (onTemplateSelect) {
             onTemplateSelect(key);
         }
@@ -48,9 +55,15 @@ export default function TemplateSelector({ selectedTemplate: propSelectedTemplat
                     </div>
                     <div className="p-2 bg-white border-t">
                         <div className="flex items-center justify-between">
+<<<<<<< HEAD
                             <span className="capitalize text-sm font-medium">
                                 {key} Template
                             </span>
+=======
+                           <span className="capitalize text-sm font-medium">
+                               {key} Template
+                           </span>
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                             {selectedTemplate === key && (
                                 <Check className="w-4 h-4 text-blue-500" />
                             )}

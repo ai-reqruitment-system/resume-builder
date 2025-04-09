@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { FaBold, FaFont, FaItalic } from "react-icons/fa";
+<<<<<<< HEAD
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 import { updateFontStyle } from '@/store/slices/templateSlice';
+=======
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
 const fontOptions = [
     "sans-serif", "serif", "monospace", "Arial", "Verdana",
@@ -21,6 +24,7 @@ const colorOptions = [
     "#E11D48", // Red
 ];
 
+<<<<<<< HEAD
 export default function SidebarControls({ fontStyles: propFontStyles, updateFontStyles: propUpdateFontStyles }) {
     const dispatch = useDispatch();
     // Get font styles from Redux store if not provided as props
@@ -42,6 +46,11 @@ export default function SidebarControls({ fontStyles: propFontStyles, updateFont
         }
     };
 
+=======
+export default function SidebarControls({ fontStyles, updateFontStyles }) {
+    const [fontDropdownOpen, setFontDropdownOpen] = useState(false);
+
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     return (
         <div className="space-y-6">
             {/* Font Family */}
@@ -83,15 +92,27 @@ export default function SidebarControls({ fontStyles: propFontStyles, updateFont
                 <div className="flex gap-2">
                     <button
                         onClick={() => updateFontStyles({ is_font_bold: !fontStyles.is_font_bold })}
+<<<<<<< HEAD
                         className={`flex-1 p-2 rounded-lg transition-colors ${fontStyles.is_font_bold ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
                             }`}
+=======
+                        className={`flex-1 p-2 rounded-lg transition-colors ${
+                            fontStyles.is_font_bold ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
+                        }`}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     >
                         <FaBold />
                     </button>
                     <button
                         onClick={() => updateFontStyles({ is_font_italic: !fontStyles.is_font_italic })}
+<<<<<<< HEAD
                         className={`flex-1 p-2 rounded-lg transition-colors ${fontStyles.is_font_italic ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
                             }`}
+=======
+                        className={`flex-1 p-2 rounded-lg transition-colors ${
+                            fontStyles.is_font_italic ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
+                        }`}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     >
                         <FaItalic />
                     </button>
@@ -110,10 +131,18 @@ export default function SidebarControls({ fontStyles: propFontStyles, updateFont
                             title={color}
                         >
                             <div
+<<<<<<< HEAD
                                 className={`w-full h-full rounded-full border transition-all ${fontStyles.font_color === color
                                         ? 'ring-2 ring-offset-2 ring-blue-500 scale-90'
                                         : 'hover:ring-2 hover:ring-offset-2 hover:ring-gray-300 hover:scale-90'
                                     }`}
+=======
+                                className={`w-full h-full rounded-full border transition-all ${
+                                    fontStyles.font_color === color
+                                        ? 'ring-2 ring-offset-2 ring-blue-500 scale-90'
+                                        : 'hover:ring-2 hover:ring-offset-2 hover:ring-gray-300 hover:scale-90'
+                                }`}
+>>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                 style={{ backgroundColor: color }}
                             />
                         </button>
