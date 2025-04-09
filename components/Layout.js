@@ -55,11 +55,6 @@ const Layout = ({ children }) => {
 
             <Navbar />
             <main className="pt-16">{children}</main>
-<<<<<<< HEAD
-
-=======
-            <Footer />
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
         </div>
     );
 };

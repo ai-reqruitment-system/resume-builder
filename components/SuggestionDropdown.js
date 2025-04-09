@@ -83,11 +83,6 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                             <X className="w-4 h-4" />
                         </button>
                     </div>
-<<<<<<< HEAD
-
-=======
-                    
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     <div className="p-2 border-b">
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -101,7 +96,6 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                                 onChange={(e) => {
                                     const newSearchTerm = e.target.value;
                                     setSearchTerm(newSearchTerm);
-<<<<<<< HEAD
 
                                     // Direct call to generateSuggestions which now has debounce built-in
                                     if (newSearchTerm.trim()) {
@@ -111,35 +105,10 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                                         const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
                                         generateSuggestions(title, promptType);
                                     }
-=======
-                                    
-                                    if (typingTimeout) {
-                                        clearTimeout(typingTimeout);
-                                    }
-                                    
-                                    const newTimeout = setTimeout(() => {
-                                        if (newSearchTerm.trim()) {
-                                            setSuggestions([]);
-                                            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
-                                            generateSuggestions(newSearchTerm, promptType);
-                                        } else if (title) {
-                                            setSuggestions([]);
-                                            const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional summary phrases for a resume based on the role:`;
-                                            generateSuggestions(title, promptType);
-                                        }
-                                    }, 500);
-                                    
-                                    setTypingTimeout(newTimeout);
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                 }}
                             />
                         </div>
                     </div>
-<<<<<<< HEAD
-
-=======
-                    
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     <div className="p-2 space-y-1 max-h-60 overflow-y-auto">
                         {isLoading ? (
                             <div className="flex justify-center items-center py-4">
@@ -148,29 +117,20 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                             </div>
                         ) : suggestions.length > 0 ? (
                             suggestions
-<<<<<<< HEAD
                                 .filter(suggestion =>
-=======
-                                .filter(suggestion => 
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     searchTerm === '' || suggestion.toLowerCase().includes(searchTerm.toLowerCase())
                                 )
-                                .map((suggestion, index) => {
-                                    const isSelected = isSuggestionSelected ? isSuggestionSelected(suggestion) : false;
-                                    return (
-                                        <button
-                                            key={index}
-                                            onClick={() => {
-                                                onSuggestionClick(suggestion);
-                                            }}
-                                            className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors duration-200 flex items-center gap-2
-                                                ${isSelected ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'}`}
-                                        >
-                                            <Plus className={`w-3 h-3 ${isSelected ? 'text-blue-600' : 'text-blue-500'}`} />
-                                            {suggestion}
-                                        </button>
-                                    );
-                                })
+                                .map((suggestion, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => onSuggestionClick(suggestion)}
+                                        className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors duration-200 flex items-center gap-2
+                                            ${isSuggestionSelected ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'}`}
+                                    >
+                                        <Plus className={`w-3 h-3 ${isSuggestionSelected ? 'text-blue-600' : 'text-blue-500'}`} />
+                                        {suggestion}
+                                    </button>
+                                ))
                         ) : (
                             <div className="text-center py-3 text-sm text-gray-500">
                                 No suggestions available

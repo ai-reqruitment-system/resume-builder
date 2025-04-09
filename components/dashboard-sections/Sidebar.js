@@ -13,17 +13,11 @@ import {
     Settings
 } from 'lucide-react';
 import { useRouter } from 'next/router';
-<<<<<<< HEAD
 import { useSelector } from 'react-redux';
 
 export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handleLogout }) {
     const router = useRouter();
     const { isRightSidebarOpen } = useSelector(state => state.ui);
-=======
-
-export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handleLogout }) {
-    const router = useRouter();
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
     const navigationItems = [
         { icon: LayoutDashboard, text: 'Dashboard' },
@@ -43,14 +37,9 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
         { id: 'Salary Analyzer', label: 'Salary Analyzer', icon: DollarSign },
     ];
     return (
-<<<<<<< HEAD
         <aside className={`fixed bottom-0 left-0 right-0 md:relative ${isRightSidebarOpen ? 'md:w-14' : 'md:w-14 lg:w-56'} border-t md:border-t-0 md:border-r md:min-h-[calc(100vh-73px)] bg-white/95 backdrop-blur-sm md:bg-white z-10 md:p-2 ${isRightSidebarOpen ? 'lg:p-2' : 'lg:p-4'} overflow-y-auto max-h-[40vh] md:max-h-none  rounded-t-xl md:rounded-none md:rounded-r-xl transition-all duration-300`}>
 
             <nav className="flex justify-center md:justify-start md:flex-col overflow-x-auto md:overflow-x-visible md:space-y-4 px-2 py-2 md:p-0 bg-transparent scrollbar-none">
-=======
-        <aside className="fixed bottom-0 left-0 right-0 md:relative md:w-16 lg:w-64 border-t md:border-t-0 md:border-r md:min-h-[calc(100vh-73px)] bg-background/95 backdrop-blur-sm bg-gray-50/90 md:bg-background z-10 md:p-2 lg:p-4 overflow-y-auto max-h-[40vh] md:max-h-none shadow-sm">
-            <nav className="flex justify-center md:justify-start md:flex-col overflow-x-auto md:overflow-x-visible md:space-y-2 px-2 py-3 md:p-0 bg-transparent scrollbar-none">
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                 {navigationItems.map((item, index) => (
                     <a
                         key={index}
@@ -59,37 +48,20 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
                             setActiveTab(item.text);
                             setShowBuilder(false);
                         }}
-<<<<<<< HEAD
                         className={`flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-2 sm:px-3 py-3 rounded-lg ${activeTab === item.text ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium shadow-md' : 'text-gray-600 hover:bg-gray-100'} mx-1 sm:mx-2 md:mx-0 mb-1 md:mb-0 transition-all duration-300 ease-in-out transform hover:scale-[1.02]`}
                     >
                         <item.icon size={20} className={`${activeTab === item.text ? 'text-white' : ''} sm:w-6 sm:h-6 md:w-5 md:h-5 lg:w-6 lg:h-6`} />
                         <span className={`text-xs mt-1 md:hidden ${isRightSidebarOpen ? 'lg:hidden' : 'lg:inline-block'} lg:text-sm lg:mt-0 font-medium`}>{item.text}</span>
-=======
-                        className={`flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-3 sm:px-4 py-2 rounded-lg ${activeTab === item.text ? 'bg-teal-100 text-gray-600' : 'text-gray-600 hover:bg-gray-100'} mx-1 sm:mx-2 md:mx-0`}
-                    >
-                        <item.icon size={20} />
-                        <span className="text-xs mt-1 md:hidden lg:inline-block lg:text-base lg:mt-0">{item.text}</span>
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     </a>
                 ))}
                 <a
                     href="#"
                     onClick={handleLogout}
-<<<<<<< HEAD
                     className="flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-2 sm:px-3 py-3 rounded-lg text-gray-600 hover:bg-red-100 hover:text-red-600 mx-1 sm:mx-2 md:mx-0 mt-auto md:mt-10 transition-all duration-300"
                 >
                     <LogOut size={20} className="sm:w-6 sm:h-6 md:w-5 md:h-5 lg:w-6 lg:h-6" />
                     <span className={`text-xs mt-1 md:hidden ${isRightSidebarOpen ? 'lg:hidden' : 'lg:inline-block'} lg:text-sm lg:mt-0 font-medium`}>Logout</span>
                 </a>
-=======
-                    className="flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-3 sm:px-4 py-2 rounded-lg text-gray-600 hover:bg-red-100 mx-1 sm:mx-2 md:mx-0 mt-auto md:mt-4"
-                >
-                    <LogOut size={20} />
-                    <span className="text-xs mt-1 md:hidden lg:inline-block lg:text-base lg:mt-0">Logout</span>
-                </a>
-
-
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
             </nav>
         </aside>
     );

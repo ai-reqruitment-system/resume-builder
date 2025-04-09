@@ -5,7 +5,6 @@ import DownloadSection from './DownloadSection';
 import { templates } from '@/lib/constants/templates';
 import SidebarControls from "@/components/SidebarControls";
 import TemplateSelector from "@/components/TemplateSelector";
-<<<<<<< HEAD
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsModalOpen } from '@/store/slices/uiSlice';
@@ -20,14 +19,6 @@ export default function PreviewPanel({ formData }) {
     const [isHovered, setIsHovered] = useState(false);
     // Remove local sidebar state
     // const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-=======
-
-export default function PreviewPanel({ formData }) {
-    const [selectedTemplate, setSelectedTemplate] = useState(formData?.templateName || 'modern');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     const [activeTab, setActiveTab] = useState('styles'); // 'styles' or 'templates'
     const previewRef = useRef(null);
 
@@ -73,7 +64,6 @@ export default function PreviewPanel({ formData }) {
         language: ["English", "Spanish"]
     };
 
-<<<<<<< HEAD
     // We no longer need this local state as we're using Redux
     // const [fontStyles, setFontStyles] = useState({
     //     font_family: "sans-serif",
@@ -81,23 +71,11 @@ export default function PreviewPanel({ formData }) {
     //     is_font_bold: false,
     //     is_font_italic: false
     // });
-=======
-    const [fontStyles, setFontStyles] = useState({
-        font_family: "sans-serif",
-        font_color: "#000000",
-        is_font_bold: false,
-        is_font_italic: false
-    });
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
     const Template = templates[selectedTemplate];
 
     const updateFontStyles = (newStyles) => {
-<<<<<<< HEAD
         dispatch(updateFontStyle(newStyles));
-=======
-        setFontStyles(prev => ({ ...prev, ...newStyles }));
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     };
 
     return (
@@ -105,11 +83,7 @@ export default function PreviewPanel({ formData }) {
             {/* Mobile Controls */}
             <div className="lg:hidden flex justify-between items-center p-4 bg-white shadow-sm rounded-lg">
                 <button
-<<<<<<< HEAD
                     onClick={() => dispatch(setIsSidebarOpen(!isSidebarOpen))}
-=======
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     className="p-2 hover:bg-gray-100 rounded-lg"
                 >
                     <Palette className="w-5 h-5" />
@@ -155,11 +129,7 @@ export default function PreviewPanel({ formData }) {
                     ) : (
                         <TemplateSelector
                             selectedTemplate={selectedTemplate}
-<<<<<<< HEAD
                             setSelectedTemplate={(template) => dispatch(setSelectedTemplate(template))}
-=======
-                            setSelectedTemplate={setSelectedTemplate}
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                         />
                     )}
                 </div>
@@ -182,21 +152,12 @@ export default function PreviewPanel({ formData }) {
                             position: 'relative',
                             zIndex: 1 // Ensure content is above overlays
                         }}>
-<<<<<<< HEAD
                             {templates[selectedTemplate] && React.createElement(templates[selectedTemplate], {
                                 data: formData,
                                 fontStyles: fontStyles,
                                 isPreview: true,
                                 defaultData: defaultData
                             })}
-=======
-                            <Template
-                                data={formData}
-                                fontStyles={fontStyles}
-                                isPreview={true}
-                                defaultData={defaultData}
-                            />
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                         </div>
                     </div>
 
@@ -210,11 +171,7 @@ export default function PreviewPanel({ formData }) {
                         ${isHovered ? '' : 'pointer-events-none'}
                     `}>
                         <button
-<<<<<<< HEAD
                             onClick={() => dispatch(setIsModalOpen(true))}
-=======
-                            onClick={() => setIsModalOpen(true)}
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                             className="bg-white/90 hover:bg-white text-gray-800 px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200 transform hover:scale-105"
                         >
                             <Maximize2 className="w-5 h-5" />
@@ -236,11 +193,7 @@ export default function PreviewPanel({ formData }) {
             {/* Modal */}
             <ResumeModal
                 isOpen={isModalOpen}
-<<<<<<< HEAD
                 onRequestClose={() => dispatch(setIsModalOpen(false))}
-=======
-                onRequestClose={() => setIsModalOpen(false)}
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                 formData={formData}
                 fontStyles={fontStyles}
                 defaultData={defaultData}
@@ -250,11 +203,7 @@ export default function PreviewPanel({ formData }) {
             {isSidebarOpen && (
                 <div
                     className="lg:hidden fixed inset-0 bg-black/50 z-20"
-<<<<<<< HEAD
                     onClick={() => dispatch(setIsSidebarOpen(false))}
-=======
-                    onClick={() => setIsSidebarOpen(false)}
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                 />
             )}
         </div>

@@ -66,11 +66,7 @@ const Jobs = () => {
                         <input
                             type="text"
                             placeholder="Job title or company"
-<<<<<<< HEAD
                             className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400/20 focus:border-blue-400 transition-all duration-300 hover:border-gray-300"
-=======
-                            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-400/20 focus:border-teal-400 transition-all duration-300 hover:border-gray-300"
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -80,11 +76,7 @@ const Jobs = () => {
                         <input
                             type="text"
                             placeholder="Location"
-<<<<<<< HEAD
                             className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400/20 focus:border-blue-400 transition-all duration-300 hover:border-gray-300"
-=======
-                            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-400/20 focus:border-teal-400 transition-all duration-300 hover:border-gray-300"
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                             value={location}
                             onChange={(e) => setLocation(e.target.value)}
                         />
@@ -111,26 +103,15 @@ const Jobs = () => {
                     {jobs.map((job) => (
                         <div
                             key={job.id}
-<<<<<<< HEAD
                             className={`bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-all duration-300 cursor-pointer border border-gray-100 group ${selectedJob?.id === job.id ? 'ring-2 ring-blue-400' : ''}`}
-=======
-                            className={`bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-all duration-300 cursor-pointer border border-gray-100 group ${selectedJob?.id === job.id ? 'ring-2 ring-teal-400' : ''}`}
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                             onClick={() => setSelectedJob(job)}
                         >
                             <div className="flex justify-between items-start mb-4">
                                 <div>
-<<<<<<< HEAD
                                     <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
                                         {job.title}
                                     </h3>
                                     <p className="text-blue-600 mt-1 font-medium">{job.company}</p>
-=======
-                                    <h3 className="text-xl font-semibold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">
-                                        {job.title}
-                                    </h3>
-                                    <p className="text-teal-600 mt-1 font-medium">{job.company}</p>
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                 </div>
                                 <button className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300 transform hover:scale-110">
                                     <Heart className="h-5 w-5" />
@@ -148,11 +129,7 @@ const Jobs = () => {
                                     <button className="px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
                                         Auto Apply
                                     </button>
-<<<<<<< HEAD
                                     <button className="px-4 py-2 text-sm bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-all duration-300 font-medium shadow-sm hover:shadow transform hover:translate-y-[-1px]">
-=======
-                                    <button className="px-4 py-2 text-sm bg-teal-400 text-white rounded-lg hover:bg-teal-500 transition-all duration-300 font-medium shadow-sm hover:shadow transform hover:translate-y-[-1px]">
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                         Apply
                                     </button>
                                 </div>

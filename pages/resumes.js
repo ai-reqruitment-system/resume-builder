@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Search, ExternalLink, FileText, CheckCircle2, Clock, Plus } from 'lucide-react';
 import Layout from '../components/Layout';
-<<<<<<< HEAD
 // Import Redux hooks and actions
 import { useSelector, useDispatch } from 'react-redux';
 import { setResumeList, resetResumeListUpdateFlag } from '@/store/slices/resumeSlice';
@@ -13,23 +12,14 @@ const Resumes = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     // Use local state for UI-specific states
-=======
-
-const Resumes = () => {
-    const router = useRouter();
-    const [profiles, setProfiles] = useState([]);
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('name');
     const [activeProfileId, setActiveProfileId] = useState(null);
 
-<<<<<<< HEAD
     // Get resume list from Redux store
     const { resumeList: profiles, isResumeListUpdated } = useSelector(state => state.resume);
 
-=======
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
     const fetchProfiles = async () => {
         setIsLoading(true);
         try {
@@ -46,7 +36,6 @@ const Resumes = () => {
 
             const data = await response.json();
             if (data && Array.isArray(data.data)) {
-<<<<<<< HEAD
                 // Store the resume list in Redux instead of local state
                 dispatch(setResumeList(data.data));
             } else {
@@ -55,15 +44,6 @@ const Resumes = () => {
         } catch (error) {
             console.error('Error fetching profiles:', error);
             dispatch(setResumeList([]));
-=======
-                setProfiles(data.data);
-            } else {
-                setProfiles([]);
-            }
-        } catch (error) {
-            console.error('Error fetching profiles:', error);
-            setProfiles([]);
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
         } finally {
             setIsLoading(false);
         }
@@ -71,7 +51,6 @@ const Resumes = () => {
 
     useEffect(() => {
         fetchProfiles();
-<<<<<<< HEAD
     }, [dispatch]);
 
     // Add a new useEffect to check for resume list updates
@@ -84,9 +63,6 @@ const Resumes = () => {
             dispatch(resetResumeListUpdateFlag());
         }
     }, [isResumeListUpdated, dispatch]);
-=======
-    }, []);
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
     const handleActiveResume = (profile) => {
         localStorage.setItem('profileData', JSON.stringify(profile));

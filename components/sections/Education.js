@@ -3,11 +3,7 @@ import FormField from "@/components/FormField";
 import Editor from "react-simple-wysiwyg";
 import { ChevronDown, Trash2, Plus } from 'lucide-react';
 import SmartInputField from "@/components/SmartInputField";
-<<<<<<< HEAD
 import WritingAssistantButton from "@/components/WritingAssistantButton";
-=======
-import SuggestionDropdown from "@/components/SuggestionDropdown";
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
 
 const Education = ({ formData, updateFormData }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -71,7 +67,6 @@ const Education = ({ formData, updateFormData }) => {
     }
 
     return (
-<<<<<<< HEAD
         <div className="w-full space-y-6">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
                 <div>
@@ -82,18 +77,6 @@ const Education = ({ formData, updateFormData }) => {
                     onClick={addEducation}
                     className="w-full sm:w-auto px-4 py-2 bg-teal-50 text-teal-600 rounded-lg
                     hover:bg-teal-100 transition-all duration-300 flex items-center justify-center
-=======
-        <div className="bg-white rounded-lg shadow-sm p-4 md:p-6 transition-all duration-300 hover:shadow-md">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
-                <div>
-                    <h2 className="text-lg font-semibold text-gray-800">Education</h2>
-                    <p className="text-gray-500 text-xs">Add your educational background</p>
-                </div>
-                <button
-                    onClick={addEducation}
-                    className="w-full sm:w-auto px-4 py-2 bg-blue-50 text-blue-600 rounded-lg
-                    hover:bg-blue-100 transition-all duration-300 flex items-center justify-center
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                     gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
                 >
                     <Plus className="w-4 h-4" />
@@ -101,15 +84,9 @@ const Education = ({ formData, updateFormData }) => {
                 </button>
             </div>
 
-<<<<<<< HEAD
             <div className="space-y-4">
                 {formData.college.map((_, index) => (
                     <div key={index} className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300">
-=======
-            <div className="space-y-3">
-                {formData.college.map((_, index) => (
-                    <div key={index} className="border border-gray-200 rounded-md overflow-hidden">
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                         <div
                             onClick={() => setActiveIndex(activeIndex === index ? -1 : index)}
                             className="w-full flex items-center justify-between p-4 bg-gray-50
@@ -144,19 +121,11 @@ const Education = ({ formData, updateFormData }) => {
                             </div>
                         </div>
 
-<<<<<<< HEAD
                         <div className={`transition-all duration-300 ease-in-out
                             ${activeIndex === index ? 'max-h-[2000px] opacity-100 visible' : 'max-h-0 opacity-0 invisible'}
                             overflow-hidden`}>
                             <div className="p-5 bg-white space-y-5">
                                 <div className="grid grid-cols-1 gap-5">
-=======
-                        <div className={`transition-all duration-200 ease-in-out
-                            ${activeIndex === index ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}
-                            overflow-hidden`}>
-                            <div className="p-3 bg-white space-y-3">
-                                <div className="grid grid-cols-1 gap-3">
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     <FormField
                                         label="College/University"
                                         value={formData.college[index] || ''}
@@ -170,11 +139,7 @@ const Education = ({ formData, updateFormData }) => {
                                     />
                                 </div>
 
-<<<<<<< HEAD
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-=======
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     <FormField
                                         label="Start Year"
                                         value={formData.college_begin[index] || ''}
@@ -199,7 +164,6 @@ const Education = ({ formData, updateFormData }) => {
                                     />
                                 </div>
 
-<<<<<<< HEAD
                                 <div className="grid grid-cols-1 gap-5">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Degree</label>
@@ -230,31 +194,6 @@ const Education = ({ formData, updateFormData }) => {
                                             }}
                                             buttonClassName="mt-2"
                                         />
-=======
-                                <div className="grid grid-cols-1 gap-3">
-                                    <input
-                                        label="Degree"
-                                        value={formData.degree[index] || ''}
-                                        onChange={(e) => {
-                                            const newArray = [...formData.degree];
-                                            newArray[index] = e.target.value;
-                                            updateFormData('degree', newArray);
-                                        }}
-                                        currentDescription={formData.college_description}
-                                        onDescriptionChange={(e) => updateFormData('college_description', e.target.value)}
-                                        placeholder="e.g., Bachelor of Science"
-                                        className="w-full px-4 py-3.5 bg-white border border-gray-300 rounded-lg
-                        outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
-                                        promptType="provide a degree or academic details based on this degree:"
-                                        index={index}
-                                    />
-                                </div>
-
-                                <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <label className="text-sm text-gray-600">Description</label>
-                                        <SuggestionDropdown onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)} />
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     </div>
                                     <Editor
                                         value={formData.college_description[index] || ''}
@@ -263,15 +202,9 @@ const Education = ({ formData, updateFormData }) => {
                                             newArray[index] = e.target.value;
                                             updateFormData('college_description', newArray);
                                         }}
-<<<<<<< HEAD
                                         className="w-full min-h-[150px] border border-gray-200 rounded-lg
                                             focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500
         transition-all duration-300"
-=======
-                                        className="w-full min-h-[120px] border border-gray-200 rounded-lg
-                                            focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500
-                                            transition-all duration-300"
->>>>>>> 6225a9a9616beac8c91fb8f81f1d3cf32647f935
                                     />
                                 </div>
                             </div>
