@@ -42,7 +42,7 @@ const MinimalistTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                     </h1>
 
                     <div className={`${isModalView ? 'text-xl' : 'text-lg'} font-normal mb-4`}>
-                        {mergedData.occupation}
+                        {mergedData.professional_summary}
                     </div>
 
                     {/* Contact Information Row */}

@@ -86,7 +86,7 @@ export default function Home() {
                 const formData = new FormData();
                 formData.append('resume_id', resumeId);
 
-                const response = await fetch('https://admin.hiremeai.in/api/delete-resume', {
+                const response = await fetch('https://admin.resuming.io/api/delete-resume', {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token

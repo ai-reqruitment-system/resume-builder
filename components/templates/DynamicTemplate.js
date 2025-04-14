@@ -1,11 +1,11 @@
 import React from 'react';
 
 const DynamicTemplate = ({
-                             data = {},
-                             fontStyles = {},
-                             defaultData = {},
-                             isModalView = false,
-                         }) => {
+    data = {},
+    fontStyles = {},
+    defaultData = {},
+    isModalView = false,
+}) => {
     const mergeDataWithDefaults = (data, defaultData) => {
         const mergedData = { ...defaultData };
         for (const key in data) {
@@ -49,7 +49,7 @@ const DynamicTemplate = ({
                 fontFamily: fontStyles.font_family || "'Plus Jakarta Sans', system-ui, sans-serif",
                 fontWeight: fontStyles.is_font_bold ? 'bold' : 'normal',
                 fontStyle: fontStyles.is_font_italic ? 'italic' : 'normal',
-                color:fontStyles.font_color,
+                color: fontStyles.font_color,
             }}
         >
             {/* Sidebar */}
@@ -63,7 +63,7 @@ const DynamicTemplate = ({
                         {`${mergedData.first_name || 'John'} ${mergedData.last_name || 'Doe'}`}
                     </h1>
                     <p className="text-[var(--accent-soft)] text-lg font-medium">
-                        {mergedData.occupation || 'Professional'}
+                        {mergedData.professional_summary || 'Professional'}
                     </p>
                 </div>
 
@@ -73,28 +73,28 @@ const DynamicTemplate = ({
                     <ul className="space-y-4">
                         {mergedData.email && (
                             <li className="flex items-center gap-4 p-3 bg-white/[0.03] rounded-lg hover:bg-white/[0.08] hover:translate-x-1 transition-all duration-300">
-                <span className="w-9 h-9 flex items-center justify-center bg-[var(--accent)] text-white rounded-lg">
-                  <i className="fas fa-envelope" />
-                </span>
+                                <span className="w-9 h-9 flex items-center justify-center bg-[var(--accent)] text-white rounded-lg">
+                                    <i className="fas fa-envelope" />
+                                </span>
                                 <span className="text-[var(--surface-1)] text-[0.95rem]">{mergedData.email}</span>
                             </li>
                         )}
                         {mergedData.phone && (
                             <li className="flex items-center gap-4 p-3 bg-white/[0.03] rounded-lg hover:bg-white/[0.08] hover:translate-x-1 transition-all duration-300">
-                <span className="w-9 h-9 flex items-center justify-center bg-[var(--accent)] text-white rounded-lg">
-                  <i className="fas fa-phone" />
-                </span>
+                                <span className="w-9 h-9 flex items-center justify-center bg-[var(--accent)] text-white rounded-lg">
+                                    <i className="fas fa-phone" />
+                                </span>
                                 <span className="text-[var(--surface-1)] text-[0.95rem]">{mergedData.phone}</span>
                             </li>
                         )}
                         {(mergedData.city || mergedData.country) && (
                             <li className="flex items-center gap-4 p-3 bg-white/[0.03] rounded-lg hover:bg-white/[0.08] hover:translate-x-1 transition-all duration-300">
-                <span className="w-9 h-9 flex items-center justify-center bg-[var(--accent)] text-white rounded-lg">
-                  <i className="fas fa-map-marker-alt" />
-                </span>
+                                <span className="w-9 h-9 flex items-center justify-center bg-[var(--accent)] text-white rounded-lg">
+                                    <i className="fas fa-map-marker-alt" />
+                                </span>
                                 <span className="text-[var(--surface-1)] text-[0.95rem]">
-                  {`${mergedData.city || ''}${mergedData.city && mergedData.country ? ', ' : ''}${mergedData.country || ''}`}
-                </span>
+                                    {`${mergedData.city || ''}${mergedData.city && mergedData.country ? ', ' : ''}${mergedData.country || ''}`}
+                                </span>
                             </li>
                         )}
                     </ul>
@@ -162,9 +162,9 @@ const DynamicTemplate = ({
                                             <p className="text-lg text-[var(--accent)]">{mergedData.employer?.[index] || ''}</p>
                                         </div>
                                         <span className="flex items-center gap-2 bg-[var(--accent)] text-white px-3 py-1.5 rounded-full text-sm font-medium">
-                      <i className="fas fa-calendar-alt text-[0.8rem]" />
+                                            <i className="fas fa-calendar-alt text-[0.8rem]" />
                                             {`${mergedData.job_begin?.[index] || ''} - ${mergedData.job_end?.[index] || 'Present'}`}
-                    </span>
+                                        </span>
                                     </div>
                                     {mergedData.job_description?.[index] && (
                                         <div
@@ -190,9 +190,9 @@ const DynamicTemplate = ({
                                     </h3>
                                     <p className="text-[var(--accent)] mb-3">{college}</p>
                                     <span className="flex items-center gap-2 text-sm text-[var(--text-2)]">
-                    <i className="fas fa-calendar-alt" />
+                                        <i className="fas fa-calendar-alt" />
                                         {`${mergedData.college_begin?.[index] || ''} - ${mergedData.college_end?.[index] || ''}`}
-                  </span>
+                                    </span>
                                     {mergedData.college_description?.[index] && (
                                         <div
                                             className="mt-3 text-[var(--text-2)] text-[0.95rem]"

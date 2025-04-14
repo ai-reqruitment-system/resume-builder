@@ -68,7 +68,7 @@ const PremiumTemplate = ({ data = {}, fontStyles, isModalView }) => {
                     <h1 className={`${isModalView ? 'text-3xl' : 'text-2xl'} mb-2 tracking-wide`}>
                         {`${mergedData.first_name} ${mergedData.last_name}`}
                     </h1>
-                    <h2 className="text-blue-300 text-lg font-normal mb-6">{mergedData.occupation}</h2>
+                    <h2 className="text-blue-300 text-lg font-normal mb-6">{mergedData.professional_summary}</h2>
                 </div>
 
                 <div className="contact-info mb-10">

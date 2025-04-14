@@ -7,10 +7,10 @@ import {
     faChartLine, faShieldAlt, faCheckCircle, faCogs
 } from '@fortawesome/free-solid-svg-icons';
 
-const IndustrialResumeTemplate = ({  data = {},
-                                      fontStyles = {},
-                                      defaultData = {},
-                                      isModalView = false, }) => {
+const IndustrialResumeTemplate = ({ data = {},
+    fontStyles = {},
+    defaultData = {},
+    isModalView = false, }) => {
     // Function to render HTML content safely
     const renderHTML = (html) => {
         return { __html: html };
@@ -76,48 +76,48 @@ const IndustrialResumeTemplate = ({  data = {},
                         className="text-2xl mb-5 font-medium"
                         style={{ color: accentColor }}
                     >
-                        {data?.occupation || 'Industrial Professional'}
+                        {data?.professional_summary || 'Industrial Professional'}
                     </p>
 
                     {/* Contact info */}
                     <table className="w-full mt-5 pt-5 border-t border-white border-opacity-10">
                         <tbody>
-                        <tr>
-                            {data?.email && (
-                                <td className="py-2 pr-4 align-middle">
-                                    <FontAwesomeIcon
-                                        icon={faEnvelope}
-                                        className="w-5 text-center pr-2"
-                                        style={{ color: accentColor }}
-                                    />
-                                    <span className="text-sm">{data.email}</span>
-                                </td>
-                            )}
-                            {data?.phone && (
-                                <td className="py-2 pr-4 align-middle">
-                                    <FontAwesomeIcon
-                                        icon={faPhone}
-                                        className="w-5 text-center pr-2"
-                                        style={{ color: accentColor }}
-                                    />
-                                    <span className="text-sm">{data.phone}</span>
-                                </td>
-                            )}
-                            {(data?.city || data?.country) && (
-                                <td className="py-2 pr-4 align-middle">
-                                    <FontAwesomeIcon
-                                        icon={faMapMarkerAlt}
-                                        className="w-5 text-center pr-2"
-                                        style={{ color: accentColor }}
-                                    />
-                                    <span className="text-sm">
-                      {data?.city || ''}
-                                        {data?.city && data?.country ? ', ' : ''}
-                                        {data?.country || ''}
-                    </span>
-                                </td>
-                            )}
-                        </tr>
+                            <tr>
+                                {data?.email && (
+                                    <td className="py-2 pr-4 align-middle">
+                                        <FontAwesomeIcon
+                                            icon={faEnvelope}
+                                            className="w-5 text-center pr-2"
+                                            style={{ color: accentColor }}
+                                        />
+                                        <span className="text-sm">{data.email}</span>
+                                    </td>
+                                )}
+                                {data?.phone && (
+                                    <td className="py-2 pr-4 align-middle">
+                                        <FontAwesomeIcon
+                                            icon={faPhone}
+                                            className="w-5 text-center pr-2"
+                                            style={{ color: accentColor }}
+                                        />
+                                        <span className="text-sm">{data.phone}</span>
+                                    </td>
+                                )}
+                                {(data?.city || data?.country) && (
+                                    <td className="py-2 pr-4 align-middle">
+                                        <FontAwesomeIcon
+                                            icon={faMapMarkerAlt}
+                                            className="w-5 text-center pr-2"
+                                            style={{ color: accentColor }}
+                                        />
+                                        <span className="text-sm">
+                                            {data?.city || ''}
+                                            {data?.city && data?.country ? ', ' : ''}
+                                            {data?.country || ''}
+                                        </span>
+                                    </td>
+                                )}
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -190,8 +190,8 @@ const IndustrialResumeTemplate = ({  data = {},
                                         className="inline-block px-3 py-1 rounded text-sm mb-4"
                                         style={{ background: surfaceColor, color: secondaryColor }}
                                     >
-                    {data.job_begin?.[index] || ''} - {data.job_end?.[index] || 'Present'}
-                  </span>
+                                        {data.job_begin?.[index] || ''} - {data.job_end?.[index] || 'Present'}
+                                    </span>
 
                                     {data.job_description?.[index] && (
                                         <div dangerouslySetInnerHTML={renderHTML(data.job_description[index])}></div>
@@ -239,12 +239,12 @@ const IndustrialResumeTemplate = ({  data = {},
                                         className="mb-2 pl-5 relative"
                                         key={`skill-${index}`}
                                     >
-                    <span
-                        className="absolute left-0 top-0"
-                        style={{ color: accentColor }}
-                    >
-                      ▸
-                    </span>
+                                        <span
+                                            className="absolute left-0 top-0"
+                                            style={{ color: accentColor }}
+                                        >
+                                            ▸
+                                        </span>
                                         {skill}
                                     </li>
                                 ))}
@@ -347,8 +347,8 @@ const IndustrialResumeTemplate = ({  data = {},
                                     className="inline-block px-3 py-1 rounded text-sm mb-4"
                                     style={{ background: surfaceColor, color: secondaryColor }}
                                 >
-                  {data.college_begin?.[index] || ''} - {data.college_end?.[index] || ''}
-                </span>
+                                    {data.college_begin?.[index] || ''} - {data.college_end?.[index] || ''}
+                                </span>
 
                                 {data.college_description?.[index] && (
                                     <div dangerouslySetInnerHTML={renderHTML(data.college_description[index])}></div>

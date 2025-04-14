@@ -94,7 +94,7 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                         {`${mergedData.first_name} ${mergedData.last_name}`}
                                     </h1>
                                     <p className={`${isModalView ? 'text-xl' : 'text-lg'} text-gray-600 font-medium`}>
-                                        {mergedData.occupation}
+                                        {mergedData.professional_summary}
                                     </p>
                                 </div>
 
@@ -122,24 +122,24 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                             {/* Contact info row */}
                             <div className="flex flex-wrap gap-4 mb-6">
                                 <div className="flex items-center text-sm text-gray-600">
-                  <span
-                      className="mr-2 text-xs"
-                      style={{ color: mainColor }}
-                  >●</span>
+                                    <span
+                                        className="mr-2 text-xs"
+                                        style={{ color: mainColor }}
+                                    >●</span>
                                     <span>{mergedData.email}</span>
                                 </div>
                                 <div className="flex items-center text-sm text-gray-600">
-                  <span
-                      className="mr-2 text-xs"
-                      style={{ color: mainColor }}
-                  >●</span>
+                                    <span
+                                        className="mr-2 text-xs"
+                                        style={{ color: mainColor }}
+                                    >●</span>
                                     <span>{mergedData.phone}</span>
                                 </div>
                                 <div className="flex items-center text-sm text-gray-600">
-                  <span
-                      className="mr-2 text-xs"
-                      style={{ color: mainColor }}
-                  >●</span>
+                                    <span
+                                        className="mr-2 text-xs"
+                                        style={{ color: mainColor }}
+                                    >●</span>
                                     <span>{`${mergedData.city}, ${mergedData.country}`}</span>
                                 </div>
                             </div>
@@ -151,10 +151,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                         className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-3 uppercase tracking-wide flex items-center`}
                                         style={{ color: mainColor }}
                                     >
-                    <span
-                        className="inline-block w-5 h-0.5 mr-2"
-                        style={{ backgroundColor: mainColor }}
-                    ></span>
+                                        <span
+                                            className="inline-block w-5 h-0.5 mr-2"
+                                            style={{ backgroundColor: mainColor }}
+                                        ></span>
                                         About Me
                                     </h2>
                                     <div
@@ -181,10 +181,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                             className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 uppercase tracking-wide flex items-center`}
                                             style={{ color: mainColor }}
                                         >
-                      <span
-                          className="inline-block w-5 h-0.5 mr-2"
-                          style={{ backgroundColor: mainColor }}
-                      ></span>
+                                            <span
+                                                className="inline-block w-5 h-0.5 mr-2"
+                                                style={{ backgroundColor: mainColor }}
+                                            ></span>
                                             Skills
                                         </h2>
 
@@ -198,8 +198,8 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                                         color: secondaryColor
                                                     }}
                                                 >
-                          {skill}
-                        </span>
+                                                    {skill}
+                                                </span>
                                             ))}
                                         </div>
                                     </div>
@@ -215,10 +215,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                             className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 uppercase tracking-wide flex items-center`}
                                             style={{ color: mainColor }}
                                         >
-                      <span
-                          className="inline-block w-5 h-0.5 mr-2"
-                          style={{ backgroundColor: mainColor }}
-                      ></span>
+                                            <span
+                                                className="inline-block w-5 h-0.5 mr-2"
+                                                style={{ backgroundColor: mainColor }}
+                                            ></span>
                                             Languages
                                         </h2>
 
@@ -232,8 +232,8 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                                                 key={i}
                                                                 className="w-2 h-2 rounded-full mx-0.5"
                                                                 style={{
-                                                                    backgroundColor: i < 5-(index % 2) ? mainColor : '#E5E7EB',
-                                                                    opacity: i < 5-(index % 2) ? 1 - (i * 0.2) : 0.3
+                                                                    backgroundColor: i < 5 - (index % 2) ? mainColor : '#E5E7EB',
+                                                                    opacity: i < 5 - (index % 2) ? 1 - (i * 0.2) : 0.3
                                                                 }}
                                                             ></div>
                                                         ))}
@@ -254,10 +254,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                             className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 uppercase tracking-wide flex items-center`}
                                             style={{ color: mainColor }}
                                         >
-                      <span
-                          className="inline-block w-5 h-0.5 mr-2"
-                          style={{ backgroundColor: mainColor }}
-                      ></span>
+                                            <span
+                                                className="inline-block w-5 h-0.5 mr-2"
+                                                style={{ backgroundColor: mainColor }}
+                                            ></span>
                                             Education
                                         </h2>
 
@@ -272,8 +272,8 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                                             {mergedData.degree[index]}
                                                         </h3>
                                                         <span className="text-xs text-gray-500">
-                              {`${mergedData.college_begin[index]}-${mergedData.college_end[index]}`}
-                            </span>
+                                                            {`${mergedData.college_begin[index]}-${mergedData.college_end[index]}`}
+                                                        </span>
                                                     </div>
                                                     <p className="text-sm text-gray-600 mb-2">{college}</p>
                                                     <div
@@ -296,10 +296,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                             className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 uppercase tracking-wide flex items-center`}
                                             style={{ color: mainColor }}
                                         >
-                      <span
-                          className="inline-block w-5 h-0.5 mr-2"
-                          style={{ backgroundColor: mainColor }}
-                      ></span>
+                                            <span
+                                                className="inline-block w-5 h-0.5 mr-2"
+                                                style={{ backgroundColor: mainColor }}
+                                            ></span>
                                             Certifications
                                         </h2>
 
@@ -330,10 +330,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                             className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-6 uppercase tracking-wide flex items-center`}
                                             style={{ color: mainColor }}
                                         >
-                      <span
-                          className="inline-block w-5 h-0.5 mr-2"
-                          style={{ backgroundColor: mainColor }}
-                      ></span>
+                                            <span
+                                                className="inline-block w-5 h-0.5 mr-2"
+                                                style={{ backgroundColor: mainColor }}
+                                            ></span>
                                             Professional Experience
                                         </h2>
 
@@ -391,10 +391,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                             className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-6 uppercase tracking-wide flex items-center`}
                                             style={{ color: mainColor }}
                                         >
-                      <span
-                          className="inline-block w-5 h-0.5 mr-2"
-                          style={{ backgroundColor: mainColor }}
-                      ></span>
+                                            <span
+                                                className="inline-block w-5 h-0.5 mr-2"
+                                                style={{ backgroundColor: mainColor }}
+                                            ></span>
                                             Internships
                                         </h2>
 
@@ -431,10 +431,10 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                             className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 uppercase tracking-wide flex items-center`}
                                             style={{ color: mainColor }}
                                         >
-                      <span
-                          className="inline-block w-5 h-0.5 mr-2"
-                          style={{ backgroundColor: mainColor }}
-                      ></span>
+                                            <span
+                                                className="inline-block w-5 h-0.5 mr-2"
+                                                style={{ backgroundColor: mainColor }}
+                                            ></span>
                                             {title}
                                         </h2>
 

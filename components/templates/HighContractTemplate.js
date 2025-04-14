@@ -1,10 +1,10 @@
 import React from 'react';
 
 const HighContractTemplate = ({
-                                  data = {},
-                                  fontStyles = {},
-                                  defaultData = {}
-                              }) => {
+    data = {},
+    fontStyles = {},
+    defaultData = {}
+}) => {
     const mergeDataWithDefaults = (data, defaultData) => {
         const mergedData = { ...defaultData };
         for (const key in data) {
@@ -30,13 +30,13 @@ const HighContractTemplate = ({
 
     return (
         <div className="w-full bg-white"
-             style={{
-                 fontFamily: fontStyles.font_family || "'Arial Black', 'Arial Bold', Arial, sans-serif",
-                 lineHeight: 1.4,
-                 fontWeight: fontStyles.is_font_bold ? 'bold' : 'normal',
-                 fontStyle: fontStyles.is_font_italic ? 'italic' : 'normal',
-                 color: fontStyles.font_color,
-             }}>
+            style={{
+                fontFamily: fontStyles.font_family || "'Arial Black', 'Arial Bold', Arial, sans-serif",
+                lineHeight: 1.4,
+                fontWeight: fontStyles.is_font_bold ? 'bold' : 'normal',
+                fontStyle: fontStyles.is_font_italic ? 'italic' : 'normal',
+                color: fontStyles.font_color,
+            }}>
 
             {/* Header Section */}
             <header className="bg-black text-white p-8 -m-2 mb-8 border-5 border-black relative">
@@ -44,7 +44,7 @@ const HighContractTemplate = ({
                     {`${mergedData.first_name || 'John'} ${mergedData.last_name || 'Doe'}`}
                 </h1>
                 <p className="text-2xl uppercase font-bold" style={{ color: fontStyles.font_color || 'white' }}>
-                    {mergedData.occupation || 'Professional'}
+                    {mergedData.professional_summary || 'Professional'}
                 </p>
 
                 {/* Contact Info */}
@@ -56,8 +56,8 @@ const HighContractTemplate = ({
                             `${mergedData.city || 'City'}, ${mergedData.country || 'Country'}`
                         ].map((item, index) => (
                             <span key={index} className="table-cell p-2 bg-white text-black font-bold border-3 border-black m-2">
-                {item}
-              </span>
+                                {item}
+                            </span>
                         ))}
                     </div>
                 </div>
@@ -84,8 +84,8 @@ const HighContractTemplate = ({
                             <div key={rowIndex} className="table-row">
                                 {skillRow.map((skill, index) => (
                                     <div key={index}
-                                         className="table-cell p-4 bg-black text-white text-center border-3 border-black uppercase font-bold w-1/4"
-                                         style={{ transform: index % 2 === 0 ? 'rotate(-2deg)' : 'rotate(2deg)' }}>
+                                        className="table-cell p-4 bg-black text-white text-center border-3 border-black uppercase font-bold w-1/4"
+                                        style={{ transform: index % 2 === 0 ? 'rotate(-2deg)' : 'rotate(2deg)' }}>
                                         {skill}
                                     </div>
                                 ))}

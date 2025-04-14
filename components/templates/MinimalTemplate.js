@@ -25,7 +25,7 @@ const MinimalTemplate = ({ data }) => (
                 fontSize: '18px',
                 color: '#7f8c8d',
                 margin: '8px 0'
-            }}>{data.occupation}</p>
+            }}>{data.professional_summary}</p>
 
             <div style={{
                 color: '#7f8c8d',

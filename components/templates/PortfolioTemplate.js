@@ -51,7 +51,7 @@ const PortfolioTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                 {`${mergedData.first_name} ${mergedData.last_name}`}
                             </div>
                             <div className={`${isModalView ? 'text-xl' : 'text-lg'} font-medium mb-3`}>
-                                {mergedData.occupation}
+                                {mergedData.professional_summary}
                             </div>
 
                             {/* Contact Information */}
@@ -90,8 +90,8 @@ const PortfolioTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                             color: primaryColor
                                         }}
                                     >
-                    {skill}
-                  </span>
+                                        {skill}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -108,10 +108,10 @@ const PortfolioTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                             <div className="space-y-3">
                                 {mergedData.language && mergedData.language.map((lang, index) => (
                                     <div key={index} className="flex items-center">
-                    <span
-                        className="w-2 h-2 rounded-full mr-2"
-                        style={{ backgroundColor: primaryColor }}
-                    ></span>
+                                        <span
+                                            className="w-2 h-2 rounded-full mr-2"
+                                            style={{ backgroundColor: primaryColor }}
+                                        ></span>
                                         <span>{lang}</span>
                                     </div>
                                 ))}

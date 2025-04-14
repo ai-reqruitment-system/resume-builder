@@ -45,7 +45,7 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                 {`${mergedData.first_name} ${mergedData.last_name}`}
                             </h1>
                             <p className={`${isModalView ? 'text-xl' : 'text-lg'} font-semibold`}>
-                                {mergedData.occupation}
+                                {mergedData.professional_summary}
                             </p>
                         </div>
 
@@ -69,10 +69,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                 className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 flex items-center`}
                                 style={{ color: primaryColor }}
                             >
-                <span
-                    className="inline-block w-4 h-4 mr-2"
-                    style={{ backgroundColor: primaryColor }}
-                ></span>
+                                <span
+                                    className="inline-block w-4 h-4 mr-2"
+                                    style={{ backgroundColor: primaryColor }}
+                                ></span>
                                 EXECUTIVE SUMMARY
                             </h2>
 
@@ -88,10 +88,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                 className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 flex items-center`}
                                 style={{ color: primaryColor }}
                             >
-                <span
-                    className="inline-block w-4 h-4 mr-2"
-                    style={{ backgroundColor: primaryColor }}
-                ></span>
+                                <span
+                                    className="inline-block w-4 h-4 mr-2"
+                                    style={{ backgroundColor: primaryColor }}
+                                ></span>
                                 CORE COMPETENCIES
                             </h2>
 
@@ -101,10 +101,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                         key={index}
                                         className="flex items-baseline"
                                     >
-                    <span
-                        className="text-xs mr-2"
-                        style={{ color: primaryColor }}
-                    >■</span>
+                                        <span
+                                            className="text-xs mr-2"
+                                            style={{ color: primaryColor }}
+                                        >■</span>
                                         <span className="text-sm">{skill}</span>
                                     </div>
                                 ))}
@@ -118,10 +118,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                     className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 flex items-center`}
                                     style={{ color: primaryColor }}
                                 >
-                  <span
-                      className="inline-block w-4 h-4 mr-2"
-                      style={{ backgroundColor: primaryColor }}
-                  ></span>
+                                    <span
+                                        className="inline-block w-4 h-4 mr-2"
+                                        style={{ backgroundColor: primaryColor }}
+                                    ></span>
                                     LANGUAGES
                                 </h2>
 
@@ -131,10 +131,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                             key={index}
                                             className="flex items-baseline"
                                         >
-                      <span
-                          className="text-xs mr-2"
-                          style={{ color: primaryColor }}
-                      >■</span>
+                                            <span
+                                                className="text-xs mr-2"
+                                                style={{ color: primaryColor }}
+                                            >■</span>
                                             <span className="text-sm">{language}</span>
                                         </div>
                                     ))}
@@ -149,10 +149,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                     className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-4 flex items-center`}
                                     style={{ color: primaryColor }}
                                 >
-                  <span
-                      className="inline-block w-4 h-4 mr-2"
-                      style={{ backgroundColor: primaryColor }}
-                  ></span>
+                                    <span
+                                        className="inline-block w-4 h-4 mr-2"
+                                        style={{ backgroundColor: primaryColor }}
+                                    ></span>
                                     CERTIFICATIONS
                                 </h2>
 
@@ -179,10 +179,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                 className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-6 flex items-center`}
                                 style={{ color: primaryColor }}
                             >
-                <span
-                    className="inline-block w-4 h-4 mr-2"
-                    style={{ backgroundColor: primaryColor }}
-                ></span>
+                                <span
+                                    className="inline-block w-4 h-4 mr-2"
+                                    style={{ backgroundColor: primaryColor }}
+                                ></span>
                                 PROFESSIONAL EXPERIENCE
                             </h2>
 
@@ -228,10 +228,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                 className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-6 flex items-center`}
                                 style={{ color: primaryColor }}
                             >
-                <span
-                    className="inline-block w-4 h-4 mr-2"
-                    style={{ backgroundColor: primaryColor }}
-                ></span>
+                                <span
+                                    className="inline-block w-4 h-4 mr-2"
+                                    style={{ backgroundColor: primaryColor }}
+                                ></span>
                                 EDUCATION
                             </h2>
 
@@ -278,10 +278,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                     className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-6 flex items-center`}
                                     style={{ color: primaryColor }}
                                 >
-                  <span
-                      className="inline-block w-4 h-4 mr-2"
-                      style={{ backgroundColor: primaryColor }}
-                  ></span>
+                                    <span
+                                        className="inline-block w-4 h-4 mr-2"
+                                        style={{ backgroundColor: primaryColor }}
+                                    ></span>
                                     INTERNSHIP EXPERIENCE
                                 </h2>
 
@@ -315,10 +315,10 @@ const ExecutiveTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) 
                                     className={`${isModalView ? 'text-lg' : 'text-base'} font-bold mb-6 flex items-center`}
                                     style={{ color: primaryColor }}
                                 >
-                  <span
-                      className="inline-block w-4 h-4 mr-2"
-                      style={{ backgroundColor: primaryColor }}
-                  ></span>
+                                    <span
+                                        className="inline-block w-4 h-4 mr-2"
+                                        style={{ backgroundColor: primaryColor }}
+                                    ></span>
                                     {title.toUpperCase()}
                                 </h2>
 

@@ -1,11 +1,11 @@
 import React from 'react';
 
 const CreativeTemplate = ({
-                              data = {},
-                              fontStyles,
-                              isModalView = false,
-                              defaultData = {},
-                          }) => {
+    data = {},
+    fontStyles,
+    isModalView = false,
+    defaultData = {},
+}) => {
     const mergeDataWithDefaults = (data, defaultData) => {
         const mergedData = { ...defaultData };
         for (const key in data) {
@@ -46,12 +46,12 @@ const CreativeTemplate = ({
     return (
         <div
             style={{
-            fontFamily: fontStyles.font_family,
-            color: fontStyles.font_color,
-            fontWeight: fontStyles.is_font_bold ? "bold" : "normal",
-            fontStyle: fontStyles.is_font_italic ? "italic" : "normal",
+                fontFamily: fontStyles.font_family,
+                color: fontStyles.font_color,
+                fontWeight: fontStyles.is_font_bold ? "bold" : "normal",
+                fontStyle: fontStyles.is_font_italic ? "italic" : "normal",
             }}
-              className={`w-full max-w-4xl mx-auto bg-white ${styles.shadow} ${styles.borderRadius} font-${styles.fontFamily}`}>
+            className={`w-full max-w-4xl mx-auto bg-white ${styles.shadow} ${styles.borderRadius} font-${styles.fontFamily}`}>
             <div className="p-8">
                 {/* Header */}
                 <div className={`bg-gradient-to-r from-${styles.headerGradient.from} to-${styles.headerGradient.to} 
@@ -60,7 +60,7 @@ const CreativeTemplate = ({
                         {`${mergedData.first_name} ${mergedData.last_name}`}
                     </h1>
                     <p className={`${styles.fontSize.subtitle} opacity-90 mb-4`}>
-                        {mergedData.occupation}
+                        {mergedData.professional_summary}
                     </p>
                     <div className="flex flex-wrap gap-4">
                         {[
@@ -81,8 +81,8 @@ const CreativeTemplate = ({
                     {
                         title: 'Professional Summary',
                         content: (
-                            <div dangerouslySetInnerHTML={{__html: mergedData.professional_description}}
-                                 className="prose max-w-none" />
+                            <div dangerouslySetInnerHTML={{ __html: mergedData.professional_description }}
+                                className="prose max-w-none" />
                         )
                     },
                     {
@@ -102,7 +102,7 @@ const CreativeTemplate = ({
                         title: 'Experience',
                         content: mergedData.job_title?.map((title, index) => (
                             <div key={index}
-                                 className={`relative pl-4 border-l-4 border-${styles.primaryColor} ${styles.spacing.element} 
+                                className={`relative pl-4 border-l-4 border-${styles.primaryColor} ${styles.spacing.element} 
                   p-4 bg-white rounded-lg shadow-sm`}>
                                 <h3 className={`${styles.fontSize.subtitle} font-semibold`}>{title}</h3>
                                 <p className="text-gray-600">{mergedData.employer[index]}</p>
@@ -110,8 +110,8 @@ const CreativeTemplate = ({
                                     {`${mergedData.job_begin[index]} - ${mergedData.job_end[index]}`}
                                 </p>
                                 <div className="mt-2 text-gray-700">
-                                    <div dangerouslySetInnerHTML={{__html: mergedData.job_description[index]}}
-                                         className="prose max-w-none"/>
+                                    <div dangerouslySetInnerHTML={{ __html: mergedData.job_description[index] }}
+                                        className="prose max-w-none" />
                                 </div>
                             </div>
                         )),
@@ -121,7 +121,7 @@ const CreativeTemplate = ({
                         title: 'Education',
                         content: mergedData.college?.map((college, index) => (
                             <div key={index}
-                                 className={`relative pl-4 border-l-4 border-${styles.primaryColor} ${styles.spacing.element} 
+                                className={`relative pl-4 border-l-4 border-${styles.primaryColor} ${styles.spacing.element} 
                   p-4 bg-white rounded-lg shadow-sm`}>
                                 <h3 className={`${styles.fontSize.subtitle} font-semibold`}>
                                     {mergedData.degree[index]}
@@ -131,8 +131,8 @@ const CreativeTemplate = ({
                                     {`${mergedData.college_begin[index]} - ${mergedData.college_end[index]}`}
                                 </p>
                                 <div className="mt-2 text-gray-700">
-                                    <div dangerouslySetInnerHTML={{__html: mergedData.college_description[index]}}
-                                         className="prose max-w-none"/>
+                                    <div dangerouslySetInnerHTML={{ __html: mergedData.college_description[index] }}
+                                        className="prose max-w-none" />
                                 </div>
                             </div>
                         )),
@@ -146,8 +146,8 @@ const CreativeTemplate = ({
                                     <div key={index} className="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
                                         <h3 className={`${styles.fontSize.subtitle} font-semibold mb-2`}>{title}</h3>
                                         <div className="text-gray-700">
-                                            <div dangerouslySetInnerHTML={{__html: mergedData.certificate_description[index]}}
-                                                 className="prose max-w-none"/>
+                                            <div dangerouslySetInnerHTML={{ __html: mergedData.certificate_description[index] }}
+                                                className="prose max-w-none" />
                                         </div>
                                     </div>
                                 ))}
@@ -161,8 +161,8 @@ const CreativeTemplate = ({
                             <div key={index} className="p-4 bg-white rounded-lg shadow-sm border border-gray-200 mb-4">
                                 <h3 className={`${styles.fontSize.subtitle} font-semibold mb-2`}>{title}</h3>
                                 <div className="text-gray-700">
-                                    <div dangerouslySetInnerHTML={{__html: mergedData.internship_summary[index]}}
-                                         className="prose max-w-none"/>
+                                    <div dangerouslySetInnerHTML={{ __html: mergedData.internship_summary[index] }}
+                                        className="prose max-w-none" />
                                 </div>
                             </div>
                         )),

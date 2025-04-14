@@ -151,7 +151,7 @@ const ResumeModal = ({
             }
 
             // Send request to save resume
-            const response = await fetch('https://admin.hiremeai.in/api/update-resume', {
+            const response = await fetch('https://admin.resuming.io/api/update-resume', {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -328,10 +328,10 @@ const ResumeModal = ({
 
                 {/* Preview area */}
                 <div className="flex-1 overflow-auto p-2 sm:p-4 md:p-6 lg:p-8 flex justify-center items-start">
-                    <div className="bg-white shadow-xl rounded-lg w-full max-w-4xl mx-auto">
+                    <div className="bg-white shadow-xl rounded-lg w-full max-w-[1600px] mx-auto">
                         {/* Preview container */}
                         <div className="relative">
-                            <div className="transform scale-[0.65] sm:scale-[0.7] md:scale-75 origin-top w-full">
+                            <div className="transform scale-[0.75] sm:scale-[0.8] md:scale-[0.85] lg:scale-90 origin-top w-full">
                                 <div className="lg:pd-4">
                                     <div className="relative z-10"> {/* Add z-index to ensure content is selectable */}
                                         <TemplateComponent
@@ -353,7 +353,7 @@ const ResumeModal = ({
 
     return (
         <div className="fixed inset-0 bg-black/50 z-50 overflow-hidden">
-            <div className="h-screen max-w-screen-2xl mx-auto">
+            <div className="h-screen w-screen mx-auto">
                 <div className="h-full flex flex-col lg:flex-row">
                     {/* Sidebar */}
                     <div className="hidden lg:flex w-64 xl:w-80 flex-shrink-0 flex-col bg-white border-r">

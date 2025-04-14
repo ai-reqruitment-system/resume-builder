@@ -43,7 +43,7 @@ const TimelineTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) =
                             {`${mergedData.first_name} ${mergedData.last_name}`}
                         </h1>
                         <div className={`${isModalView ? 'text-xl' : 'text-lg'} font-medium mb-2`}>
-                            {mergedData.occupation}
+                            {mergedData.professional_summary}
                         </div>
 
                         {/* Professional description with stylized quote */}
@@ -101,8 +101,8 @@ const TimelineTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) =
                                             border: `1px solid ${accentColor}40` // 40% opacity border
                                         }}
                                     >
-                    {skill}
-                  </span>
+                                        {skill}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -123,8 +123,8 @@ const TimelineTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) =
                                             border: "1px solid rgba(229, 231, 235, 1)"
                                         }}
                                     >
-                    {lang}
-                  </span>
+                                        {lang}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -160,15 +160,15 @@ const TimelineTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) =
                                     {title}
                                 </div>
                                 <div className="flex justify-between items-center mb-2">
-                  <span
-                      className="text-base font-medium"
-                      style={{ color: accentColor }}
-                  >
-                    {mergedData.employer[index]}
-                  </span>
+                                    <span
+                                        className="text-base font-medium"
+                                        style={{ color: accentColor }}
+                                    >
+                                        {mergedData.employer[index]}
+                                    </span>
                                     <span className={`text-gray-500 ${isModalView ? 'text-sm' : 'text-xs'}`}>
-                    {`${mergedData.job_begin[index]} - ${mergedData.job_end[index]}`}
-                  </span>
+                                        {`${mergedData.job_begin[index]} - ${mergedData.job_end[index]}`}
+                                    </span>
                                 </div>
                                 <div
                                     dangerouslySetInnerHTML={{ __html: mergedData.job_description[index] }}
@@ -288,7 +288,7 @@ const TimelineTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) =
                         </h2>
 
                         <div className="prose max-w-none text-gray-600"
-                             dangerouslySetInnerHTML={{ __html: mergedData.other_description[index] }}
+                            dangerouslySetInnerHTML={{ __html: mergedData.other_description[index] }}
                         />
                     </div>
                 ))}

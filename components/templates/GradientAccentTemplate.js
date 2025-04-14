@@ -62,7 +62,7 @@ const GradientAccentTemplate = ({ data = {}, fontStyles, isModalView, defaultDat
                         </h1>
 
                         <p className={`${isModalView ? 'text-xl' : 'text-lg'} mb-4 font-medium text-gray-500`}>
-                            {mergedData.occupation}
+                            {mergedData.professional_summary}
                         </p>
 
                         <div className="flex flex-wrap gap-4 items-center mb-6">
@@ -147,10 +147,10 @@ const GradientAccentTemplate = ({ data = {}, fontStyles, isModalView, defaultDat
                                     <div className="space-y-2">
                                         {mergedData.language.map((language, index) => (
                                             <div key={index} className="flex items-center gap-2">
-                        <span
-                            className="w-2 h-2 rounded-full"
-                            style={{ background: getGradient(baseColor) }}
-                        ></span>
+                                                <span
+                                                    className="w-2 h-2 rounded-full"
+                                                    style={{ background: getGradient(baseColor) }}
+                                                ></span>
                                                 <span>{language}</span>
                                             </div>
                                         ))}

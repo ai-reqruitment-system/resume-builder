@@ -5,9 +5,9 @@ import React from 'react';
 // import { faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 const OfficialTemplate = ({ data = {},
-                              fontStyles = {},
-                              defaultData = {},
-                              isModalView = false, }) => {
+    fontStyles = {},
+    defaultData = {},
+    isModalView = false, }) => {
     // Function to render HTML content safely
     const renderHTML = (html) => {
         return { __html: html };
@@ -43,14 +43,14 @@ const OfficialTemplate = ({ data = {},
             <div className="flex flex-col md:flex-row">
                 {/* Left Column */}
                 <div className="w-full md:w-[28%] p-8"
-                     style={{ backgroundColor: primaryColor, color: 'white' }}>
+                    style={{ backgroundColor: primaryColor, color: 'white' }}>
                     {/* Name and Title */}
                     <h1 className="text-2xl font-bold mb-2 uppercase tracking-wider text-white">
                         {data?.first_name || 'John'} {data?.last_name || 'Doe'}
                     </h1>
                     <p className="text-base mb-8 italic"
-                       style={{ color: accentColor }}>
-                        {data?.occupation || 'Professional'}
+                        style={{ color: accentColor }}>
+                        {data?.professional_summary || 'Professional'}
                     </p>
 
                     {/* Contact Section */}
@@ -62,19 +62,19 @@ const OfficialTemplate = ({ data = {},
                         <div className="space-y-3">
                             {data?.email && (
                                 <div className="p-2 text-sm"
-                                     style={{ backgroundColor: `${accentColor}1a` }}>
+                                    style={{ backgroundColor: `${accentColor}1a` }}>
                                     {data.email}
                                 </div>
                             )}
                             {data?.phone && (
                                 <div className="p-2 text-sm"
-                                     style={{ backgroundColor: `${accentColor}1a` }}>
+                                    style={{ backgroundColor: `${accentColor}1a` }}>
                                     {data.phone}
                                 </div>
                             )}
                             {(data?.city || data?.country) && (
                                 <div className="p-2 text-sm"
-                                     style={{ backgroundColor: `${accentColor}1a` }}>
+                                    style={{ backgroundColor: `${accentColor}1a` }}>
                                     {data?.city || ''}
                                     {data?.city && data?.country ? ', ' : ''}
                                     {data?.country || ''}
@@ -159,11 +159,11 @@ const OfficialTemplate = ({ data = {},
                                             {title}
                                         </h3>
                                         <p className="text-base mb-1"
-                                           style={{ color: accentColor }}>
+                                            style={{ color: accentColor }}>
                                             {data.employer?.[index] || ''}
                                         </p>
                                         <span className="inline-block py-1 px-3 mb-2 text-sm text-white"
-                                              style={{ backgroundColor: primaryColor }}>
+                                            style={{ backgroundColor: primaryColor }}>
                                             {data.job_begin?.[index] || ''} - {data.job_end?.[index] || 'Present'}
                                         </span>
                                         {data.job_description?.[index] && (
@@ -194,11 +194,11 @@ const OfficialTemplate = ({ data = {},
                                         {data.degree?.[index] || ''}
                                     </h3>
                                     <p className="text-base mb-1"
-                                       style={{ color: accentColor }}>
+                                        style={{ color: accentColor }}>
                                         {college}
                                     </p>
                                     <span className="inline-block py-1 px-3 mb-2 text-sm text-white"
-                                          style={{ backgroundColor: primaryColor }}>
+                                        style={{ backgroundColor: primaryColor }}>
                                         {data.college_begin?.[index] || ''} - {data.college_end?.[index] || ''}
                                     </span>
                                     {data.college_description?.[index] && (

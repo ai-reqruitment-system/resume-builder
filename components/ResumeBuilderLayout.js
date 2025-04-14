@@ -103,8 +103,12 @@ const ResumeBuilderLayout = ({ onClose }) => {
     const handleNext = () => {
         const nextIndex = currentSectionIndex + 1;
         if (nextIndex < sections.length) {
+            // If not on the last section, move to the next section
             dispatch(setCurrentSection(sections[nextIndex].id));
             dispatch(setCurrentSectionIndex(nextIndex));
+        } else {
+            // If we're already at the last section or clicking Finish, show the preview modal
+            dispatch(setIsModalOpen(true));
         }
     };
 
@@ -325,14 +329,14 @@ const ResumeBuilderLayout = ({ onClose }) => {
                 </div>
 
                 {/* Form Content */}
-                <div className="flex-1 p-2 sm:p-4 overflow-auto bg-gray-50/50">
+                <div className="flex-1 p-2 sm:p-4 pb-16 sm:pb-20 overflow-auto bg-gray-50/50">
                     <div className="w-full bg-white rounded-lg md:rounded-xl shadow-sm">
                         {renderSection()}
                     </div>
                 </div>
 
-                {/* Navigation Buttons */}
-                <div className="p-2 sm:p-4 border-t border-gray-200 bg-white shadow-md z-10">
+                {/* Navigation Buttons - Made sticky */}
+                <div className="p-2 sm:p-4 border-t border-gray-200 bg-white shadow-md z-10 sticky bottom-0 left-0 right-0">
                     <div className="w-full flex justify-between space-x-2">
                         <button
                             onClick={handlePrevious}
@@ -347,8 +351,12 @@ const ResumeBuilderLayout = ({ onClose }) => {
                             onClick={handleNext}
                             className="px-2 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-md md:rounded-lg hover:bg-blue-500 flex items-center space-x-1 sm:space-x-2 text-xs sm:text-base shadow-md hover:shadow-lg"
                         >
-                            <span>{currentSectionIndex === sections.length - 1 ? 'Finish' : 'Next'}</span>
-                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <span>{currentSectionIndex === sections.length - 1 ? 'Finish & Preview' : 'Next'}</span>
+                            {currentSectionIndex === sections.length - 1 ? (
+                                <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
+                            ) : (
+                                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                            )}
                         </button>
                     </div>
                 </div>

@@ -1,11 +1,11 @@
 import React from 'react';
 
 const ProfessionalTemplate = ({
-                                  data = {},
-                                  fontStyles = {},
-                                  defaultData = {},
-                                  isModalView = false,
-                              }) => {
+    data = {},
+    fontStyles = {},
+    defaultData = {},
+    isModalView = false,
+}) => {
     const mergeDataWithDefaults = (data, defaultData) => {
         const mergedData = { ...defaultData };
         for (const key in data) {
@@ -64,35 +64,35 @@ const ProfessionalTemplate = ({
                     <ul className="space-y-4">
                         {mergedData.email && (
                             <li className="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 hover:translate-x-1 transition-all duration-300">
-                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
-                  <i className="fas fa-envelope" />
-                </span>
+                                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
+                                    <i className="fas fa-envelope" />
+                                </span>
                                 <span className="text-sm opacity-90">{mergedData.email}</span>
                             </li>
                         )}
                         {mergedData.phone && (
                             <li className="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 hover:translate-x-1 transition-all duration-300">
-                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
-                  <i className="fas fa-phone" />
-                </span>
+                                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
+                                    <i className="fas fa-phone" />
+                                </span>
                                 <span className="text-sm opacity-90">{mergedData.phone}</span>
                             </li>
                         )}
                         {(mergedData.city || mergedData.country) && (
                             <li className="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 hover:translate-x-1 transition-all duration-300">
-                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
-                  <i className="fas fa-map-marker-alt" />
-                </span>
+                                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
+                                    <i className="fas fa-map-marker-alt" />
+                                </span>
                                 <span className="text-sm opacity-90">
-                  {`${mergedData.city || ''}${mergedData.city && mergedData.country ? ', ' : ''}${mergedData.country || ''}`}
-                </span>
+                                    {`${mergedData.city || ''}${mergedData.city && mergedData.country ? ', ' : ''}${mergedData.country || ''}`}
+                                </span>
                             </li>
                         )}
                         {mergedData.website && (
                             <li className="flex items-center p-3 rounded-lg bg-white/5 hover:bg-white/10 hover:translate-x-1 transition-all duration-300">
-                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
-                  <i className="fas fa-globe" />
-                </span>
+                                <span className="w-8 h-8 flex items-center justify-center bg-[var(--accent)] rounded-md shadow mr-3 text-sm">
+                                    <i className="fas fa-globe" />
+                                </span>
                                 <span className="text-sm opacity-90">{mergedData.website}</span>
                             </li>
                         )}
@@ -138,7 +138,7 @@ const ProfessionalTemplate = ({
                         {`${mergedData.first_name || 'John'} ${mergedData.last_name || 'Doe'}`}
                     </h1>
                     <p className="text-xl text-[var(--text-muted)] mb-6">
-                        {mergedData.occupation || 'Professional'}
+                        {mergedData.professional_summary || 'Professional'}
                     </p>
                     {mergedData.professional_description && (
                         <div
@@ -163,8 +163,8 @@ const ProfessionalTemplate = ({
                                             <p className="text-lg text-[var(--accent)]">{mergedData.employer?.[index] || ''}</p>
                                         </div>
                                         <span className="px-3 py-1.5 bg-[var(--accent)] text-white rounded-full text-sm">
-                      {`${mergedData.job_begin?.[index] || ''} - ${mergedData.job_end?.[index] || 'Present'}`}
-                    </span>
+                                            {`${mergedData.job_begin?.[index] || ''} - ${mergedData.job_end?.[index] || 'Present'}`}
+                                        </span>
                                     </div>
                                     {mergedData.job_description?.[index] && (
                                         <div

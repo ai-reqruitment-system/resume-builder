@@ -45,7 +45,7 @@ const MinimalistTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                         <h2
                             className={`font-medium ${isModalView ? 'text-xl' : 'text-lg'} text-gray-700`}
                         >
-                            {mergedData.occupation}
+                            {mergedData.professional_summary}
                         </h2>
                     </div>
                     <div className="text-right text-sm text-gray-600">
@@ -91,8 +91,8 @@ const MinimalistTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                             border: `1px solid ${accentColor}40`
                                         }}
                                     >
-                    {skill}
-                  </span>
+                                        {skill}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -104,8 +104,8 @@ const MinimalistTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                         key={index}
                                         className="px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 border border-gray-200"
                                     >
-                    {lang}
-                  </span>
+                                        {lang}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -137,8 +137,8 @@ const MinimalistTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                     </p>
                                 </div>
                                 <span className="text-sm text-gray-600">
-                  {`${mergedData.job_begin[index]} - ${mergedData.job_end[index]}`}
-                </span>
+                                    {`${mergedData.job_begin[index]} - ${mergedData.job_end[index]}`}
+                                </span>
                             </div>
                             <div
                                 dangerouslySetInnerHTML={{ __html: mergedData.job_description[index] }}
@@ -173,8 +173,8 @@ const MinimalistTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                     </p>
                                 </div>
                                 <span className="text-sm text-gray-600">
-                  {`${mergedData.college_begin[index]} - ${mergedData.college_end[index]}`}
-                </span>
+                                    {`${mergedData.college_begin[index]} - ${mergedData.college_end[index]}`}
+                                </span>
                             </div>
                             <div
                                 dangerouslySetInnerHTML={{ __html: mergedData.college_description[index] }}

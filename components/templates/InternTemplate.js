@@ -54,7 +54,7 @@ const InnovativeTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                             className={`font-medium ${isModalView ? 'text-xl' : 'text-lg'} text-gray-700`}
                             style={{ color: secondaryColor }}
                         >
-                            {mergedData.occupation}
+                            {mergedData.professional_summary}
                         </h2>
                     </div>
                     <div
@@ -123,8 +123,8 @@ const InnovativeTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                             border: `1px solid ${primaryColor}40`
                                         }}
                                     >
-                    {skill}
-                  </span>
+                                        {skill}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -148,8 +148,8 @@ const InnovativeTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                             border: `1px solid ${secondaryColor}40`
                                         }}
                                     >
-                    {lang}
-                  </span>
+                                        {lang}
+                                    </span>
                                 ))}
                             </div>
                         </div>
@@ -197,8 +197,8 @@ const InnovativeTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                         color: primaryColor
                                     }}
                                 >
-                  {`${mergedData.job_begin[index]} - ${mergedData.job_end[index]}`}
-                </span>
+                                    {`${mergedData.job_begin[index]} - ${mergedData.job_end[index]}`}
+                                </span>
                             </div>
                             <div
                                 dangerouslySetInnerHTML={{ __html: mergedData.job_description[index] }}
@@ -249,8 +249,8 @@ const InnovativeTemplate = ({ data = {}, fontStyles, isModalView, defaultData })
                                         color: primaryColor
                                     }}
                                 >
-                  {`${mergedData.college_begin[index]} - ${mergedData.college_end[index]}`}
-                </span>
+                                    {`${mergedData.college_begin[index]} - ${mergedData.college_end[index]}`}
+                                </span>
                             </div>
                             <div
                                 dangerouslySetInnerHTML={{ __html: mergedData.college_description[index] }}

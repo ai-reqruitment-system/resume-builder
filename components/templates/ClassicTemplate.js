@@ -10,7 +10,7 @@ const ClassicTemplate = ({ data }) => {
                     <h2 className="text-[#3498DB] text-2xl mb-5">ABOUT ME</h2>
                     <p className="text-white text-sm leading-relaxed">
                         <div
-                            dangerouslySetInnerHTML={{__html: data.professional_description}}
+                            dangerouslySetInnerHTML={{ __html: data.professional_description }}
                             className="prose max-w-none"
                         />
                     </p>
@@ -49,7 +49,7 @@ const ClassicTemplate = ({ data }) => {
                     <span className="text-[#3498DB]">{data.last_name}</span>
                 </h1>
                 <p className="text-lg text-gray-600 mb-4 uppercase">
-                    {data.occupation}
+                    {data.professional_summary}
                 </p>
                 <p className="text-gray-600 text-sm mb-8 pb-4 border-b-2 border-[#3498DB]">
                     {data.email} • {data.phone} • {data.city}, {data.country}

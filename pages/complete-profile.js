@@ -19,8 +19,8 @@ const CompleteProfilePage = () => {
         email: '',
         phone: '',
         location: '',
-        targetRoles: [''],  // Array to store multiple job preferences
-        selectedLocations: [''], // Array to store multiple preferred locations
+        job_roles: [''],  // Array to store multiple job preferences
+        selected_locations: [''], // Array to store multiple preferred locations
 
         skills: [],
     });
@@ -245,7 +245,8 @@ const CompleteProfilePage = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Desired Roles (Max 5)
                                 </label>
-                                {formData.targetRoles.map((role, index) => (
+                                {formData.job_roles
+.map((role, index) => (
                                     <div key={index} className="flex items-center gap-2 mb-2">
                                         <div className="relative flex-1 rounded-md shadow-sm">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -255,20 +256,25 @@ const CompleteProfilePage = () => {
                                                 type="text"
                                                 value={role}
                                                 onChange={(e) => {
-                                                    const newRoles = [...formData.targetRoles];
+                                                    const newRoles = [...formData.job_roles
+];
                                                     newRoles[index] = e.target.value;
-                                                    setFormData(prev => ({ ...prev, targetRoles: newRoles }));
+                                                    setFormData(prev => ({ ...prev, job_roles
+: newRoles }));
                                                 }}
                                                 className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                                 placeholder="e.g., Software Engineer"
                                             />
                                         </div>
-                                        {formData.targetRoles.length > 1 && (
+                                        {formData.job_roles
+.length > 1 && (
                                             <button
                                                 type="button"
                                                 onClick={() => {
-                                                    const newRoles = formData.targetRoles.filter((_, i) => i !== index);
-                                                    setFormData(prev => ({ ...prev, targetRoles: newRoles }));
+                                                    const newRoles = formData.job_roles
+.filter((_, i) => i !== index);
+                                                    setFormData(prev => ({ ...prev, job_roles
+: newRoles }));
                                                 }}
                                                 className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
                                             >
@@ -277,12 +283,15 @@ const CompleteProfilePage = () => {
                                         )}
                                     </div>
                                 ))}
-                                {formData.targetRoles.length < 5 && (
+                                {formData.job_roles
+.length < 5 && (
                                     <button
                                         type="button"
                                         onClick={() => setFormData(prev => ({
                                             ...prev,
-                                            targetRoles: [...prev.targetRoles, '']
+                                            job_roles
+: [...prev.job_roles
+, '']
                                         }))}
                                         className="mt-2 text-sm text-blue-500 hover:text-blue-700"
                                     >
@@ -295,7 +304,7 @@ const CompleteProfilePage = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Preferred Locations (Max 5)
                                 </label>
-                                {formData.selectedLocations.map((location, index) => (
+                                {formData.selected_locations.map((location, index) => (
                                     <div key={index} className="flex items-center gap-2 mb-2">
                                         <div className="relative flex-1 rounded-md shadow-sm">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -305,20 +314,20 @@ const CompleteProfilePage = () => {
                                                 type="text"
                                                 value={location}
                                                 onChange={(e) => {
-                                                    const newLocations = [...formData.selectedLocations];
+                                                    const newLocations = [...formData.selected_locations];
                                                     newLocations[index] = e.target.value;
-                                                    setFormData(prev => ({ ...prev, selectedLocations: newLocations }));
+                                                    setFormData(prev => ({ ...prev, selected_locations: newLocations }));
                                                 }}
                                                 className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                                 placeholder="e.g., London or Remote"
                                             />
                                         </div>
-                                        {formData.selectedLocations.length > 1 && (
+                                        {formData.selected_locations.length > 1 && (
                                             <button
                                                 type="button"
                                                 onClick={() => {
-                                                    const newLocations = formData.selectedLocations.filter((_, i) => i !== index);
-                                                    setFormData(prev => ({ ...prev, selectedLocations: newLocations }));
+                                                    const newLocations = formData.selected_locations.filter((_, i) => i !== index);
+                                                    setFormData(prev => ({ ...prev, selected_locations: newLocations }));
                                                 }}
                                                 className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
                                             >
@@ -327,12 +336,12 @@ const CompleteProfilePage = () => {
                                         )}
                                     </div>
                                 ))}
-                                {formData.selectedLocations.length < 5 && (
+                                {formData.selected_locations.length < 5 && (
                                     <button
                                         type="button"
                                         onClick={() => setFormData(prev => ({
                                             ...prev,
-                                            selectedLocations: [...prev.selectedLocations, '']
+                                            selected_locations: [...prev.selected_locations, '']
                                         }))}
                                         className="mt-2 text-sm text-blue-500 hover:text-blue-700"
                                     >

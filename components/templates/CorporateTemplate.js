@@ -1,11 +1,11 @@
 import React from 'react';
 
 const CorporateTemplate = ({
-                               data = {},
-                               fontStyles = {},
-                               defaultData = {},
-                               isModalView = false,
-                           }) => {
+    data = {},
+    fontStyles = {},
+    defaultData = {},
+    isModalView = false,
+}) => {
     const mergeDataWithDefaults = (data, defaultData) => {
         const mergedData = { ...defaultData };
         for (const key in data) {
@@ -49,30 +49,30 @@ const CorporateTemplate = ({
                     {`${mergedData.first_name || 'John'} ${mergedData.last_name || 'Doe'}`}
                 </h1>
                 <p className="text-xl text-[var(--text-secondary)] mb-6 font-medium">
-                    {mergedData.occupation || 'Professional'}
+                    {mergedData.professional_summary || 'Professional'}
                 </p>
                 <div className="mt-6 w-full table">
                     <div className="table-row">
-            <span className="table-cell pr-8 py-2 text-[var(--text-secondary)] text-sm">
-              {mergedData.email || 'email@example.com'}
-            </span>
                         <span className="table-cell pr-8 py-2 text-[var(--text-secondary)] text-sm">
-              {mergedData.phone || '+1 (555) 123-4567'}
-            </span>
+                            {mergedData.email || 'email@example.com'}
+                        </span>
                         <span className="table-cell pr-8 py-2 text-[var(--text-secondary)] text-sm">
-              {`${mergedData.city || 'City'}, ${mergedData.country || 'Country'}`}
-            </span>
+                            {mergedData.phone || '+1 (555) 123-4567'}
+                        </span>
+                        <span className="table-cell pr-8 py-2 text-[var(--text-secondary)] text-sm">
+                            {`${mergedData.city || 'City'}, ${mergedData.country || 'Country'}`}
+                        </span>
                         {mergedData.github && (
                             <span className="table-cell pr-8 py-2 font-mono text-sm">
-                <a
-                    href={mergedData.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[var(--primary)] no-underline"
-                >
-                  {`github.com/${mergedData.github.split('/').pop()}`}
-                </a>
-              </span>
+                                <a
+                                    href={mergedData.github}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-[var(--primary)] no-underline"
+                                >
+                                    {`github.com/${mergedData.github.split('/').pop()}`}
+                                </a>
+                            </span>
                         )}
                     </div>
                 </div>
@@ -90,8 +90,8 @@ const CorporateTemplate = ({
                                 key={index}
                                 className="px-5 py-3 bg-[var(--bg-tag)] border border-[var(--border-light)] rounded font-mono text-sm text-[var(--text-primary)]"
                             >
-                {skill}
-              </span>
+                                {skill}
+                            </span>
                         ))}
                     </div>
                 </section>
