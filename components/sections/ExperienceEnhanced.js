@@ -6,6 +6,8 @@ import EnhancedTipTapEditor from "../enhancedtiptapeditor";
 
 const ExperienceEnhanced = ({ formData, updateFormData }) => {
     const [activeIndex, setActiveIndex] = useState(0);
+    // State for tracking validation errors
+    const [errors, setErrors] = useState([]);
 
     // Common job description suggestions
     const jobSuggestions = [
@@ -62,7 +64,9 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
         if (!formData.job_title?.length) {
             initializeEmptyExperience();
         }
-    }, []);
+        // Validate dates when form data changes
+        validateDates();
+    }, [formData]);
 
     const initializeEmptyExperience = () => {
         updateFormData('job_title', ['']);
@@ -70,6 +74,50 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
         updateFormData('job_begin', ['']);
         updateFormData('job_end', ['']);
         updateFormData('job_description', ['']);
+        setErrors([{ job_begin: false, job_end: false, date_order: false }]);
+    };
+
+    // Validate date fields
+    const validateDates = () => {
+        if (!formData.job_title?.length) return;
+
+        const newErrors = formData.job_title.map((_, index) => {
+            const startDate = formData.job_begin[index];
+            const endDate = formData.job_end[index];
+
+            // Check if start date is provided (required)
+            const startDateMissing = !startDate;
+
+            // Check date order only if both dates are provided
+            let dateOrderError = false;
+            if (startDate && endDate) {
+                // Parse dates for comparison
+                const [startMonth, startYear] = startDate.split(' ');
+                const [endMonth, endYear] = endDate.split(' ');
+
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+                const startMonthIndex = months.indexOf(startMonth);
+                const endMonthIndex = months.indexOf(endMonth);
+
+                const startYearNum = parseInt(startYear);
+                const endYearNum = parseInt(endYear);
+
+                // Compare years first, then months if years are equal
+                if (endYearNum < startYearNum || (endYearNum === startYearNum && endMonthIndex < startMonthIndex)) {
+                    dateOrderError = true;
+                }
+            }
+
+            return {
+                job_begin: startDateMissing,
+                job_end: false, // End date is not required (could be current position)
+                date_order: dateOrderError
+            };
+        });
+
+        setErrors(newErrors);
+        return !newErrors.some(error => error.job_begin || error.date_order);
     };
 
     const addExperience = () => {
@@ -171,27 +219,38 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
                                 </div>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <MonthYearSelector
-                                        label="Start Date"
-                                        value={formData.job_begin[index] || ''}
-                                        onChange={(value) => {
-                                            const newArray = [...formData.job_begin];
-                                            newArray[index] = value;
-                                            updateFormData('job_begin', newArray);
-                                        }}
-                                        placeholder="Select start date"
-                                        required
-                                    />
-                                    <MonthYearSelector
-                                        label="End Date"
-                                        value={formData.job_end[index] || ''}
-                                        onChange={(value) => {
-                                            const newArray = [...formData.job_end];
-                                            newArray[index] = value;
-                                            updateFormData('job_end', newArray);
-                                        }}
-                                        placeholder="Select end date"
-                                    />
+                                    <div className="relative">
+                                        <MonthYearSelector
+                                            label="Start Date"
+                                            value={formData.job_begin[index] || ''}
+                                            onChange={(value) => {
+                                                const newArray = [...formData.job_begin];
+                                                newArray[index] = value;
+                                                updateFormData('job_begin', newArray);
+                                            }}
+                                            placeholder="Select start date"
+                                            required
+                                            className={errors[index]?.job_begin ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}
+                                        />
+                                        {errors[index]?.job_begin && (
+                                            <p className="text-red-500 text-xs mt-1">Start date is required</p>
+                                        )}
+                                    </div>
+                                    <div className="relative">
+                                        <MonthYearSelector
+                                            label="End Date"
+                                            value={formData.job_end[index] || ''}
+                                            onChange={(value) => {
+                                                const newArray = [...formData.job_end];
+                                                newArray[index] = value;
+                                                updateFormData('job_end', newArray);
+                                            }}
+                                            placeholder="Select end date or leave empty for current position"
+                                        />
+                                        {errors[index]?.date_order && (
+                                            <p className="text-red-500 text-xs mt-1">End date must be after start date</p>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-4">

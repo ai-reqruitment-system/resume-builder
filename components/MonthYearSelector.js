@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const MonthYearSelector = ({ value, onChange, label, placeholder = "Select date", required = false }) => {
+const MonthYearSelector = ({ value, onChange, label, placeholder = "Select date", required = false, className = "" }) => {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
 
-    // Parse initial value on mount
+    // Parse initial value on mount and when value changes
     useEffect(() => {
         if (value) {
             const parts = value.split(' ');
@@ -12,12 +12,15 @@ const MonthYearSelector = ({ value, onChange, label, placeholder = "Select date"
                 setMonth(parts[0]);
                 setYear(parts[1]);
             }
+        } else {
+            setMonth('');
+            setYear('');
         }
-    }, []);
+    }, [value]);
 
     const months = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
     const years = Array.from({ length: 50 }, (_, i) =>
@@ -34,23 +37,26 @@ const MonthYearSelector = ({ value, onChange, label, placeholder = "Select date"
 
     return (
         <div className="flex flex-col">
-            <label className="mb-1 text-sm text-gray-700">
+            <label className="mb-1 text-sm font-medium text-gray-700">
                 {label}
                 {required && <span className="text-red-500 ml-1">*</span>}
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
                 <select
                     value={month}
                     onChange={(e) => {
                         setMonth(e.target.value);
                         handleChange(e.target.value, year);
                     }}
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm
-                        focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm
+                        bg-white appearance-none cursor-pointer truncate
+                        focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
+                        hover:border-blue-400 transition-colors ${className}`}
+                    style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,<svg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\" fill=\"gray\"/></svg>')", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', paddingRight: '2rem' }}
                 >
-                    <option value="">{placeholder}</option>
+                    <option value="" className="text-gray-500">{placeholder}</option>
                     {months.map((m) => (
-                        <option key={m} value={m}>
+                        <option key={m} value={m} className="py-1">
                             {m}
                         </option>
                     ))}
@@ -61,12 +67,15 @@ const MonthYearSelector = ({ value, onChange, label, placeholder = "Select date"
                         setYear(e.target.value);
                         handleChange(month, e.target.value);
                     }}
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-md text-sm
-                        focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className={`w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm
+                        bg-white appearance-none cursor-pointer truncate
+                        focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
+                        hover:border-blue-400 transition-colors ${className}`}
+                    style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,<svg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\" fill=\"gray\"/></svg>')", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', paddingRight: '2rem' }}
                 >
-                    <option value="">{placeholder}</option>
+                    <option value="" className="text-gray-500">{placeholder}</option>
                     {years.map((y) => (
-                        <option key={y} value={y}>
+                        <option key={y} value={y} className="py-1">
                             {y}
                         </option>
                     ))}

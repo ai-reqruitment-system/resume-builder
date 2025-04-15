@@ -1,9 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FormField from "@/components/FormField";
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
 import EnhancedTipTapEditor from '../enhancedtiptapeditor';
 
 const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
+    // State for tracking validation errors
+    const [errors, setErrors] = useState({
+        first_name: false,
+        last_name: false,
+        email: false,
+        phone: false,
+        city: false,
+        country: false
+    });
+
+    // Validate fields when form data changes
+    useEffect(() => {
+        validateFields();
+    }, [formData]);
+
+    // Validate all required fields
+    const validateFields = () => {
+        const newErrors = {
+            first_name: !formData.first_name,
+            last_name: !formData.last_name,
+            email: !formData.email,
+            phone: !formData.phone,
+            city: !formData.city,
+            country: !formData.country
+        };
+        setErrors(newErrors);
+        return !Object.values(newErrors).some(error => error);
+    };
+
+    // Handle field change with validation
+    const handleFieldChange = (field, value) => {
+        updateFormData(field, value);
+        setErrors(prev => ({
+            ...prev,
+            [field]: !value
+        }));
+    };
+
     // Common professional summary suggestions
     const professionalSuggestions = [
         "Experienced professional with expertise in...",
@@ -50,42 +88,63 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                     <h3 className="text-xs xxs:text-sm sm:text-md font-medium text-gray-700 border-b border-gray-100 pb-1.5 xxs:pb-2 sm:pb-3 mb-1">Contact Details</h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xxs:gap-4">
-                        <FormField
-                            label="First Name"
-                            value={formData.first_name}
-                            onChange={(e) => updateFormData('first_name', e.target.value)}
-                            placeholder="e.g., John"
-                            required
-                            className="bg-white w-full"
-                        />
-                        <FormField
-                            label="Last Name"
-                            value={formData.last_name}
-                            onChange={(e) => updateFormData('last_name', e.target.value)}
-                            placeholder="e.g., Doe"
-                            required
-                            className="bg-white w-full"
-                        />
+                        <div className="relative">
+                            <FormField
+                                label="First Name"
+                                value={formData.first_name}
+                                onChange={(e) => handleFieldChange('first_name', e.target.value)}
+                                placeholder="e.g., John"
+                                required
+                                className={`bg-white w-full ${errors.first_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                            />
+                            {errors.first_name && (
+                                <p className="text-red-500 text-xs mt-1">First name is required</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <FormField
+                                label="Last Name"
+                                value={formData.last_name}
+                                onChange={(e) => handleFieldChange('last_name', e.target.value)}
+                                placeholder="e.g., Doe"
+                                required
+                                className={`bg-white w-full ${errors.last_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                            />
+                            {errors.last_name && (
+                                <p className="text-red-500 text-xs mt-1">Last name is required</p>
+                            )}
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <FormField
-                            label="Email"
-                            type="email"
-                            value={formData.email}
-                            onChange={(e) => updateFormData('email', e.target.value)}
-                            placeholder="e.g., john@example.com"
-                            required
-                            className="bg-white w-full"
-                        />
-                        <FormField
-                            label="Phone"
-                            type="tel"
-                            value={formData.phone}
-                            onChange={(e) => updateFormData('phone', e.target.value)}
-                            placeholder="e.g., +1 234 567 8900"
-                            className="bg-white w-full"
-                        />
+                        <div className="relative">
+                            <FormField
+                                label="Email"
+                                type="email"
+                                value={formData.email}
+                                onChange={(e) => handleFieldChange('email', e.target.value)}
+                                placeholder="e.g., john@example.com"
+                                required
+                                className={`bg-white w-full ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                            />
+                            {errors.email && (
+                                <p className="text-red-500 text-xs mt-1">Email is required</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <FormField
+                                label="Phone"
+                                type="tel"
+                                value={formData.phone}
+                                onChange={(e) => handleFieldChange('phone', e.target.value)}
+                                placeholder="e.g., +1 234 567 8900"
+                                required
+                                className={`bg-white w-full ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                            />
+                            {errors.phone && (
+                                <p className="text-red-500 text-xs mt-1">Phone number is required</p>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -94,20 +153,32 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                     <h3 className="text-sm sm:text-md font-medium text-gray-700 border-b border-gray-100 pb-2 sm:pb-3 mb-3">Location</h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <FormField
-                            label="City"
-                            value={formData.city}
-                            onChange={(e) => updateFormData('city', e.target.value)}
-                            placeholder="e.g., New York"
-                            className="bg-white w-full"
-                        />
-                        <FormField
-                            label="Country"
-                            value={formData.country}
-                            onChange={(e) => updateFormData('country', e.target.value)}
-                            placeholder="e.g., United States"
-                            className="bg-white w-full"
-                        />
+                        <div className="relative">
+                            <FormField
+                                label="City"
+                                value={formData.city}
+                                onChange={(e) => handleFieldChange('city', e.target.value)}
+                                placeholder="e.g., New York"
+                                required
+                                className={`bg-white w-full ${errors.city ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                            />
+                            {errors.city && (
+                                <p className="text-red-500 text-xs mt-1">City is required</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <FormField
+                                label="Country"
+                                value={formData.country}
+                                onChange={(e) => handleFieldChange('country', e.target.value)}
+                                placeholder="e.g., United States"
+                                required
+                                className={`bg-white w-full ${errors.country ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                            />
+                            {errors.country && (
+                                <p className="text-red-500 text-xs mt-1">Country is required</p>
+                            )}
+                        </div>
                     </div>
                 </div>
 
