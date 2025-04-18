@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Search, Plus, Sparkles, X, ArrowRight, Loader2, Maximize2, Minimize2 } from 'lucide-react';
-import TipTapEditor from '@/components/TipTapEditor';
 import { useSuggestionGenerator } from '@/hooks/useSuggestionGenerator';
 import debounce from 'lodash/debounce';
 
-const SkillsLanguagesEditor = ({
+const LanguagesSelector = ({
     value = [],
     onChange,
-    title,
+    title = 'Languages',
     customPrompt,
-    type = 'skills', // 'skills' or 'languages'
     showWritingAssistant = true
 }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -22,7 +20,6 @@ const SkillsLanguagesEditor = ({
     const [selectedItems, setSelectedItems] = useState([]);
     const [proficiencyLevels, setProficiencyLevels] = useState({});
 
-    const editorRef = useRef(null);
     const suggestionsRef = useRef(null);
     const searchInputRef = useRef(null);
     const modalRef = useRef(null);
@@ -36,12 +33,8 @@ const SkillsLanguagesEditor = ({
         generateSuggestions
     } = useSuggestionGenerator();
 
-    // Initialize with static suggestions based on type
-    const staticSuggestions = type === 'skills' ? [
-        'JavaScript', 'React.js', 'Node.js', 'Python',
-        'Java', 'SQL', 'AWS', 'Docker', 'Git',
-        'TypeScript', 'HTML5', 'CSS3', 'MongoDB'
-    ] : [
+    // Initialize with static suggestions for languages
+    const staticSuggestions = [
         'English', 'Spanish', 'French', 'German',
         'Chinese', 'Japanese', 'Korean', 'Russian',
         'Arabic', 'Portuguese', 'Italian', 'Hindi'
@@ -67,42 +60,60 @@ const SkillsLanguagesEditor = ({
         return { items, levels };
     }, []);
 
-    // Compare two arrays for equality
+    // Compare two arrays for equality with more robust checking
     const areArraysEqual = (a, b) => {
+        if (!a || !b) return false;
         if (a.length !== b.length) return false;
-        const sortedA = [...a].sort();
-        const sortedB = [...b].sort();
-        return sortedA.every((val, idx) => val === sortedB[idx]);
+
+        // Create a map of values for more efficient comparison
+        const mapA = a.reduce((acc, val) => {
+            const key = typeof val === 'object' && val.name ? val.name : val;
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
+
+        const mapB = b.reduce((acc, val) => {
+            const key = typeof val === 'object' && val.name ? val.name : val;
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Compare the maps
+        const keysA = Object.keys(mapA);
+        if (keysA.length !== Object.keys(mapB).length) return false;
+
+        return keysA.every(key => mapA[key] === mapB[key]);
     };
 
-    // Initialize from value prop
-    useEffect(() => {
+    // Memoize the value comparison function to prevent infinite loops
+    const updateFromValueProp = useCallback(() => {
         // Skip when component first mounts to avoid duplicate initialization
         if (isInitialMount.current) {
             const { items, levels } = extractValuesFromProp(value);
             setSelectedItems(items);
             setProficiencyLevels(levels);
-            prevValueRef.current = value;
+            prevValueRef.current = JSON.parse(JSON.stringify(value)); // Deep copy to avoid reference issues
             isInitialMount.current = false;
             return;
         }
 
-        // Compare current value prop with previous value prop
-        const prevNames = prevValueRef.current.map(item =>
-            typeof item === 'object' && item.name ? item.name : item
-        );
+        // Use JSON stringify for deep comparison to prevent unnecessary updates
+        const prevValueJSON = JSON.stringify(prevValueRef.current);
+        const currentValueJSON = JSON.stringify(value);
 
-        const currentNames = value.map(item =>
-            typeof item === 'object' && item.name ? item.name : item
-        );
-
-        if (!areArraysEqual(prevNames, currentNames)) {
+        if (prevValueJSON !== currentValueJSON) {
+            // Only update if the values are actually different
             const { items, levels } = extractValuesFromProp(value);
             setSelectedItems(items);
             setProficiencyLevels(levels);
-            prevValueRef.current = value;
+            prevValueRef.current = JSON.parse(JSON.stringify(value)); // Deep copy to avoid reference issues
         }
     }, [value, extractValuesFromProp]);
+
+    // Initialize from value prop
+    useEffect(() => {
+        updateFromValueProp();
+    }, [updateFromValueProp]); // Only depend on the memoized function
 
     // Update filtered suggestions when search term changes
     useEffect(() => {
@@ -179,9 +190,9 @@ const SkillsLanguagesEditor = ({
         setShowAiSuggestions(true);
         setAnimateIn(false);
         const promptType = customPrompt ||
-            `Generate a list of ${type === 'skills' ? 'technical skills and tools' : 'languages'} as single words or short phrases (no descriptions or explanations). Focus on ${title || type}. Example format: JavaScript, React, Node.js`;
-        generateSuggestions(title || type, promptType);
-    }, [customPrompt, generateSuggestions, title, type]);
+            `Generate a list of languages as single words or short phrases (no descriptions or explanations). Focus on ${title}. Example format: English, Spanish, French`;
+        generateSuggestions(title, promptType);
+    }, [customPrompt, generateSuggestions, title]);
 
     // Create debounced search handler
     const debouncedSearchHandler = useRef(
@@ -190,7 +201,7 @@ const SkillsLanguagesEditor = ({
                 setIsGeneratingSuggestions(true);
                 setShowAiSuggestions(true);
                 const promptType = customPrompt ||
-                    `Generate a list of ${type === 'skills' ? 'technical skills and tools' : 'languages'} that match "${searchValue}". Return only names as single words or short phrases, no descriptions. Example format: JavaScript, React, Node.js`;
+                    `Generate a list of languages that match "${searchValue}". Return only names as single words or short phrases, no descriptions. Example format: English, Spanish, French`;
                 generateSuggestions(searchValue, promptType);
             }
         }, 1000)
@@ -262,7 +273,7 @@ const SkillsLanguagesEditor = ({
                             ref={searchInputRef}
                             type="text"
                             className="block w-full pl-6 xxs:pl-7 sm:pl-8 pr-2 xxs:pr-2.5 sm:pr-3 py-0.5 xxs:py-1 sm:py-1.5 text-[8px] xxs:text-[10px] sm:text-xs border border-gray-200 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
-                            placeholder={`Search ${type}...`}
+                            placeholder={`Search languages...`}
                             value={searchTerm}
                             onChange={(e) => {
                                 const newValue = e.target.value;
@@ -309,7 +320,7 @@ const SkillsLanguagesEditor = ({
                 {/* Right panel - Selected Items */}
                 <div className="w-full md:w-1/2 bg-white rounded-xl border border-gray-200 p-1 xxs:p-1.5 sm:p-2 md:p-3 h-[260px] xxs:h-[280px] sm:h-[300px] md:h-[320px] lg:h-[350px] overflow-hidden flex flex-col">
                     <h3 className="text-[8px] xxs:text-[10px] sm:text-xs font-medium text-gray-700 mb-1 xxs:mb-1.5 sm:mb-2">
-                        Selected {type.charAt(0).toUpperCase() + type.slice(1)}
+                        Selected Languages
                     </h3>
                     <div className="flex-1 overflow-y-auto space-y-1 xxs:space-y-1.5 sm:space-y-2">
                         {selectedItems.map((item, index) => (
@@ -330,4 +341,4 @@ const SkillsLanguagesEditor = ({
     );
 };
 
-export default SkillsLanguagesEditor;
+export default LanguagesSelector;

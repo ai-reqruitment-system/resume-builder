@@ -1,5 +1,6 @@
 import React from 'react';
-import SkillsLanguagesEditor from '@/components/SkillsLanguagesEditor';
+import SkillsSelector from '@/components/SkillsSelector';
+import LanguagesSelector from '@/components/LanguagesSelector';
 
 const Skills = ({ formData, updateFormData }) => {
     const handleSkillsChange = (skills) => {
@@ -16,12 +17,10 @@ const Skills = ({ formData, updateFormData }) => {
                 {/* Skills Section */}
                 <div className=" bg-white rounded-xl  space-y-4 transition-all duration-300">
 
-                    <SkillsLanguagesEditor
-
+                    <SkillsSelector
                         value={formData.skill ? formData.skill.map(skill => ({ name: skill, proficiency: 'Intermediate' })) : []}
                         onChange={handleSkillsChange}
                         title="Skills"
-                        type="skills"
                         customPrompt="Provide a comprehensive list of professional skills related to:"
                     />
                 </div>
@@ -29,11 +28,10 @@ const Skills = ({ formData, updateFormData }) => {
                 {/* Languages Section */}
                 <div className=" space-y-4 transition-all duration-300">
 
-                    <SkillsLanguagesEditor
+                    <LanguagesSelector
                         value={formData.language ? formData.language.map(lang => ({ name: lang, proficiency: 'Intermediate' })) : []}
                         onChange={handleLanguagesChange}
                         title="Languages"
-                        type="languages"
                         customPrompt="Provide a list of languages only like Hindi,bengali,marathi,spanish,german etc. "
                     />
                 </div>
@@ -41,5 +39,6 @@ const Skills = ({ formData, updateFormData }) => {
         </div>
     );
 };
+
 
 export default Skills;
