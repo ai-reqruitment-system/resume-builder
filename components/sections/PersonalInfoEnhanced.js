@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import FormField from "@/components/FormField";
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
 import EnhancedTipTapEditor from '../enhancedtiptapeditor';
+import { useAuth } from '@/context/AuthContext';
 
 const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
+    const { user } = useAuth()
+    console.log("user from the personl info", user)
     // State for tracking validation errors
     const [errors, setErrors] = useState({
         first_name: false,
@@ -24,7 +27,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
         const newErrors = {
             first_name: !formData.first_name,
             last_name: !formData.last_name,
-            email: !formData.email,
+            email: user.email || !formData.email,
             phone: !formData.phone,
             city: !formData.city,
             country: !formData.country
@@ -95,6 +98,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 onChange={(e) => handleFieldChange('first_name', e.target.value)}
                                 placeholder="e.g., John"
                                 required
+                                defaultValue={user?.name}
                                 className={`bg-white w-full ${errors.first_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
                             />
                             {errors.first_name && (
