@@ -180,7 +180,7 @@ const InternshipTabEnhanced = ({
                                 newArray[index] = e.target.value;
                                 updateFormData('internship_summary', newArray);
                             }}
-                            title={`${formData.internship_title[index] || 'Internship'} Description`}
+                            title={`Internship' Description`}
                             customPrompt="Provide a comprehensive list of detailed professional descriptions and achievements for this internship role:"
                             suggestions={internshipSuggestions}
                             onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}

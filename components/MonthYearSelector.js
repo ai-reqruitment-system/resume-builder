@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const MonthYearSelector = ({ value, onChange, label, placeholder = "Select date", required = false, className = "" }) => {
+const MonthYearSelector = ({ value, onChange, label, placeholder = "Select month", required = false, className = "" }) => {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
 
@@ -73,7 +73,7 @@ const MonthYearSelector = ({ value, onChange, label, placeholder = "Select date"
                         hover:border-blue-400 transition-colors ${className}`}
                     style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,<svg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\" fill=\"gray\"/></svg>')", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', paddingRight: '2rem' }}
                 >
-                    <option value="" className="text-gray-500">{placeholder}</option>
+                    <option value="" className="text-gray-500">Select year</option>
                     {years.map((y) => (
                         <option key={y} value={y} className="py-1">
                             {y}

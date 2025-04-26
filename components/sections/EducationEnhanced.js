@@ -211,7 +211,7 @@ const EducationEnhanced = ({ formData, updateFormData }) => {
                                             newArray[index] = e.target.value;
                                             updateFormData('college_description', newArray);
                                         }}
-                                        title={`${formData.degree[index] || 'Education'} Description`}
+                                        title={`Education Description`}
                                         customPrompt="Provide details about your educational experience, achievements, and relevant coursework:"
                                         suggestions={educationSuggestions}
                                         onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}

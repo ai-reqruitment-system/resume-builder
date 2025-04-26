@@ -5,11 +5,14 @@ import EnhancedTipTapEditor from '../enhancedtiptapeditor';
 import { useAuth } from '@/context/AuthContext';
 import { useLoading } from '@/context/LoadingContext';
 import SkeletonLoader from '@/components/SkeletonLoader';
+import occupationTitles from '@/data/occupationTitles.json';
 
 const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
+    const [filteredTitles, setFilteredTitles] = useState([]);
     const { user, loading: authLoading } = useAuth();
     const { isComponentLoading, setComponentLoading } = useLoading();
     const [isFormLoading, setIsFormLoading] = useState(false);
+    const [showTitleSuggestions, setShowTitleSuggestions] = useState(false);
 
     // State for tracking validation errors
     const [errors, setErrors] = useState({
@@ -238,13 +241,45 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                     <h3 className="text-sm sm:text-md font-medium text-gray-700 border-b border-gray-100 pb-2 sm:pb-3 mb-1">Occupation Title</h3>
 
                     <div>
-                        <input
-                            value={formData.professional_summary}
-                            onChange={(e) => updateFormData('professional_summary', e.target.value)}
-                            placeholder="e.g., Working as full time backend developer."
-                            className="w-full px-3 sm:px-4 py-2.5 bg-white border border-gray-300 rounded-lg
-                            outline-none transition-colors hover:border-blue-400 focus:border-blue-500 text-sm"
-                        />
+                        <div className="relative">
+                            <input
+                                value={formData.professional_summary}
+                                onFocus={() => setShowTitleSuggestions(true)}
+                                onBlur={() => setTimeout(() => setShowTitleSuggestions(false), 200)}
+                                placeholder="e.g., Working as full time backend developer."
+                                className="w-full px-3 sm:px-4 py-2.5 bg-white border border-gray-300 rounded-lgoutline-none transition-colors hover:border-blue-400 focus:border-blue-500 text-sm"
+                                onChange={(e) => {
+                                    updateFormData('professional_summary', e.target.value);
+                                    if (e.target.value.length > 0) {
+                                        const filtered = occupationTitles.titles.filter(title =>
+                                            title.toLowerCase().includes(e.target.value.toLowerCase())
+                                        );
+                                        setFilteredTitles(filtered);
+                                        setShowTitleSuggestions(true);
+                                    } else {
+                                        setFilteredTitles([]);
+                                        setShowTitleSuggestions(false);
+                                    }
+                                }}
+                            />
+                            {showTitleSuggestions && filteredTitles.length > 0 && (
+                                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto">
+                                    {filteredTitles.map((title, index) => (
+                                        <div
+                                            key={index}
+                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                            onClick={() => {
+                                                updateFormData('professional_summary', title);
+                                                setFilteredTitles([]);
+                                                setShowTitleSuggestions(false);
+                                            }}
+                                        >
+                                            {title}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -255,7 +290,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                     <EnhancedTipTapEditor
                         value={formData.professional_description || ''}
                         onChange={(e) => updateFormData('professional_description', e.target.value)}
-                        title={formData.professional_summary || 'Professional Summary'}
+                        title={'Professional Summary'}
                         customPrompt="provide a professional summary based on this title:"
                         suggestions={professionalSuggestions}
                         onSuggestionClick={handleSuggestionClick}

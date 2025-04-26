@@ -67,7 +67,7 @@ const EnhancedTipTapEditor = ({
     }, [generatedSuggestions]);
 
     const handleSuggestionClick = (suggestion) => {
-        if (onSuggestionClick) {
+        if (onSuggestionClick && !isSuggestionSelected(suggestion)) {
             onSuggestionClick(suggestion);
         }
     };

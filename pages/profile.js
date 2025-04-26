@@ -21,13 +21,6 @@ export default function Profile() {
     const [isLoading, setIsLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [saveLoading, setSaveLoading] = useState(false);
-
-
-
-
-
-
-
     useEffect(() => {
         // First set form data from user context if available
         if (user) {
@@ -111,7 +104,6 @@ export default function Profile() {
 
 
     return (
-
         <div className="min-h-screen w-full bg-gradient-to-b from-gray-50 to-gray-100 px-4 sm:px-6 lg:px-8">
             <div className="w-full sm:w-[600px] lg:w-[800px] xl:w-[900px]">
                 {isLoading ? (
@@ -159,84 +151,69 @@ export default function Profile() {
 
                         {/* Profile Form */}
                         <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-8">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-                                {/* Left Column */}
+                            <div className="grid grid-cols-1 gap-6 sm:gap-8">
                                 <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">first Name</label>
-                                        <input
-                                            type="text"
-                                            name="first_name"
-                                            value={formData.first_name}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
-                                        />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
+                                            <input
+                                                type="text"
+                                                name="first_name"
+                                                value={formData.first_name}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
+                                            <input
+                                                type="text"
+                                                name="last_name"
+                                                value={formData.last_name}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">last Name</label>
-                                        <input
-                                            type="text"
-                                            name="last_name"
-                                            value={formData.last_name}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
-                                        />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                                            <input
+                                                type="tel"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+                                            <input
+                                                type="text"
+                                                name="location"
+                                                value={formData.location}
+                                                onChange={handleChange}
+                                                disabled={!isEditing}
+                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                                        <input
-                                            type="email"
-                                            name="email"
-                                            value={formData.email}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
-                                        <input
-                                            type="tel"
-                                            name="phone"
-                                            value={formData.phone}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Right Column */}
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
-                                        <input
-                                            type="text"
-                                            name="location"
-                                            value={formData.location}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Profession</label>
+                                    <div className="col-span-2">
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Occupation</label>
                                         <input
                                             type="text"
                                             name="bio"
-                                            value={formData.bio || ''}
+                                            value={formData.bio}
                                             onChange={handleChange}
                                             disabled={!isEditing}
                                             className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                         />
                                     </div>
-
                                 </div>
                             </div>
-
-
 
                             {/* Save Button */}
                             {isEditing && (
@@ -267,6 +244,5 @@ export default function Profile() {
                 )}
             </div>
         </div>
-
     );
 }

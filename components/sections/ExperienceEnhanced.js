@@ -228,7 +228,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
                                                 newArray[index] = value;
                                                 updateFormData('job_begin', newArray);
                                             }}
-                                            placeholder="Select start date"
+                                            placeholder="Select start month"
                                             required
                                             className={errors[index]?.job_begin ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}
                                         />
@@ -245,7 +245,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
                                                 newArray[index] = value;
                                                 updateFormData('job_end', newArray);
                                             }}
-                                            placeholder="Select end date or leave empty for current position"
+                                            placeholder="Select end month or leave empty for current position"
                                         />
                                         {errors[index]?.date_order && (
                                             <p className="text-red-500 text-xs mt-1">End date must be after start date</p>
@@ -279,7 +279,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
                                             newArray[index] = e.target.value;
                                             updateFormData('job_description', newArray);
                                         }}
-                                        title={`${formData.job_title[index] || 'Job'} Description`}
+                                        title={`Job Description`}
                                         customPrompt="Provide a list of job responsibilities and achievements for a resume based on this role:"
                                         suggestions={jobSuggestions}
                                         onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}

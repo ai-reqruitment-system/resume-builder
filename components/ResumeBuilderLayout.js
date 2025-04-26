@@ -41,7 +41,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
         { id: 'education', title: 'Education', completed: false },
         { id: 'skills', title: 'Skills', completed: false },
         { id: 'internship', title: 'Internship', completed: false },
-        { id: 'achievements', title: 'Achievements', completed: false },
+        { id: 'certificates', title: 'certificates', completed: false },
         { id: 'additional', title: 'Additional', completed: false },
     ];
 
@@ -72,7 +72,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                     activeIndex={activeIndex}
                     setActiveIndex={setActiveIndex}
                 />;
-            case 'achievements':
+            case 'certificates':
                 return <CertificateTabEnhanced
                     formData={formData}
                     updateFormData={updateFormDataHandler}
@@ -264,7 +264,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                 {currentSection === 'skills' && 'What skills do you have?'}
                                 {currentSection === 'header' && 'Let\'s start with your personal details'}
                                 {currentSection === 'internship' && 'Add your internship experiences'}
-                                {currentSection === 'achievements' && 'Add your certifications and achievements'}
+                                {currentSection === 'certificates' && 'Add your certifications and courses'}
                                 {currentSection === 'summary' && 'Summarize your professional background'}
                                 {currentSection === 'additional' && 'Any additional information to include?'}
                                 {currentSection === 'finalize' && 'Review and finalize your resume'}
@@ -273,8 +273,8 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                 {currentSection === 'experience' && 'Great progress! Next up → Education'}
                                 {currentSection === 'education' && 'Keep going! Next up → Skills'}
                                 {currentSection === 'skills' && 'Continue adding details! Next up → Internship'}
-                                {currentSection === 'internship' && 'Great job! Next up → Achievements'}
-                                {currentSection === 'achievements' && 'Almost there! Next up → Summary'}
+                                {currentSection === 'internship' && 'Great job! Next up → certificates'}
+                                {currentSection === 'certificates' && 'Almost there! Next up → Summary'}
                                 {currentSection === 'header' && 'Next up → Experience'}
                                 {currentSection === 'summary' && 'Getting closer! Next up → Additional Details'}
                                 {currentSection === 'additional' && 'Final step! Next up → Finalize'}
