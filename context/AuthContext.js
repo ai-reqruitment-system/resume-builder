@@ -7,23 +7,28 @@ import { setGlobalLoading } from '@/store/slices/uiSlice'
 const AuthContext = createContext()
 
 export const updateUserProfile = async (formData) => {
-    console.log(formData, "from the update user profile api ")
-    const response = await fetch(`https://admin.resuming.io/api/profile/update`, {
+    console.log(formData, "from the update user profile api ");
+    let fetchOptions = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + (localStorage.getItem('token'))
         },
-        body: JSON.stringify(formData),
-    });
+        body: formData
+    };
+    // If not FormData, send as JSON
+    if (!(formData instanceof FormData)) {
+        fetchOptions.headers['Content-Type'] = 'application/json';
+        fetchOptions.body = JSON.stringify(formData);
+    }
+    const response = await fetch(`https://admin.resuming.io/api/auth/complete-profile`, fetchOptions);
     const data = await response.json();
-    console.log(data, "from the update user profile api ")
+    console.log(data, "from the update user profile api ");
     if (data.token) {
         // Store updated user data in localStorage
         localStorage.setItem('userData', JSON.stringify(data.data));
         return data.data;
     } else {
-        console.log("Error in updating the profile")
+        console.log("Error in updating the profile");
         return null;
     }
 }

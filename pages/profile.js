@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
+import Image from 'next/image';
 
 export default function Profile() {
     const router = useRouter();
@@ -17,10 +18,16 @@ export default function Profile() {
         phone: '',
         location: '',
         bio: '',
+        profile_photo_url: '',
     });
     const [isLoading, setIsLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [saveLoading, setSaveLoading] = useState(false);
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadError, setUploadError] = useState('');
+    const fileInputRef = useRef(null);
     useEffect(() => {
         // First set form data from user context if available
         if (user) {
@@ -31,6 +38,7 @@ export default function Profile() {
                 phone: user.phone || '',
                 location: user.location || '',
                 bio: user.bio || '',
+                profile_photo_url: user.profile_photo_url || '',
             });
         }
 
@@ -51,6 +59,7 @@ export default function Profile() {
                         phone: userFound.phone || '',
                         location: userFound.location || '',
                         bio: userFound.bio || '',
+                        profile_photo_url: userFound.profile_photo_url || '',
                     });
                     console.log("User details fetched successfully:", userFound);
                 }
@@ -74,11 +83,68 @@ export default function Profile() {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Check file type
+        const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+            setUploadError('Please select a valid image file (JPEG, PNG, GIF)');
+            return;
+        }
+
+        // Check file size (limit to 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            setUploadError('Image size should be less than 5MB');
+            return;
+        }
+
+        setUploadError('');
+        setImageFile(file);
+
+        // Create preview
+        const reader = new FileReader();
+        reader.onloadstart = () => setUploadProgress(0);
+        reader.onprogress = (e) => {
+            if (e.lengthComputable) {
+                setUploadProgress(Math.round((e.loaded / e.total) * 100));
+            }
+        };
+        reader.onload = (e) => {
+            setImagePreview(e.target.result);
+            setUploadProgress(100);
+        };
+        reader.readAsDataURL(file);
+    };
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaveLoading(true);
         try {
-            await updateUserProfile(formData);
+            // Construct FormData for multipart/form-data
+            const form = new FormData();
+            form.append('first_name', formData.first_name);
+            form.append('last_name', formData.last_name);
+            form.append('email', formData.email);
+            form.append('phone', formData.phone);
+            form.append('location', formData.location);
+            form.append('bio', formData.bio);
+            if (imageFile) {
+                form.append('profile_photo_url', imageFile);
+            } else if (formData.profile_photo_url) {
+                // If no new file, but existing URL, send as string
+                form.append('profile_photo_url', formData.profile_photo_url);
+            }
+
+            // Debug: Log FormData contents
+            for (let pair of form.entries()) {
+                console.log(pair[0] + ':', pair[1]);
+            }
+
+            await updateUserProfile(form);
             setIsEditing(false);
 
             // Refresh user data after successful update
@@ -92,7 +158,12 @@ export default function Profile() {
                     phone: updatedUser.phone || '',
                     location: updatedUser.location || '',
                     bio: updatedUser.bio || '',
+                    profile_photo_url: updatedUser.profile_photo_url || ''
                 });
+                // Reset image states
+                setImageFile(null);
+                setImagePreview('');
+                setUploadProgress(0);
             }
         } catch (error) {
             console.error('Error updating profile:', error);
@@ -117,9 +188,41 @@ export default function Profile() {
                             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                                 <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                                     <div className="relative">
-                                        <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-3xl sm:text-4xl font-bold ring-4 ring-white shadow-xl">
-                                            {formData.first_name ? formData.first_name[0].toUpperCase() : 'U'}
-                                        </div>
+                                        {(imagePreview || formData.profile_photo_url) ? (
+                                            <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full overflow-hidden ring-4 ring-white shadow-xl relative">
+                                                <img
+                                                    src={imagePreview || formData.profile_photo_url}
+                                                    alt="Profile"
+                                                    className="h-full w-full object-cover"
+                                                />
+                                                {isEditing && (
+                                                    <div
+                                                        className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+                                                        onClick={() => fileInputRef.current.click()}
+                                                    >
+                                                        <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        </svg>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-3xl sm:text-4xl font-bold ring-4 ring-white shadow-xl relative">
+                                                {formData.first_name ? formData.first_name[0].toUpperCase() : 'U'}
+                                                {isEditing && (
+                                                    <div
+                                                        className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 rounded-full cursor-pointer"
+                                                        onClick={() => fileInputRef.current.click()}
+                                                    >
+                                                        <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        </svg>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                         {!isEditing && (
                                             <div className="absolute -bottom-2 -right-2 h-8 w-8 bg-green-500 rounded-full ring-4 ring-white flex items-center justify-center shadow-lg">
                                                 <svg className="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,6 +230,15 @@ export default function Profile() {
                                                 </svg>
                                             </div>
                                         )}
+
+                                        {/* Hidden file input */}
+                                        <input
+                                            type="file"
+                                            ref={fileInputRef}
+                                            className="hidden"
+                                            accept="image/*"
+                                            onChange={handleImageChange}
+                                        />
                                     </div>
                                     <div className="text-center sm:text-left">
                                         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -162,7 +274,7 @@ export default function Profile() {
                                                 value={formData.first_name}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
                                             />
                                         </div>
                                         <div>
@@ -173,7 +285,7 @@ export default function Profile() {
                                                 value={formData.last_name}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
                                             />
                                         </div>
                                     </div>
@@ -186,7 +298,7 @@ export default function Profile() {
                                                 value={formData.phone}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
                                             />
                                         </div>
                                         <div>
@@ -197,7 +309,7 @@ export default function Profile() {
                                                 value={formData.location}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
                                             />
                                         </div>
                                     </div>
@@ -209,9 +321,52 @@ export default function Profile() {
                                             value={formData.bio}
                                             onChange={handleChange}
                                             disabled={!isEditing}
-                                            className={`w-full px-4 py-3 rounded-lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                            className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
                                         />
                                     </div>
+
+                                    {/* Image Upload Progress and Error */}
+                                    {isEditing && (
+                                        <div className="col-span-2">
+                                            {uploadProgress > 0 && uploadProgress < 100 && (
+                                                <div className="mt-2">
+                                                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                                        <div
+                                                            className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                                            style={{ width: `${uploadProgress} % ` }}
+                                                        ></div>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500 mt-1">Uploading: {uploadProgress}%</p>
+                                                </div>
+                                            )}
+
+                                            {uploadError && (
+                                                <div className="mt-2 text-sm text-red-600">
+                                                    {uploadError}
+                                                </div>
+                                            )}
+
+                                            {imagePreview && (
+                                                <div className="mt-2 flex items-center space-x-2">
+                                                    <div className="w-10 h-10 rounded-full overflow-hidden">
+                                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                    </div>
+                                                    <span className="text-sm text-gray-600">New profile photo selected</span>
+                                                    <button
+                                                        type="button"
+                                                        className="text-red-500 hover:text-red-700 text-sm"
+                                                        onClick={() => {
+                                                            setImageFile(null);
+                                                            setImagePreview('');
+                                                            setUploadProgress(0);
+                                                        }}
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
