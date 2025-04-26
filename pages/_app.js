@@ -6,12 +6,12 @@ import { ToastProvider } from '@/components/ui/ToastProvider';
 
 export default function App({ Component, pageProps }) {
   return (
-    <Provider store={store}>
-      <AuthProvider>
+    <AuthProvider>
+      <Provider store={store}>
         <ToastProvider>
           <Component {...pageProps} />
         </ToastProvider>
-      </AuthProvider>
-    </Provider>
+      </Provider>
+    </AuthProvider>
   );
 }

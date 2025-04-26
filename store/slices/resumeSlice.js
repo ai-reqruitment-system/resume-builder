@@ -31,6 +31,8 @@ const initialState = {
         templateName: 'modern',
         internship_title: [],
         internship_summary: [],
+        internship_start_date: [],
+        internship_end_date: [],
         certificate_title: [],
         certificate_description: [],
         other_title: [],

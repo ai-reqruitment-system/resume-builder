@@ -138,20 +138,7 @@ const CertificateTabEnhanced = ({
                                 />
                             </div>
                         </div>
-                        <EnhancedTipTapEditor
-                            value={formData.certificate_description[index] || ''}
-                            onChange={(e) => {
-                                const newArray = [...formData.certificate_description];
-                                newArray[index] = e.target.value;
-                                updateFormData('certificate_description', newArray);
-                            }}
-                            title={`${formData.certificate_title[index] || 'Certificate'} Description`}
-                            customPrompt="Provide detailed descriptions of this certification, its value, and how it demonstrates your expertise:"
-                            suggestions={certificateSuggestions}
-                            onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
-                            isSuggestionSelected={(suggestion) => isSuggestionSelected(suggestion, index)}
-                            showWritingAssistant={true}
-                        />
+
                     </div>
                 </ContentItem>
             ))}

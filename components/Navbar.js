@@ -29,6 +29,7 @@ const Navbar = () => {
         const checkAuth = () => {
             const token = localStorage.getItem('token');
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            console.log("user data from the user ", userData)
             setIsAuthenticated(!!token);
             setUserName(userData.name || 'User');
 

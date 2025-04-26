@@ -15,14 +15,13 @@ const CompleteProfilePage = () => {
 
     // Updated formData structure
     const [formData, setFormData] = useState({
-        name: '',
+        first_name: '',
+        last_name: '',
         email: '',
         phone: '',
         location: '',
         job_roles: [''],  // Array to store multiple job preferences
         selected_locations: [''], // Array to store multiple preferred locations
-
-        skills: [],
     });
 
     useEffect(() => {
@@ -51,8 +50,12 @@ const CompleteProfilePage = () => {
     };
 
     const validateForm = () => {
-        if (!formData.name.trim()) {
-            setError('Name is required');
+        if (!formData.first_name.trim()) {
+            setError('First name is required');
+            return false;
+        }
+        if (!formData.last_name.trim()) {
+            setError('Last name is required');
             return false;
         }
         if (formData.phone && !validatePhone(formData.phone)) {
@@ -68,6 +71,9 @@ const CompleteProfilePage = () => {
 
         setLoading(true);
         try {
+            // Instead of directly calling the external API, make a request to our own API
+            // which will then forward the request to the external API
+            // This avoids CORS issues as the browser is only making a same-origin request
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/complete-profile`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -76,13 +82,29 @@ const CompleteProfilePage = () => {
 
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || 'Failed to complete profile');
+            console.log(data)
 
             if (data.token) {
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('userData', JSON.stringify(data.user));
+                localStorage.setItem('userData', JSON.stringify(data.data));
                 localStorage.removeItem('profileData');
                 router.push('/dashboard');
+            } else {
+                // If we don't get a token back but the request was successful
+                setSuccess('Profile completed successfully!');
+                // Store basic user data
+                localStorage.setItem('userData', JSON.stringify({
+                    first_name: formData.first_name,
+                    last_name: formData.last_name,
+                    email: formData.email
+                }));
+                localStorage.removeItem('profileData');
             }
+            // //   Redirect after a short delay to show the success message
+            // setTimeout(() => {
+            //     router.push('/dashboard');
+            // }, 1500);
+
         } catch (err) {
             setError(err.message);
         } finally {
@@ -171,17 +193,31 @@ const CompleteProfilePage = () => {
                                 className="bg-gray-50"
                             />
 
-                            {/* Full Name */}
+                            {/* First Name */}
                             <InputWithIcon
-                                label="Full Name"
+                                label="First Name"
                                 icon={UserCircle2}
                                 type="text"
-                                value={formData.name}
+                                value={formData.first_name}
                                 onChange={(e) => setFormData(prev => ({
                                     ...prev,
-                                    name: e.target.value
+                                    first_name: e.target.value
                                 }))}
-                                placeholder="Enter your full name"
+                                placeholder="Enter your first name"
+                                required={true}
+                            />
+
+                            {/* Last Name */}
+                            <InputWithIcon
+                                label="Last Name"
+                                icon={UserCircle2}
+                                type="text"
+                                value={formData.last_name}
+                                onChange={(e) => setFormData(prev => ({
+                                    ...prev,
+                                    last_name: e.target.value
+                                }))}
+                                placeholder="Enter your last name"
                                 required={true}
                             />
 
@@ -246,58 +282,62 @@ const CompleteProfilePage = () => {
                                     Desired Roles (Max 5)
                                 </label>
                                 {formData.job_roles
-.map((role, index) => (
-                                    <div key={index} className="flex items-center gap-2 mb-2">
-                                        <div className="relative flex-1 rounded-md shadow-sm">
-                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <Briefcase className="h-5 w-5 text-gray-400" />
+                                    .map((role, index) => (
+                                        <div key={index} className="flex items-center gap-2 mb-2">
+                                            <div className="relative flex-1 rounded-md shadow-sm">
+                                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <Briefcase className="h-5 w-5 text-gray-400" />
+                                                </div>
+                                                <input
+                                                    type="text"
+                                                    value={role}
+                                                    onChange={(e) => {
+                                                        const newRoles = [...formData.job_roles
+                                                        ];
+                                                        newRoles[index] = e.target.value;
+                                                        setFormData(prev => ({
+                                                            ...prev, job_roles
+                                                                : newRoles
+                                                        }));
+                                                    }}
+                                                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                                    placeholder="e.g., Software Engineer"
+                                                />
                                             </div>
-                                            <input
-                                                type="text"
-                                                value={role}
-                                                onChange={(e) => {
-                                                    const newRoles = [...formData.job_roles
-];
-                                                    newRoles[index] = e.target.value;
-                                                    setFormData(prev => ({ ...prev, job_roles
-: newRoles }));
-                                                }}
-                                                className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                                placeholder="e.g., Software Engineer"
-                                            />
+                                            {formData.job_roles
+                                                .length > 1 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newRoles = formData.job_roles
+                                                                .filter((_, i) => i !== index);
+                                                            setFormData(prev => ({
+                                                                ...prev, job_roles
+                                                                    : newRoles
+                                                            }));
+                                                        }}
+                                                        className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                )}
                                         </div>
-                                        {formData.job_roles
-.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    const newRoles = formData.job_roles
-.filter((_, i) => i !== index);
-                                                    setFormData(prev => ({ ...prev, job_roles
-: newRoles }));
-                                                }}
-                                                className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
-                                            >
-                                                ×
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
+                                    ))}
                                 {formData.job_roles
-.length < 5 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => setFormData(prev => ({
-                                            ...prev,
-                                            job_roles
-: [...prev.job_roles
-, '']
-                                        }))}
-                                        className="mt-2 text-sm text-blue-500 hover:text-blue-700"
-                                    >
-                                        + Add another role
-                                    </button>
-                                )}
+                                    .length < 5 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData(prev => ({
+                                                ...prev,
+                                                job_roles
+                                                    : [...prev.job_roles
+                                                        , '']
+                                            }))}
+                                            className="mt-2 text-sm text-blue-500 hover:text-blue-700"
+                                        >
+                                            + Add another role
+                                        </button>
+                                    )}
                             </div>
 
                             <div>
@@ -352,84 +392,11 @@ const CompleteProfilePage = () => {
                         </div>
 
 
-                        {/* Skills */}
-                        <div>
-                            <h2 className="text-xl font-bold mb-2">Skills</h2>
-                            {formData.skills.map((skill, index) => (
-                                <div key={index} className="mb-6 bg-gray-50 rounded-lg p-4">
-                                    <div className="flex justify-between items-center border-b pb-3 mb-4">
-                                        <span>Skill {index + 1}</span>
-                                        {formData.skills.length > 1 && (
-                                            <button
-                                                onClick={() => removeSkill(index)}
-                                                className="text-red-500 hover:text-red-700"
-                                            >
-                                                Remove
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label htmlFor={`skill-${index}`} className="block text-sm font-medium text-gray-700">
-                                                Skill
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id={`skill-${index}`}
-                                                value={skill.skill}
-                                                onChange={(e) => {
-                                                    const newSkills = [...formData.skills];
-                                                    newSkills[index].skill = e.target.value;
-                                                    setFormData(prev => ({
-                                                        ...prev,
-                                                        skills: newSkills,
-                                                    }));
-                                                }}
-                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                                placeholder="Enter skill"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label htmlFor={`level-${index}`} className="block text-sm font-medium text-gray-700">
-                                                Level
-                                            </label>
-                                            <select
-                                                id={`level-${index}`}
-                                                value={skill.level}
-                                                onChange={(e) => {
-                                                    const newSkills = [...formData.skills];
-                                                    newSkills[index].level = e.target.value;
-                                                    setFormData(prev => ({
-                                                        ...prev,
-                                                        skills: newSkills,
-                                                    }));
-                                                }}
-                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                            >
-                                                <option value="">Select Level</option>
-                                                <option value="Beginner">Beginner</option>
-                                                <option value="Intermediate">Intermediate</option>
-                                                <option value="Advanced">Advanced</option>
-                                                <option value="Expert">Expert</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                            <button
-                                type="button"
-                                onClick={addSkill}
-                                className="text-blue-500 hover:text-blue-700"
-                            >
-                                Add Another Skill
-                            </button>
-                        </div>
-
                         {/* Submit Button */}
                         <div className="bg-white rounded-lg shadow-md p-6">
                             <button
                                 type="submit"
-                                disabled={loading || !formData.name || (formData.phone && !validatePhone(formData.phone))}
+                                disabled={loading || !formData.first_name || !formData.last_name || (formData.phone && !validatePhone(formData.phone))}
                                 className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
                             >
                                 {loading ? (

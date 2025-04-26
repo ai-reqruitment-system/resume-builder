@@ -135,19 +135,26 @@ const EnhancedTipTapEditor = ({
 
     return (
         <div className="transition-all duration-300">
-            <div className="flex flex-wrap items-center justify-end gap-1 xxs:gap-2 mb-2 xxs:mb-3">
+            <div className="flex flex-wrap items-center justify-between gap-1 xxs:gap-2 mb-2 xxs:mb-3 px-2">
+                <div className='text-lg'>
+                    {title}
+                </div>
                 <button
                     onClick={toggleExpand}
-                    className="flex items-center gap-0.5 xxs:gap-1 px-2 xxs:px-3 py-1 xxs:py-1.5 text-[10px] xxs:text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 animate-pulse hover:animate-none transform hover:scale-105 hover:-translate-y-0.5"
+                    className="flex items-center gap-0.5 xxs:gap-1 px-2 xxs:px-3 py-1 xxs:py-1.5 text-[10px] xxs:text-xs font-medium text-gray-100 bg-blue-600 rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200 animate-pulse hover:animate-none transform hover:scale-105 hover:-translate-y-0.5"
                 >
                     <Maximize2 className="h-3 w-3 xxs:h-3.5 xxs:w-3.5" />
                     <span>Expand Editor</span>
                 </button>
+
+
             </div>
 
             <div className="flex flex-col md:flex-row gap-2 xxs:gap-3 sm:gap-4">
                 {/* Left panel - Suggestions */}
+
                 <div className="w-full md:w-1/2 bg-gray-50 rounded-xl border border-gray-200 p-1.5 xxs:p-2 sm:p-3 h-[280px] xxs:h-[300px] sm:h-[320px] md:h-[350px] lg:h-[380px] overflow-hidden flex flex-col">
+
                     <div className="flex items-center justify-between mb-1.5 xxs:mb-2">
                         <h3 className="text-[10px] xxs:text-xs sm:text-sm font-medium text-gray-700">Suggestions</h3>
                         <button
@@ -192,7 +199,6 @@ const EnhancedTipTapEditor = ({
                             filteredSuggestions.map((suggestion, index) => {
                                 const isSelected = isSuggestionSelected && isSuggestionSelected(suggestion);
                                 const isAiSuggestion = aiSuggestions.includes(suggestion);
-
                                 return (
                                     <div
                                         key={index}
@@ -270,7 +276,6 @@ const EnhancedTipTapEditor = ({
                     </div>
                 </div>
             </div>
-
             {/* Expanded Modal View */}
             {isExpanded && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 xxs:p-3 sm:p-4 transition-all duration-300">

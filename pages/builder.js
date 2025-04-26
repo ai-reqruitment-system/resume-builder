@@ -2,11 +2,7 @@ import React, { useEffect } from 'react';
 import { Briefcase, Check, Eye, Download, GraduationCap, Plus, Trophy, UserCircle2, X, Menu } from 'lucide-react';
 import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
-import PersonalInfo from '../components/sections/PersonalInfo';
-import Experience from '../components/sections/Experience';
-import Skills from "@/components/sections/Skills";
-import Education from "@/components/sections/Education";
-import Others from "@/components/sections/Others";
+
 import { uuid } from "uuidv4";
 import ResumeModal from "@/components/ResumeModal";
 import DownloadSection from "@/components/DownloadSection";

@@ -19,6 +19,8 @@ const InternshipTab = ({
     const initializeEmptyInternship = () => {
         updateFormData('internship_title', ['']);
         updateFormData('internship_summary', ['']);
+        updateFormData('internship_begin', ['']);
+        updateFormData('internship_end', ['']);
     };
 
     const handleSuggestionClick = (suggestion, index) => {

@@ -22,13 +22,37 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
         validateFields();
     }, [formData]);
 
+    // Auto-fill form data with user data when component mounts or user data changes
+    useEffect(() => {
+        if (user) {
+            // Only update fields that are empty or if user data exists
+            const updatedFormData = {
+                first_name: formData.first_name || user.first_name || '',
+                last_name: formData.last_name || user.last_name || '',
+                email: formData.email || user.email || '',
+                phone: formData.phone || user.phone || '',
+                location: formData.location || user.location || '',
+                city: formData.location || user.location || '',
+                country: formData.country || user.location?.country || ''
+            };
+
+            // Update each field individually to maintain other form data
+            Object.keys(updatedFormData).forEach(field => {
+                if (updatedFormData[field] && !formData[field]) {
+                    updateFormData(field, updatedFormData[field]);
+                }
+            });
+        }
+    }, [user]);
+
     // Validate all required fields
     const validateFields = () => {
         const newErrors = {
-            first_name: !formData.first_name,
+            first_name: user.first_name || !formData.first_name,
             last_name: !formData.last_name,
             email: user.email || !formData.email,
             phone: !formData.phone,
+            location: !formData.location,
             city: !formData.city,
             country: !formData.country
         };
@@ -98,12 +122,9 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 onChange={(e) => handleFieldChange('first_name', e.target.value)}
                                 placeholder="e.g., John"
                                 required
-                                defaultValue={user?.name}
-                                className={`bg-white w-full ${errors.first_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                defaultValue={user?.first_name}
+                                className={`bg-white w-full`}
                             />
-                            {errors.first_name && (
-                                <p className="text-red-500 text-xs mt-1">First name is required</p>
-                            )}
                         </div>
                         <div className="relative">
                             <FormField
@@ -112,11 +133,8 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 onChange={(e) => handleFieldChange('last_name', e.target.value)}
                                 placeholder="e.g., Doe"
                                 required
-                                className={`bg-white w-full ${errors.last_name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                className={`bg-white w-full`}
                             />
-                            {errors.last_name && (
-                                <p className="text-red-500 text-xs mt-1">Last name is required</p>
-                            )}
                         </div>
                     </div>
 
@@ -129,11 +147,8 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 onChange={(e) => handleFieldChange('email', e.target.value)}
                                 placeholder="e.g., john@example.com"
                                 required
-                                className={`bg-white w-full ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                className={`bg-white w-full`}
                             />
-                            {errors.email && (
-                                <p className="text-red-500 text-xs mt-1">Email is required</p>
-                            )}
                         </div>
                         <div className="relative">
                             <FormField
@@ -143,11 +158,8 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 onChange={(e) => handleFieldChange('phone', e.target.value)}
                                 placeholder="e.g., +1 234 567 8900"
                                 required
-                                className={`bg-white w-full ${errors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                className={`bg-white w-full`}
                             />
-                            {errors.phone && (
-                                <p className="text-red-500 text-xs mt-1">Phone number is required</p>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -156,7 +168,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                 <div className="p-2 sm:p-3 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
                     <h3 className="text-sm sm:text-md font-medium text-gray-700 border-b border-gray-100 pb-2 sm:pb-3 mb-3">Location</h3>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
                         <div className="relative">
                             <FormField
                                 label="City"
@@ -164,11 +176,8 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 onChange={(e) => handleFieldChange('city', e.target.value)}
                                 placeholder="e.g., New York"
                                 required
-                                className={`bg-white w-full ${errors.city ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                className={`bg-white w-full`}
                             />
-                            {errors.city && (
-                                <p className="text-red-500 text-xs mt-1">City is required</p>
-                            )}
                         </div>
                         <div className="relative">
                             <FormField
@@ -177,13 +186,12 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 onChange={(e) => handleFieldChange('country', e.target.value)}
                                 placeholder="e.g., United States"
                                 required
-                                className={`bg-white w-full ${errors.country ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                className={`bg-white w-full `}
                             />
-                            {errors.country && (
-                                <p className="text-red-500 text-xs mt-1">Country is required</p>
-                            )}
                         </div>
                     </div>
+
+
                 </div>
 
                 {/* Professional Summary Title */}

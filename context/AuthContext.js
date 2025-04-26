@@ -1,12 +1,63 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { setUser } from '@/store/slices/authSlice'
 
 const AuthContext = createContext()
+
+export const updateUserProfile = async (formData) => {
+    console.log(formData, "from the update user profile api ")
+    const response = await fetch(`https://admin.resuming.io/api/profile/update`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + (localStorage.getItem('token'))
+        },
+        body: JSON.stringify(formData),
+    });
+    const data = await response.json();
+    console.log(data, "from the update user profile api ")
+    if (data.token) {
+        // Store updated user data in localStorage
+        localStorage.setItem('userData', JSON.stringify(data.data));
+        return data.data;
+    } else {
+        console.log("Error in updating the profile")
+        return null;
+    }
+}
+
+export const fetchUserDetail = async () => {
+    const res = await fetch('https://admin.resuming.io/api/get-customer-details', {
+        headers: {
+            'Authorization': 'Bearer ' + (localStorage.getItem('token'))
+        },
+    })
+    const data = await res.json();
+    if (res.ok) {
+        // Store user data in localStorage for persistence
+        localStorage.setItem('userData', JSON.stringify(data.data));
+        return data.data // Return the user object
+    } else {
+        console.log("Error in fetching the user detail ")
+        return null;
+    }
+}
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const router = useRouter()
+
+    // Wrapper for updateUserProfile to update local state
+    const handleUpdateUserProfile = async (formData) => {
+        const updatedUser = await updateUserProfile(formData)
+        if (updatedUser) {
+            setUser(updatedUser)
+        }
+        return updatedUser
+    }
+
+
 
     useEffect(() => {
         // Wait for router to be ready
@@ -23,44 +74,33 @@ export function AuthProvider({ children }) {
                 router.push('/login')
             } else {
                 // Has stored token - stay on current page
-                const storedUser = JSON.parse(localStorage.getItem('userData'))
+                const storedUser = JSON.parse(localStorage.getItem('userData') || '{}')
                 setUser(storedUser)
+
+                // Fetch the latest user data from API
+                try {
+                    const userData = await fetchUserDetail()
+                    if (userData) {
+                        console.log('User data fetched successfully:', userData)
+                        // Update the user state with the latest data from API
+                        setUser(userData)
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error)
+                }
             }
             setLoading(false)
-            return;
-
-            // We have a token in URL - fetch user details
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-customer-details`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                })
-
-                const data = await response.json()
-
-                if (data.data) {
-                    setUser(data.data)
-                    localStorage.setItem('token', data.data.token)
-                    localStorage.setItem('userData', JSON.stringify(data.data))
-                    localStorage.removeItem('profileData')
-                    router.push('/builder?templateId=modern') // Redirect to home after successful auth
-                }
-            } catch (error) {
-                console.error('Auth error:', error)
-                router.push('/unauthorized')
-            } finally {
-                setLoading(false)
-            }
         }
+
+
 
         handleAuth()
     }, [router.isReady]) // Only run when router is ready
 
+
+
     return (
-        <AuthContext.Provider value={{ user, loading }}>
+        <AuthContext.Provider value={{ user, loading, updateUserProfile: handleUpdateUserProfile, fetchUserDetail }}>
             {children}
         </AuthContext.Provider>
     )

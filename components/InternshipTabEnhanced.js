@@ -39,6 +39,8 @@ const InternshipTabEnhanced = ({
     const initializeEmptyInternship = () => {
         updateFormData('internship_title', ['']);
         updateFormData('internship_summary', ['']);
+        updateFormData('internship_start_date', ['']);
+        updateFormData('internship_end_date', ['']);
     };
 
     const handleSuggestionClick = (suggestion, index) => {
@@ -75,7 +77,7 @@ const InternshipTabEnhanced = ({
         e.stopPropagation();
         if (!formData.internship_title?.length || formData.internship_title.length <= 1) return;
 
-        ['internship_title', 'internship_summary'].forEach(key => {
+        ['internship_title', 'internship_summary', 'internship_start_date', 'internship_end_date'].forEach(key => {
             const newArray = [...formData[key]];
             newArray.splice(index, 1);
             updateFormData(key, newArray);
@@ -91,6 +93,8 @@ const InternshipTabEnhanced = ({
     const addInternship = () => {
         updateFormData('internship_title', [...(formData.internship_title || []), '']);
         updateFormData('internship_summary', [...(formData.internship_summary || []), '']);
+        updateFormData('internship_start_date', [...(formData.internship_start_date || []), '']);
+        updateFormData('internship_end_date', [...(formData.internship_end_date || []), '']);
         setActiveIndex(formData.internship_title?.length || 0);
     };
 
@@ -133,6 +137,38 @@ const InternshipTabEnhanced = ({
                                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
                                     outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
                                 />
+                            </div>
+
+                            {/* Date Range Section */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                    <input
+                                        type="date"
+                                        value={formData.internship_start_date[index] || ''}
+                                        onChange={(e) => {
+                                            const newArray = [...(formData.internship_start_date || Array(formData.internship_title.length).fill(''))];
+                                            newArray[index] = e.target.value;
+                                            updateFormData('internship_start_date', newArray);
+                                        }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
+                                        outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                    <input
+                                        type="date"
+                                        value={formData.internship_end_date[index] || ''}
+                                        onChange={(e) => {
+                                            const newArray = [...(formData.internship_end_date || Array(formData.internship_title.length).fill(''))];
+                                            newArray[index] = e.target.value;
+                                            updateFormData('internship_end_date', newArray);
+                                        }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
+                                        outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
+                                    />
+                                </div>
                             </div>
                         </div>
 
