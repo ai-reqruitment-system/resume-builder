@@ -29,7 +29,7 @@ const ResumeModal = ({
     const [saveError, setSaveError] = useState(null);
     const [saveSuccess, setSaveSuccess] = useState(false);
     const router = useRouter();
-    console.log(localStorage.getItem("profileData"), "from the Resume Modal compnent ")
+
 
     // Validate form data - extracted common validation logic
     const validateFormData = (setErrorFn) => {
