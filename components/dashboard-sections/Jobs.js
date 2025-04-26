@@ -57,102 +57,113 @@ const Jobs = () => {
         },
     ];
 
-    return (
-        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Search Section */}
-            <div className={`bg-white rounded-lg shadow-sm p-6 mb-8 border border-gray-100 hover:shadow-md transition-all duration-300 ${selectedJob ? 'lg:block hidden' : ''}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            placeholder="Job title or company"
-                            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400/20 focus:border-blue-400 transition-all duration-300 hover:border-gray-300"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        <Search className="h-5 w-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300" />
-                    </div>
-                    <div className="relative">
-                        <input
-                            type="text"
-                            placeholder="Location"
-                            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400/20 focus:border-blue-400 transition-all duration-300 hover:border-gray-300"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                        />
-                        <MapPin className="h-5 w-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300" />
-                    </div>
-                </div>
-                <div className="mt-6 flex flex-wrap gap-3">
-                    <button className="px-5 py-2.5 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
-                        Remote
-                    </button>
-                    <button className="px-5 py-2.5 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
-                        Auto Apply
-                    </button>
-                    <button className="px-5 py-2.5 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
-                        Posted anytime
-                    </button>
-                </div>
-            </div>
-
-            {/* Job Listings and Description Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 relative">
-                {/* Job Listings */}
-                <div className={`space-y-6 ${selectedJob ? 'lg:block hidden' : ''}`}>
-                    {jobs.map((job) => (
-                        <div
-                            key={job.id}
-                            className={`bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-all duration-300 cursor-pointer border border-gray-100 group ${selectedJob?.id === job.id ? 'ring-2 ring-blue-400' : ''}`}
-                            onClick={() => setSelectedJob(job)}
-                        >
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
-                                        {job.title}
-                                    </h3>
-                                    <p className="text-blue-600 mt-1 font-medium">{job.company}</p>
-                                </div>
-                                <button className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300 transform hover:scale-110">
-                                    <Heart className="h-5 w-5" />
-                                </button>
-                            </div>
-                            <div className="flex items-center text-gray-600 text-sm">
-                                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-                                <span>{job.location}</span>
-                            </div>
-                            <div className="mt-6 flex items-center justify-between">
-                                <span className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
-                                    {job.postedDate}
-                                </span>
-                                <div className="space-x-3">
-                                    <button className="px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
-                                        Auto Apply
-                                    </button>
-                                    <button className="px-4 py-2 text-sm bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-all duration-300 font-medium shadow-sm hover:shadow transform hover:translate-y-[-1px]">
-                                        Apply
-                                    </button>
-                                </div>
-                            </div>
+    const returnSample = () => {
+        <div>
+            <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Search Section */}
+                <div className={`bg-white rounded-lg shadow-sm p-6 mb-8 border border-gray-100 hover:shadow-md transition-all duration-300 ${selectedJob ? 'lg:block hidden' : ''}`}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder="Job title or company"
+                                className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400/20 focus:border-blue-400 transition-all duration-300 hover:border-gray-300"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                            <Search className="h-5 w-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300" />
                         </div>
-                    ))}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder="Location"
+                                className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400/20 focus:border-blue-400 transition-all duration-300 hover:border-gray-300"
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                            />
+                            <MapPin className="h-5 w-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300" />
+                        </div>
+                    </div>
+                    <div className="mt-6 flex flex-wrap gap-3">
+                        <button className="px-5 py-2.5 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
+                            Remote
+                        </button>
+                        <button className="px-5 py-2.5 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
+                            Auto Apply
+                        </button>
+                        <button className="px-5 py-2.5 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
+                            Posted anytime
+                        </button>
+                    </div>
                 </div>
 
-                {/* Job Description Panel */}
-                {selectedJob && (
-                    <div className={`${selectedJob ? 'block' : 'hidden'} lg:block`}>
-                        {/* Back button for mobile */}
-                        <button
-                            onClick={() => setSelectedJob(null)}
-                            className="lg:hidden flex items-center gap-2 mb-4 text-gray-600 hover:text-gray-900 transition-colors duration-300"
-                        >
-                            <ArrowLeft className="h-5 w-5" />
-                            Back to Jobs
-                        </button>
-                        <JobDescription job={selectedJob} onClose={() => setSelectedJob(null)} />
+                {/* Job Listings and Description Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 relative">
+                    {/* Job Listings */}
+                    <div className={`space-y-6 ${selectedJob ? 'lg:block hidden' : ''}`}>
+                        {jobs.map((job) => (
+                            <div
+                                key={job.id}
+                                className={`bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-all duration-300 cursor-pointer border border-gray-100 group ${selectedJob?.id === job.id ? 'ring-2 ring-blue-400' : ''}`}
+                                onClick={() => setSelectedJob(job)}
+                            >
+                                <div className="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                                            {job.title}
+                                        </h3>
+                                        <p className="text-blue-600 mt-1 font-medium">{job.company}</p>
+                                    </div>
+                                    <button className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-300 transform hover:scale-110">
+                                        <Heart className="h-5 w-5" />
+                                    </button>
+                                </div>
+                                <div className="flex items-center text-gray-600 text-sm">
+                                    <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                                    <span>{job.location}</span>
+                                </div>
+                                <div className="mt-6 flex items-center justify-between">
+                                    <span className="text-sm text-gray-500 bg-gray-50 px-3 py-1 rounded-full">
+                                        {job.postedDate}
+                                    </span>
+                                    <div className="space-x-3">
+                                        <button className="px-4 py-2 text-sm bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-all duration-300 font-medium">
+                                            Auto Apply
+                                        </button>
+                                        <button className="px-4 py-2 text-sm bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-all duration-300 font-medium shadow-sm hover:shadow transform hover:translate-y-[-1px]">
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                )}
+
+                    {/* Job Description Panel */}
+                    {selectedJob && (
+                        <div className={`${selectedJob ? 'block' : 'hidden'} lg:block`}>
+                            {/* Back button for mobile */}
+                            <button
+                                onClick={() => setSelectedJob(null)}
+                                className="lg:hidden flex items-center gap-2 mb-4 text-gray-600 hover:text-gray-900 transition-colors duration-300"
+                            >
+                                <ArrowLeft className="h-5 w-5" />
+                                Back to Jobs
+                            </button>
+                            <JobDescription job={selectedJob} onClose={() => setSelectedJob(null)} />
+                        </div>
+                    )}
+                </div>
             </div>
+        </div>
+    }
+
+    return (
+        <div className='text-2xl mx-auto text-center capitalize bold text-gray-700 flex flex-col gap-4 mt-4 px-4'>
+            <span className='text-2xl uppercase font-bold text-blue-700'>
+                Jobs page
+            </span>
+            comming soon
         </div>
     );
 };

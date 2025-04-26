@@ -132,7 +132,7 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                             </div>
 
                             <h3 className="text-xl font-bold text-gray-800">{`${profile.first_name} ${profile.last_name}`}</h3>
-                            <p className="mt-2 text-sm text-gray-600 font-medium">{profile.occupproation || 'Untitled'}</p>
+                            <p className="mt-2 text-sm text-gray-600 font-medium">{profile.occupation || 'Untitled'}</p>
 
                             <div className="mt-4 flex items-center text-sm text-gray-500">
                                 <Clock className="h-4 w-4 mr-2" />
