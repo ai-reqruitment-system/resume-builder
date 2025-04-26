@@ -19,6 +19,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import PersonalInfo from '@/components/sections/PersonalInfo';
 export default function Builder() {
     // Use Redux state instead of local state
     const dispatch = useDispatch();

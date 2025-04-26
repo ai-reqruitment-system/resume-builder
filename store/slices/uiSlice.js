@@ -9,6 +9,16 @@ const initialState = {
     isSidebarOpen: true,
     activeTab: 'styles',
     isHovered: false,
+    // Loading states for different parts of the application
+    isLoading: false,
+    loadingMessage: 'Loading...',
+    componentLoading: {
+        builder: false,
+        resumeList: false,
+        jobs: false,
+        profile: false,
+        formSubmission: false
+    },
 };
 
 export const uiSlice = createSlice({
@@ -45,6 +55,25 @@ export const uiSlice = createSlice({
         setIsHovered: (state, action) => {
             state.isHovered = action.payload;
         },
+        // Loading state reducers
+        setIsLoading: (state, action) => {
+            state.isLoading = action.payload;
+        },
+        setLoadingMessage: (state, action) => {
+            state.loadingMessage = action.payload;
+        },
+        setComponentLoading: (state, action) => {
+            const { component, isLoading } = action.payload;
+            state.componentLoading[component] = isLoading;
+        },
+        startLoading: (state, action) => {
+            state.isLoading = true;
+            if (action.payload) state.loadingMessage = action.payload;
+        },
+        stopLoading: (state) => {
+            state.isLoading = false;
+            state.loadingMessage = 'Loading...';
+        },
     },
 });
 
@@ -59,6 +88,12 @@ export const {
     toggleSidebar,
     setActiveTab,
     setIsHovered,
+    // Loading state actions
+    setIsLoading,
+    setLoadingMessage,
+    setComponentLoading,
+    startLoading,
+    stopLoading
 } = uiSlice.actions;
 
 export default uiSlice.reducer;
