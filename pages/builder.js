@@ -20,6 +20,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import PersonalInfo from '@/components/sections/PersonalInfo';
+import Experience from '@/components/sections/Experience';
 export default function Builder() {
     // Use Redux state instead of local state
     const dispatch = useDispatch();

@@ -21,7 +21,7 @@ export default function Profile() {
     const [isLoading, setIsLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [saveLoading, setSaveLoading] = useState(false);
-    console.log(localStorage.getItem('token'))
+
 
 
 

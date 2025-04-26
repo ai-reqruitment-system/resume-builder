@@ -12,6 +12,7 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
     const [hoveredCard, setHoveredCard] = useState(null);
     const toast = useToast();
     const router = useRouter();
+    console.log(Object(profiles), "from teh Resume List")
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto px-2 sm:px-0">
             {/* New Resume Card - Enhanced with better visuals */}
@@ -131,7 +132,7 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                             </div>
 
                             <h3 className="text-xl font-bold text-gray-800">{`${profile.first_name} ${profile.last_name}`}</h3>
-                            <p className="mt-2 text-sm text-gray-600 font-medium">{profile.occupation || 'Untitled'}</p>
+                            <p className="mt-2 text-sm text-gray-600 font-medium">{profile.occupproation || 'Untitled'}</p>
 
                             <div className="mt-4 flex items-center text-sm text-gray-500">
                                 <Clock className="h-4 w-4 mr-2" />

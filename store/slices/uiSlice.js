@@ -66,6 +66,11 @@ export const uiSlice = createSlice({
             const { component, isLoading } = action.payload;
             state.componentLoading[component] = isLoading;
         },
+        setGlobalLoading: (state, action) => {
+            const { isLoading, loadingMessage } = action.payload;
+            state.isLoading = isLoading;
+            if (loadingMessage) state.loadingMessage = loadingMessage;
+        },
         startLoading: (state, action) => {
             state.isLoading = true;
             if (action.payload) state.loadingMessage = action.payload;
@@ -92,6 +97,7 @@ export const {
     setIsLoading,
     setLoadingMessage,
     setComponentLoading,
+    setGlobalLoading,
     startLoading,
     stopLoading
 } = uiSlice.actions;

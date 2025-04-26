@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { setUser } from '@/store/slices/authSlice'
+import { useDispatch } from 'react-redux'
+import { setGlobalLoading } from '@/store/slices/uiSlice'
 
 const AuthContext = createContext()
 
@@ -47,14 +49,23 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const router = useRouter()
+    const dispatch = useDispatch()
 
     // Wrapper for updateUserProfile to update local state
     const handleUpdateUserProfile = async (formData) => {
-        const updatedUser = await updateUserProfile(formData)
-        if (updatedUser) {
-            setUser(updatedUser)
+        try {
+            dispatch(setGlobalLoading({ isLoading: true, loadingMessage: 'Updating profile...' }))
+            const updatedUser = await updateUserProfile(formData)
+            if (updatedUser) {
+                setUser(updatedUser)
+            }
+            return updatedUser
+        } catch (error) {
+            console.error('Error updating profile:', error)
+            return null
+        } finally {
+            dispatch(setGlobalLoading({ isLoading: false }))
         }
-        return updatedUser
     }
 
 
@@ -67,29 +78,36 @@ export function AuthProvider({ children }) {
         //eyJjdXN0b21lcl9pZCI6NywidHlwZSI6ImVkaXQiLCJ0ZW1wbGF0ZV9pZCI6bnVsbH0=
 
         const handleAuth = async () => {
-            // If no token in URL, check localStorage
-            const storedToken = localStorage.getItem('token')
-            if (!storedToken) {
-                // No token anywhere - redirect to main site
-                router.push('/login')
-            } else {
-                // Has stored token - stay on current page
-                const storedUser = JSON.parse(localStorage.getItem('userData') || '{}')
-                setUser(storedUser)
+            try {
+                dispatch(setGlobalLoading({ isLoading: true, loadingMessage: 'Authenticating...' }))
+                // If no token in URL, check localStorage
+                const storedToken = localStorage.getItem('token')
+                if (!storedToken) {
+                    // No token anywhere - redirect to main site
+                    router.push('/login')
+                } else {
+                    // Has stored token - stay on current page
+                    const storedUser = JSON.parse(localStorage.getItem('userData') || '{}')
+                    setUser(storedUser)
 
-                // Fetch the latest user data from API
-                try {
-                    const userData = await fetchUserDetail()
-                    if (userData) {
-                        console.log('User data fetched successfully:', userData)
-                        // Update the user state with the latest data from API
-                        setUser(userData)
+                    // Fetch the latest user data from API
+                    try {
+                        const userData = await fetchUserDetail()
+                        if (userData) {
+                            console.log('User data fetched successfully:', userData)
+                            // Update the user state with the latest data from API
+                            setUser(userData)
+                        }
+                    } catch (error) {
+                        console.error('Error fetching user data:', error)
                     }
-                } catch (error) {
-                    console.error('Error fetching user data:', error)
                 }
+            } catch (error) {
+                console.error('Authentication error:', error)
+            } finally {
+                setLoading(false)
+                dispatch(setGlobalLoading({ isLoading: false }))
             }
-            setLoading(false)
         }
 
 

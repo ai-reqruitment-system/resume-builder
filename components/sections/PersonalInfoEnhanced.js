@@ -3,10 +3,14 @@ import FormField from "@/components/FormField";
 import EnhancedDescriptionEditor from "@/components/EnhancedDescriptionEditor";
 import EnhancedTipTapEditor from '../enhancedtiptapeditor';
 import { useAuth } from '@/context/AuthContext';
+import { useLoading } from '@/context/LoadingContext';
+import SkeletonLoader from '@/components/SkeletonLoader';
 
 const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
-    const { user } = useAuth()
-    console.log("user from the personl info", user)
+    const { user, loading: authLoading } = useAuth();
+    const { isComponentLoading, setComponentLoading } = useLoading();
+    const [isFormLoading, setIsFormLoading] = useState(false);
+
     // State for tracking validation errors
     const [errors, setErrors] = useState({
         first_name: false,
@@ -24,26 +28,43 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
 
     // Auto-fill form data with user data when component mounts or user data changes
     useEffect(() => {
-        if (user) {
-            // Only update fields that are empty or if user data exists
-            const updatedFormData = {
-                first_name: formData.first_name || user.first_name || '',
-                last_name: formData.last_name || user.last_name || '',
-                email: formData.email || user.email || '',
-                phone: formData.phone || user.phone || '',
-                location: formData.location || user.location || '',
-                city: formData.location || user.location || '',
-                country: formData.country || user.location?.country || ''
-            };
+        const fillUserData = async () => {
+            try {
+                setIsFormLoading(true);
+                setComponentLoading('profile', true);
 
-            // Update each field individually to maintain other form data
-            Object.keys(updatedFormData).forEach(field => {
-                if (updatedFormData[field] && !formData[field]) {
-                    updateFormData(field, updatedFormData[field]);
+                if (user) {
+                    // Only update fields that are empty or if user data exists
+                    const updatedFormData = {
+                        first_name: formData.first_name || user.first_name || '',
+                        last_name: formData.last_name || user.last_name || '',
+                        email: formData.email || user.email || '',
+                        phone: formData.phone || user.phone || '',
+                        location: formData.location || user.location || '',
+                        city: formData.location || user.location || '',
+                        country: formData.country || user.location?.country || ''
+                    };
+
+                    // Update each field individually to maintain other form data
+                    Object.keys(updatedFormData).forEach(field => {
+                        if (updatedFormData[field] && !formData[field]) {
+                            updateFormData(field, updatedFormData[field]);
+                        }
+                    });
                 }
-            });
-        }
-    }, [user]);
+            } catch (error) {
+                console.error('Error filling user data:', error);
+            } finally {
+                // Short timeout to prevent flickering
+                setTimeout(() => {
+                    setIsFormLoading(false);
+                    setComponentLoading('profile', false);
+                }, 300);
+            }
+        };
+
+        fillUserData();
+    }, [user, setComponentLoading]);
 
     // Validate all required fields
     const validateFields = () => {
@@ -62,11 +83,20 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
 
     // Handle field change with validation
     const handleFieldChange = (field, value) => {
+        // Set temporary loading state for the specific field
+        setIsFormLoading(true);
+
+        // Update the form data
         updateFormData(field, value);
+
+        // Update validation errors
         setErrors(prev => ({
             ...prev,
             [field]: !value
         }));
+
+        // Clear loading state after a short delay
+        setTimeout(() => setIsFormLoading(false), 300);
     };
 
     // Common professional summary suggestions
@@ -106,7 +136,16 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
 
     // Combined view with both basic information and description editor
     return (
-        <div className="w-full space-y-3 xxs:space-y-4 sm:space-y-5">
+        <div className="w-full space-y-3 xxs:space-y-4 sm:space-y-5 relative">
+            {/* Loading overlay for the entire form */}
+            {(authLoading || isComponentLoading('profile')) && (
+                <div className="absolute inset-0 bg-white bg-opacity-70 z-10 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mb-2"></div>
+                        <p className="text-sm text-gray-600">Loading your information...</p>
+                    </div>
+                </div>
+            )}
 
 
             <div className="space-y-3 xxs:space-y-4 sm:space-y-5">
