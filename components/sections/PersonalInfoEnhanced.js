@@ -35,7 +35,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
             try {
                 setIsFormLoading(true);
                 setComponentLoading('profile', true);
-
+                console.log(user)
                 if (user) {
                     // Only update fields that are empty or if user data exists
                     const updatedFormData = {
