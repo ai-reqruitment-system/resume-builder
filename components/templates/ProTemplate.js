@@ -62,20 +62,20 @@ const ProfessionalTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
     // SVG Icons for contact information
     const emailIcon = (
         <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"/>
+            <path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z" />
         </svg>
     );
 
     const phoneIcon = (
         <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M22 16.92V19.92C22 20.5 21.8 20.9 21.4 21.2C21 21.6 20.6 21.7 20.1 21.7C18.8 21.6 17.3 21.1 15.9 20.4C14.4 19.6 13.1 18.5 11.9 17.3C10.7 16.1 9.6 14.8 8.8 13.3C8.1 11.9 7.6 10.4 7.5 9.1C7.5 8.6 7.6 8.2 8 7.8C8.3 7.4 8.7 7.2 9.3 7.2H12.3C12.7 7.2 13.1 7.3 13.4 7.5C13.7 7.7 13.9 8 14 8.3L14.5 10.1C14.6 10.4 14.5 10.7 14.4 11C14.3 11.3 14.1 11.5 13.9 11.7L12.6 13C13.3 14.2 14.1 15.3 15.1 16.2C16 17.2 17.1 18 18.3 18.7L19.6 17.4C19.8 17.2 20 17 20.3 16.9C20.6 16.8 20.9 16.7 21.2 16.8L23 17.3C23.3 17.4 23.6 17.6 23.8 17.9C24 18.2 24.1 18.6 24.1 19V22C24 22.35 23.88 22.69 23.65 22.94C23.42 23.19 23.1 23.33 22.75 23.34C19.5 23.55 16.33 22.47 13.8 20.3C11.27 18.13 9.64 15.07 9.3 11.8C9.19 10.74 9.31 9.67 9.66 8.66C10.01 7.65 10.58 6.73 11.31 5.97C12.05 5.21 12.94 4.63 13.92 4.28C14.91 3.93 15.96 3.81 17 3.94H22C22.3 3.94 22.58 4.05 22.79 4.26C23 4.47 23.11 4.75 23.11 5.04C23.12 9.11 21.97 13.08 19.8 16.43L22 16.92Z"/>
+            <path d="M22 16.92V19.92C22 20.5 21.8 20.9 21.4 21.2C21 21.6 20.6 21.7 20.1 21.7C18.8 21.6 17.3 21.1 15.9 20.4C14.4 19.6 13.1 18.5 11.9 17.3C10.7 16.1 9.6 14.8 8.8 13.3C8.1 11.9 7.6 10.4 7.5 9.1C7.5 8.6 7.6 8.2 8 7.8C8.3 7.4 8.7 7.2 9.3 7.2H12.3C12.7 7.2 13.1 7.3 13.4 7.5C13.7 7.7 13.9 8 14 8.3L14.5 10.1C14.6 10.4 14.5 10.7 14.4 11C14.3 11.3 14.1 11.5 13.9 11.7L12.6 13C13.3 14.2 14.1 15.3 15.1 16.2C16 17.2 17.1 18 18.3 18.7L19.6 17.4C19.8 17.2 20 17 20.3 16.9C20.6 16.8 20.9 16.7 21.2 16.8L23 17.3C23.3 17.4 23.6 17.6 23.8 17.9C24 18.2 24.1 18.6 24.1 19V22C24 22.35 23.88 22.69 23.65 22.94C23.42 23.19 23.1 23.33 22.75 23.34C19.5 23.55 16.33 22.47 13.8 20.3C11.27 18.13 9.64 15.07 9.3 11.8C9.19 10.74 9.31 9.67 9.66 8.66C10.01 7.65 10.58 6.73 11.31 5.97C12.05 5.21 12.94 4.63 13.92 4.28C14.91 3.93 15.96 3.81 17 3.94H22C22.3 3.94 22.58 4.05 22.79 4.26C23 4.47 23.11 4.75 23.11 5.04C23.12 9.11 21.97 13.08 19.8 16.43L22 16.92Z" />
         </svg>
     );
 
     const locationIcon = (
         <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-            <circle cx="12" cy="10" r="3"/>
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
         </svg>
     );
 
@@ -97,9 +97,9 @@ const ProfessionalTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                         {/* Profile Photo (placeholder) */}
                         <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-8 flex justify-center">
                             <div className="w-32 h-32 md:w-36 md:h-36 rounded-full border-4 border-white shadow-md bg-gray-200">
-                                {/* This is a placeholder for the profile photo */}
+                                {/* Display user profile photo if available, otherwise show placeholder */}
                                 <img
-                                    src={"profile-placeholder.jpg"}
+                                    src={mergedData.profile_photo_url || "profile-placeholder.jpg"}
                                     alt="Profile"
                                     className="w-full h-full rounded-full object-cover"
                                 />

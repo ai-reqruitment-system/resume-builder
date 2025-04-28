@@ -16,6 +16,7 @@ const initialState = {
         dob: '',
         professional_description: '',
         professional_summary: '',
+        profile_photo_url: '',
         job_title: [],
         employer: [],
         job_begin: [],
@@ -50,6 +51,7 @@ const initialState = {
         phone: "+1 234 567 890",
         city: "New York",
         country: "USA",
+        profile_photo_url: "",
         professional_description: "<p>Experienced software engineer with a passion for building scalable and efficient web applications. Proficient in JavaScript, React, and Node.js.</p>",
         job_title: ["Senior Software Engineer", "Software Engineer"],
         employer: ["Tech Corp", "Innovate Inc"],
@@ -112,6 +114,7 @@ export const resumeSlice = createSlice({
                     pincode: action.payload.pincode || '',
                     dob: action.payload.dob || '',
                     professional_description: action.payload.professional_description || '',
+                    profile_photo_url: action.payload.profile_photo_url || '',
                 };
 
                 if (action.payload.job && action.payload.job.length > 0) {
