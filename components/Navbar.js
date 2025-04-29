@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from "react";
 import Image from 'next/image';
+import ProfileCompletionIndicator from './ProfileCompletionIndicator';
 
 import {
     Menu,
@@ -20,6 +21,7 @@ const Navbar = () => {
     const [userName, setUserName] = useState('');
     const [activeProfileId, setActiveProfileId] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userData, setUserData] = useState(null);
 
 
 
@@ -31,7 +33,8 @@ const Navbar = () => {
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
             console.log("user data from the user ", userData)
             setIsAuthenticated(!!token);
-            setUserName(userData.name || 'User');
+            setUserName(userData.name || userData.first_name || 'User');
+            setUserData(userData);
 
             // Get active profile ID from localStorage if present
             const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
@@ -113,6 +116,13 @@ const Navbar = () => {
                         {/* Render auth content based on authentication status */}
                         {renderAuthContent()}
                     </div>
+                    
+                    {/* Profile Completion Indicator */}
+                    {isAuthenticated && userData && (
+                        <div className="absolute top-16 right-4 w-72 z-40">
+                            <ProfileCompletionIndicator userData={userData} />
+                        </div>
+                    )}
                 </div>
 
                 {/* No mobile menu needed anymore as we show username directly */}

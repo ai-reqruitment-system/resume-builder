@@ -8,6 +8,7 @@ import JobTracker from '@/components/dashboard-sections/JobTracker';
 import InterviewPrep from '@/components/dashboard-sections/InterviewPrep';
 import SalaryAnalyzer from '@/components/dashboard-sections/SalaryAnalyzer';
 import Profile from '@/pages/profile';
+import ProfileCompletionIndicator from '@/components/ProfileCompletionIndicator';
 import { useRouter } from 'next/router';
 import { formatDate } from '@/lib/utils';
 import { CheckCircle2, Clock, ExternalLink } from 'lucide-react';
@@ -20,6 +21,7 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
     const [activeProfileId, setActiveProfileId] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [userData, setUserData] = useState(null);
 
     const fetchProfiles = async () => {
         setIsLoading(true);
@@ -56,6 +58,12 @@ export default function Home() {
 
     useEffect(() => {
         fetchProfiles();
+
+        // Get user data from localStorage
+        const storedUserData = JSON.parse(localStorage.getItem('userData') || '{}');
+        if (Object.keys(storedUserData).length > 0) {
+            setUserData(storedUserData);
+        }
     }, []);
 
     useEffect(() => {
@@ -147,11 +155,13 @@ export default function Home() {
 
                     {/* Main Content - adjust padding for mobile */}
                     <main className="p-3 sm:p-4 md:p-6 pb-24 md:pb-6 flex justify-center md:justify-start flex-1 overflow-x-hidden">
+
                         {(() => {
                             switch (activeTab) {
                                 case 'Dashboard':
                                     return (
                                         <div>
+
                                             <div className="mb-6">
                                                 <h2 className="text-2xl font-semibold mb-4">Resumes</h2>
                                                 <div className="border-b">
