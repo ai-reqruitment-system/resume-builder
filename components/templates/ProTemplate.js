@@ -1,6 +1,19 @@
-import React from 'react';
+import { useAuth } from '@/context/AuthContext';
+import React, { useEffect, useState } from 'react';
 
 const ProfessionalTemplate = ({ data = {}, fontStyles, isModalView, defaultData }) => {
+    const [profilePhoto, setProfilePhoto] = useState(null);
+    const { fetchUserDetail } = useAuth();
+    const getUserDetails = async () => {
+        const userFound = await fetchUserDetail();
+        // console.log(userFound.profile_photo_url, "user found");
+        setProfilePhoto(userFound.profile_photo_url || "profile-placeholder.jpg");
+        // Don't modify the data prop directly
+        console.log(userFound.profile_photo_url, "profile photo");
+    }
+    useEffect(() => {
+        getUserDetails();
+    }, []);
     const mergeDataWithDefaults = (data, defaultData) => {
         const mergedData = { ...defaultData };
         for (const key in data) {
@@ -97,9 +110,9 @@ const ProfessionalTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                         {/* Profile Photo (placeholder) */}
                         <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-8 flex justify-center">
                             <div className="w-32 h-32 md:w-36 md:h-36 rounded-full border-4 border-white shadow-md bg-gray-200">
-                                {/* Display user profile photo if available, otherwise show placeholder */}
+                                {/* This is a placeholder for the profile photo */}
                                 <img
-                                    src={mergedData.profile_photo_url || "profile-placeholder.jpg"}
+                                    src={profilePhoto || (data.profile_photo_url || "profile-placeholder.jpg")}
                                     alt="Profile"
                                     className="w-full h-full rounded-full object-cover"
                                 />

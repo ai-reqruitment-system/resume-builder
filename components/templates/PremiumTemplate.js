@@ -50,6 +50,8 @@ const mergeDataWithDefaults = (data, defaultData) => {
 const PremiumTemplate = ({ data = {}, fontStyles, isModalView }) => {
     const mergedData = mergeDataWithDefaults(data, defaultData);
 
+    console.log(data, "from the premium template")
+
     return (
         <div className="container" style={{
             fontFamily: fontStyles.font_family,
@@ -185,8 +187,31 @@ const PremiumTemplate = ({ data = {}, fontStyles, isModalView }) => {
                             INTERNSHIPS
                         </h2>
                         {mergedData.internship_title.map((title, index) => (
-                            <div key={index} className="mb-4">
-                                <div className="text-xl font-semibold text-gray-800">{title}</div>
+                            <div key={index} className="mb-6 pl-8 relative before:content-[''] before:absolute before:left-0 before:top-0 before:w-3 before:h-3 before:rounded-full before:bg-blue-300 before:border-2 before:border-white before:shadow-[0_0_0_3px_#64b5f6]">
+                                <div className="text-xl font-semibold text-gray-800 mb-1">{title}</div>
+                                {(mergedData.internship_start_date && mergedData.internship_start_date[index]) ||
+                                    (mergedData.internship_start_year && mergedData.internship_start_year[index]) ? (
+                                    <div className="flex justify-between text-blue-600 mb-2">
+                                        <span></span>
+                                        <span className="text-gray-500">
+                                            {mergedData.internship_start_date && mergedData.internship_start_date[index] ?
+                                                mergedData.internship_start_date[index] :
+                                                (mergedData.internship_start_month && mergedData.internship_start_month[index] ?
+                                                    `${mergedData.internship_start_month[index]} ` : '')}
+                                            {mergedData.internship_start_year && mergedData.internship_start_year[index] ?
+                                                mergedData.internship_start_year[index] : ''}
+                                            {((mergedData.internship_end_date && mergedData.internship_end_date[index]) ||
+                                                (mergedData.internship_end_year && mergedData.internship_end_year[index])) ?
+                                                ' - ' : ''}
+                                            {mergedData.internship_end_date && mergedData.internship_end_date[index] ?
+                                                mergedData.internship_end_date[index] :
+                                                (mergedData.internship_end_month && mergedData.internship_end_month[index] ?
+                                                    `${mergedData.internship_end_month[index]} ` : '')}
+                                            {mergedData.internship_end_year && mergedData.internship_end_year[index] ?
+                                                mergedData.internship_end_year[index] : ''}
+                                        </span>
+                                    </div>
+                                ) : null}
                                 <div
                                     dangerouslySetInnerHTML={{ __html: mergedData.internship_summary[index] }}
                                     className="prose max-w-none text-gray-600"

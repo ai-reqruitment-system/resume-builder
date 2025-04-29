@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsModalOpen } from '@/store/slices/uiSlice';
 import { updateResumeList, markResumeListAsUpdated } from '@/store/slices/resumeSlice';
+import { useAuth } from '@/context/AuthContext';
 
 const ResumeModal = ({
     isOpen,
@@ -20,6 +21,19 @@ const ResumeModal = ({
     defaultData,
     onDownload
 }) => {
+    const [profilePhoto, setProfilePhoto] = useState(null);
+    const { fetchUserDetail } = useAuth();
+    const getUserDetails = async () => {
+        const userFound = await fetchUserDetail();
+
+        // Don't modify the data prop directly
+        console.log(userFound.profile_photo_url, "profile photo");
+        setProfilePhoto(userFound.profile_photo_url ?? null);
+    }
+    useEffect(() => {
+        getUserDetails();
+    }, []);
+
     const dispatch = useDispatch();
     const [fontStyles, setFontStyles] = useState(initialFontStyles);
     const [mobileView, setMobileView] = useState('preview');
@@ -211,7 +225,9 @@ const ResumeModal = ({
             const payload = {
                 ...formData,
                 ...fontStyles,
+                profile_photo_url: profilePhoto ? profilePhoto.url : null,
                 templateName: parentSelectedTemplate,
+
             };
 
             // Send request to generate PDF
