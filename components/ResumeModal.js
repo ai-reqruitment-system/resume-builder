@@ -222,12 +222,13 @@ const ResumeModal = ({
             if (!validateFormData(setDownloadError)) return;
 
             // Prepare payload
+            const resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
             const payload = {
                 ...formData,
                 ...fontStyles,
-                profile_photo_url: profilePhoto ? profilePhoto.url : null,
+                profile_photo_url: profilePhoto ? profilePhoto : null,
                 templateName: parentSelectedTemplate,
-
+                resume_id: resume_id,
             };
 
             // Send request to generate PDF

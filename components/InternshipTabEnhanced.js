@@ -71,6 +71,27 @@ const InternshipTabEnhanced = ({
         updateFormData('internship_summary', newArray);
     };
 
+    const handleSuggestionUnselect = (suggestion, index) => {
+        const currentContent = formData.internship_summary[index] || '';
+        const bulletPoint = `<li>${suggestion}</li>`;
+
+        // If the suggestion is in a list item
+        if (currentContent.includes(bulletPoint)) {
+            // Remove the list item containing the suggestion
+            let newContent = currentContent.replace(bulletPoint, '');
+
+            // If this was the only list item, remove the entire ul element
+            if (!newContent.includes('<li>')) {
+                newContent = newContent.replace('<ul></ul>', '');
+            }
+
+            // Update the form data with the modified content
+            const newArray = [...formData.internship_summary];
+            newArray[index] = newContent;
+            updateFormData('internship_summary', newArray);
+        }
+    };
+
     const isSuggestionSelected = (suggestion, index) => {
         const currentContent = formData.internship_summary[index] || '';
         return currentContent.includes(`<li>${suggestion}</li>`);
@@ -212,6 +233,7 @@ const InternshipTabEnhanced = ({
                             customPrompt="Provide a comprehensive list of detailed professional descriptions and achievements for this internship role:"
                             suggestions={internshipSuggestions}
                             onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
+                            onSuggestionUnselect={(suggestion) => handleSuggestionUnselect(suggestion, index)}
                             isSuggestionSelected={(suggestion) => isSuggestionSelected(suggestion, index)}
                             showWritingAssistant={true}
                         />

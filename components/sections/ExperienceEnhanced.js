@@ -55,6 +55,26 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
         updateFormData('job_description', newArray);
     };
 
+    const handleSuggestionUnselect = (suggestion, index) => {
+        const currentContent = formData.job_description[index] || '';
+
+        // If the suggestion is in a list item
+        if (currentContent.includes(`<li>${suggestion}</li>`)) {
+            // Remove the list item containing the suggestion
+            let newContent = currentContent.replace(`<li>${suggestion}</li>`, '');
+
+            // If this was the only list item, remove the entire ul element
+            if (!newContent.includes('<li>')) {
+                newContent = newContent.replace('<ul></ul>', '');
+            }
+
+            // Update the form data with the modified content
+            const newArray = [...formData.job_description];
+            newArray[index] = newContent;
+            updateFormData('job_description', newArray);
+        }
+    };
+
     const isSuggestionSelected = (suggestion, index) => {
         const editorContent = formData.job_description[index] || '';
         return editorContent.includes(`<li>${suggestion}</li>`);
@@ -283,6 +303,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
                                         customPrompt="Provide a list of job responsibilities and achievements for a resume based on this role:"
                                         suggestions={jobSuggestions}
                                         onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
+                                        onSuggestionUnselect={(suggestion) => handleSuggestionUnselect(suggestion, index)}
                                         isSuggestionSelected={(suggestion) => isSuggestionSelected(suggestion, index)}
                                         showWritingAssistant={true}
                                     />

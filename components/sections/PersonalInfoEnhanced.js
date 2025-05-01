@@ -132,6 +132,24 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
         }
     };
 
+    const handleSuggestionUnselect = (suggestion) => {
+        const currentContent = formData.professional_description || '';
+
+        // If the suggestion is in a list item
+        if (currentContent.includes(`<li>${suggestion}</li>`)) {
+            // Remove the list item containing the suggestion
+            let newContent = currentContent.replace(`<li>${suggestion}</li>`, '');
+
+            // If this was the only list item, remove the entire ul element
+            if (!newContent.includes('<li>')) {
+                newContent = newContent.replace('<ul></ul>', '');
+            }
+
+            // Update the form data with the modified content
+            updateFormData('professional_description', newContent);
+        }
+    };
+
     const isSuggestionSelected = (suggestion) => {
         const currentContent = formData.professional_description || '';
         return currentContent.includes(suggestion);
@@ -294,6 +312,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                         customPrompt="provide a professional summary based on this title:"
                         suggestions={professionalSuggestions}
                         onSuggestionClick={handleSuggestionClick}
+                        onSuggestionUnselect={handleSuggestionUnselect}
                         isSuggestionSelected={isSuggestionSelected}
                         showWritingAssistant={true}
                     />

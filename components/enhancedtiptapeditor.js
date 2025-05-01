@@ -11,6 +11,7 @@ const EnhancedTipTapEditor = ({
     customPrompt,
     suggestions = [],
     onSuggestionClick,
+    onSuggestionUnselect,
     isSuggestionSelected,
     showWritingAssistant = true
 }) => {
@@ -67,7 +68,14 @@ const EnhancedTipTapEditor = ({
     }, [generatedSuggestions]);
 
     const handleSuggestionClick = (suggestion) => {
-        if (onSuggestionClick && !isSuggestionSelected(suggestion)) {
+        // Toggle behavior: if already selected, unselect it; otherwise, select it
+        if (onSuggestionClick && isSuggestionSelected && isSuggestionSelected(suggestion)) {
+            // If there's an unselect handler provided, call it
+            if (onSuggestionUnselect) {
+                onSuggestionUnselect(suggestion);
+            }
+        } else if (onSuggestionClick) {
+            // Otherwise select the suggestion
             onSuggestionClick(suggestion);
         }
     };

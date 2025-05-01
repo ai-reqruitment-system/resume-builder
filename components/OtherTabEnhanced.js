@@ -67,6 +67,26 @@ const OtherTabEnhanced = ({
         updateFormData('other_description', newArray);
     };
 
+    const handleSuggestionUnselect = (suggestion, index) => {
+        const currentContent = formData.other_description[index] || '';
+
+        // If the suggestion is in a list item
+        if (currentContent.includes(`<li>${suggestion}</li>`)) {
+            // Remove the list item containing the suggestion
+            let newContent = currentContent.replace(`<li>${suggestion}</li>`, '');
+
+            // If this was the only list item, remove the entire ul element
+            if (!newContent.includes('<li>')) {
+                newContent = newContent.replace('<ul></ul>', '');
+            }
+
+            // Update the form data with the modified content
+            const newArray = [...formData.other_description];
+            newArray[index] = newContent;
+            updateFormData('other_description', newArray);
+        }
+    };
+
     const isSuggestionSelected = (suggestion, index) => {
         const content = formData.other_description[index] || '';
         return content.includes(suggestion);
@@ -147,6 +167,7 @@ const OtherTabEnhanced = ({
                             customPrompt="Provide detailed descriptions and impact of this achievement:"
                             suggestions={achievementSuggestions}
                             onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
+                            onSuggestionUnselect={(suggestion) => handleSuggestionUnselect(suggestion, index)}
                             isSuggestionSelected={(suggestion) => isSuggestionSelected(suggestion, index)}
                             showWritingAssistant={true}
                         />
