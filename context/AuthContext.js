@@ -93,6 +93,7 @@ export function AuthProvider({ children }) {
                 } else {
                     // Has stored token - stay on current page
                     const storedUser = JSON.parse(localStorage.getItem('userData') || '{}')
+
                     setUser(storedUser)
 
                     // Fetch the latest user data from API

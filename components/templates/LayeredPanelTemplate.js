@@ -348,7 +348,7 @@ const LayeredPanelTemplate = ({ data = {}, fontStyles, isModalView, defaultData 
                                                             color: secondaryColor
                                                         }}
                                                     >
-                                                        {mergedData.job_begin[index].split('/')[1] || mergedData.job_begin[index]}
+                                                        {mergedData.job_begin[index]?.split('/')[1] || mergedData.job_begin[index]}
                                                     </div>
 
                                                     {/* Content */}

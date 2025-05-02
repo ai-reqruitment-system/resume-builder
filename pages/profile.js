@@ -136,6 +136,7 @@ export default function Profile() {
                 form.append('profile_photo_url', imageFile);
             } else if (formData.profile_photo_url) {
                 // If no new file, but existing URL, send as string
+                formData.profile_photo_url = '';
                 form.append('profile_photo_url', formData.profile_photo_url);
             }
 

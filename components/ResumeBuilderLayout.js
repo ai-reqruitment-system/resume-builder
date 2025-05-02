@@ -26,7 +26,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
 
     // Local state for AI writing assistant modal and mobile menu
     const [isAiModalOpen, setIsAiModalOpen] = useState(false);
-    const [currentField, setCurrentField] = useState('professional summary');
+    const [currentField, setCurrentField] = useState('professional summar');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Get state from Redux store
@@ -37,8 +37,9 @@ const ResumeBuilderLayout = ({ onClose }) => {
     // Define the sections for the sidebar
     const sections = [
         { id: 'heading', title: 'Header', completed: false },
-        { id: 'experience', title: 'Experience', completed: false },
+
         { id: 'education', title: 'Education', completed: false },
+        { id: 'experience', title: 'Experience', completed: false },
         { id: 'skills', title: 'Skills', completed: false },
         { id: 'internship', title: 'Internship', completed: false },
         { id: 'certificates', title: 'certificates', completed: false },
@@ -57,7 +58,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
     // Render the current section content
     const renderSection = () => {
         switch (currentSection) {
-            case 'header':
+            case 'heading':
                 return <PersonalInfoEnhanced formData={formData} updateFormData={updateFormDataHandler} />;
             case 'experience':
                 return <ExperienceEnhanced formData={formData} updateFormData={updateFormDataHandler} />;
@@ -262,7 +263,8 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                 {currentSection === 'experience' && 'Add details about your work experience'}
                                 {currentSection === 'education' && 'Add your education background'}
                                 {currentSection === 'skills' && 'What skills do you have?'}
-                                {currentSection === 'header' && 'Let\'s start with your personal details'}
+                                {currentSection === 'heading' && 'Let\'s start with your personal details'}
+                                {currentSection === 'professional summary' && 'Let\'s start with your personal details'}
                                 {currentSection === 'internship' && 'Add your internship experiences'}
                                 {currentSection === 'certificates' && 'Add your certifications and courses'}
                                 {currentSection === 'summary' && 'Summarize your professional background'}
@@ -275,7 +277,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                 {currentSection === 'skills' && 'Continue adding details! Next up → Internship'}
                                 {currentSection === 'internship' && 'Great job! Next up → certificates'}
                                 {currentSection === 'certificates' && 'Almost there! Next up → Summary'}
-                                {currentSection === 'header' && 'Next up → Experience'}
+                                {currentSection === 'heading' && 'Next up → Experience'}
                                 {currentSection === 'summary' && 'Getting closer! Next up → Additional Details'}
                                 {currentSection === 'additional' && 'Final step! Next up → Finalize'}
                                 {currentSection === 'finalize' && 'You\'re all set to download your resume!'}
@@ -298,7 +300,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                 }}
                                 className="bg-white/10 backdrop-blur-sm p-2 lg:p-3 rounded-xl shadow-lg border border-blue-400/20 hover:bg-white/20 transition-colors cursor-pointer group flex-1 lg:flex-none"
                             >
-                                <div className="flex items-center space-x-2">
+                                {/*  <div className="flex items-center space-x-2">
                                     <div className="bg-blue-500 p-2 rounded-lg shadow-inner group-hover:bg-blue-400 transition-colors">
                                         <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-blue-900" />
                                     </div>
@@ -306,7 +308,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                                         <p className="font-medium">AI Assistant</p>
                                         <p className="text-blue-100 text-[0.7rem] md:text-xs">Phrasing help</p>
                                     </div>
-                                </div>
+                                </div> */}
                             </button>
 
                             {/* Preview Button */}
@@ -372,126 +374,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
                 defaultData={defaultData}
             />
 
-            {/* AI Writing Assistant Modal */}
-            <AiWritingAssistantModal
-                isOpen={isAiModalOpen}
-                onClose={() => setIsAiModalOpen(false)}
-                title={currentField}
-                onSuggestionClick={(suggestion) => {
-                    // Handle the suggestion click based on the current section
-                    switch (currentSection) {
-                        case 'header':
-                            // For personal info, update the professional_description field
-                            if (formData.professional_description) {
-                                const currentContent = formData.professional_description;
-                                // Add the suggestion as a bullet point if it doesn't already exist
-                                if (!currentContent.includes(suggestion)) {
-                                    let newContent;
-                                    if (currentContent.includes('<ul>')) {
-                                        // Add to existing list
-                                        newContent = currentContent.replace('</ul>', `<li>${suggestion}</li></ul>`);
-                                    } else {
-                                        // Create new list
-                                        newContent = `${currentContent}<ul><li>${suggestion}</li></ul>`;
-                                    }
-                                    updateFormDataHandler('professional_description', newContent);
-                                }
-                            } else {
-                                // Create new content with the suggestion
-                                updateFormDataHandler('professional_description', `<ul><li>${suggestion}</li></ul>`);
-                            }
-                            break;
-                        case 'experience':
-                            // For experience, we would need to know which job to update
-                            // This is simplified - in a real implementation, you'd need to track the active job index
-                            if (formData.job_description && formData.job_description.length > 0) {
-                                const index = 0; // Update the first job for simplicity
-                                const descriptions = [...formData.job_description];
-                                const currentContent = descriptions[index] || '';
 
-                                if (!currentContent.includes(suggestion)) {
-                                    let newContent;
-                                    if (currentContent.includes('<ul>')) {
-                                        newContent = currentContent.replace('</ul>', `<li>${suggestion}</li></ul>`);
-                                    } else {
-                                        newContent = `${currentContent}<ul><li>${suggestion}</li></ul>`;
-                                    }
-                                    descriptions[index] = newContent;
-                                    updateFormDataHandler('job_description', descriptions);
-                                }
-                            }
-                            break;
-                        case 'education':
-                            // Similar approach for education
-                            if (formData.college_description && formData.college_description.length > 0) {
-                                const index = 0; // Update the first education entry for simplicity
-                                const descriptions = [...formData.college_description];
-                                const currentContent = descriptions[index] || '';
-
-                                if (!currentContent.includes(suggestion)) {
-                                    let newContent;
-                                    if (currentContent.includes('<ul>')) {
-                                        newContent = currentContent.replace('</ul>', `<li>${suggestion}</li></ul>`);
-                                    } else {
-                                        newContent = `${currentContent}<ul><li>${suggestion}</li></ul>`;
-                                    }
-                                    descriptions[index] = newContent;
-                                    updateFormDataHandler('college_description', descriptions);
-                                }
-                            }
-                            break;
-                        case 'skills':
-                            // For skills, add as a new skill if it doesn't exist
-                            if (formData.skill) {
-                                const skills = [...formData.skill];
-                                if (!skills.includes(suggestion)) {
-                                    skills.push(suggestion);
-                                    updateFormDataHandler('skill', skills);
-                                }
-                            } else {
-                                updateFormDataHandler('skill', [suggestion]);
-                            }
-                            break;
-                        case 'summary':
-                            // Update summary field
-                            if (formData.summary) {
-                                if (!formData.summary.includes(suggestion)) {
-                                    updateFormDataHandler('summary', formData.summary + '\n' + suggestion);
-                                }
-                            } else {
-                                updateFormDataHandler('summary', suggestion);
-                            }
-                            break;
-                        default:
-                            // For other sections, just log the suggestion
-                            console.log('Selected suggestion for', currentSection, ':', suggestion);
-                            break;
-                    }
-                }}
-                isSuggestionSelected={(suggestion) => {
-                    // Check if the suggestion is already selected based on the current section
-                    switch (currentSection) {
-                        case 'header':
-                            return formData.professional_description && formData.professional_description.includes(suggestion);
-                        case 'experience':
-                            return formData.job_description &&
-                                formData.job_description.length > 0 &&
-                                formData.job_description[0] &&
-                                formData.job_description[0].includes(suggestion);
-                        case 'education':
-                            return formData.college_description &&
-                                formData.college_description.length > 0 &&
-                                formData.college_description[0] &&
-                                formData.college_description[0].includes(suggestion);
-                        case 'skills':
-                            return formData.skill && formData.skill.includes(suggestion);
-                        case 'summary':
-                            return formData.summary && formData.summary.includes(suggestion);
-                        default:
-                            return false;
-                    }
-                }}
-            />
         </div>
     );
 };
