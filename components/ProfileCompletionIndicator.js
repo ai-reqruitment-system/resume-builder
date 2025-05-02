@@ -13,6 +13,14 @@ const ProfileCompletionIndicator = ({ userData, onTabChange }) => {
     const isMobile = useMediaQuery('(max-width: 640px)');
     const isTablet = useMediaQuery('(min-width: 641px) and (max-width: 1024px)');
 
+    // Check localStorage on component mount to see if user has dismissed the indicator before
+    useEffect(() => {
+        const isDismissed = localStorage.getItem('profileIndicatorDismissed');
+        if (isDismissed === 'true') {
+            setIsVisible(false);
+        }
+    }, []);
+
     // Define required fields for a complete profile
     const requiredFields = [
         'first_name',
@@ -110,24 +118,7 @@ const ProfileCompletionIndicator = ({ userData, onTabChange }) => {
                     </p>
                 </div>
 
-                {/* Missing fields */}
-                {missingFields.length > 0 && (
-                    <div className="mt-2 sm:mt-3 mb-1 sm:mb-2">
-                        <p className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Missing information:</p>
-                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                            {missingFields.slice(0, isMobile ? 2 : 3).map(field => (
-                                <span key={field} className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-700 text-[10px] sm:text-xs rounded-full">
-                                    {formatFieldName(field)}
-                                </span>
-                            ))}
-                            {missingFields.length > (isMobile ? 2 : 3) && (
-                                <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-100 text-gray-700 text-[10px] sm:text-xs rounded-full">
-                                    +{missingFields.length - (isMobile ? 2 : 3)} more
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                )}
+                {/* Missing fields section removed as requested */}
 
                 {/* Action buttons */}
                 <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
@@ -155,6 +146,8 @@ const ProfileCompletionIndicator = ({ userData, onTabChange }) => {
                         onClick={(e) => {
                             e.stopPropagation();
                             setIsVisible(false);
+                            // Save dismissed state to localStorage
+                            localStorage.setItem('profileIndicatorDismissed', 'true');
                         }}
                         className="w-full sm:w-auto py-1.5 sm:py-2 px-3 border border-gray-300 text-gray-600 text-xs sm:text-sm rounded-md hover:bg-gray-50 transition-colors duration-300"
                     >
