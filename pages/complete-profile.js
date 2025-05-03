@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { UserCircle2, Mail, Phone, Loader2, ArrowLeft, MapPin, Briefcase, GraduationCap } from 'lucide-react';
+import { UserCircle2, Mail, Phone, Loader2, ArrowLeft, MapPin, Briefcase, GraduationCap, AlertTriangle } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -12,6 +12,7 @@ const CompleteProfilePage = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState({});
 
     // Updated formData structure
     const [formData, setFormData] = useState({
@@ -46,28 +47,79 @@ const CompleteProfilePage = () => {
     }, [error, success]);
 
     const validatePhone = (phone) => {
-        return /^[1-9]\d{9}$/.test(phone);
+        return /^[1-9]\d{11}$/.test(phone);
     };
 
     const validateForm = () => {
+        // Reset previous errors
+        setFieldErrors({});
+        setError(''); // Clear any previous general error message
+        
+        let isValid = true;
+        const errors = {};
+        
         if (!formData.first_name.trim()) {
             setError('First name is required');
-            return false;
+            errors.first_name = 'First name is required';
+            isValid = false;
         }
+        
         if (!formData.last_name.trim()) {
             setError('Last name is required');
-            return false;
+            errors.last_name = 'Last name is required';
+            isValid = false;
         }
+        
         if (formData.phone && !validatePhone(formData.phone)) {
-            setError('Please enter a valid phone number');
-            return false;
+            setError('Please enter a valid 12-digit phone number');
+            errors.phone = 'Please enter a valid 12-digit phone number';
+            isValid = false;
         }
-        return true;
+        
+        // Validate job roles - ensure none are empty if provided
+        const validJobRoles = formData.job_roles.filter(role => role.trim() !== '');
+        if (validJobRoles.length === 0) {
+            errors.job_roles = 'At least one job role must be provided';
+            isValid = false;
+        }
+        
+        // Check if any job role is empty (for backend validation format)
+        formData.job_roles.forEach((role, index) => {
+            if (!role.trim()) {
+                errors[`job_roles.${index}`] = `The job role field must not be empty`;
+                isValid = false;
+            }
+        });
+        
+        // Validate preferred locations - ensure none are empty if provided
+        const validLocations = formData.selected_locations.filter(location => location.trim() !== '');
+        if (validLocations.length === 0) {
+            errors.selected_locations = 'At least one preferred location must be provided';
+            isValid = false;
+        }
+        
+        // Check if any location is empty (for backend validation format)
+        formData.selected_locations.forEach((location, index) => {
+            if (!location.trim()) {
+                errors[`selected_locations.${index}`] = `The location field must not be empty`;
+                isValid = false;
+            }
+        });
+        
+        setFieldErrors(errors);
+        return isValid;
     };
 
     const handleCompleteProfile = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
+
+        // Filter out empty values from arrays before submission
+        const cleanedFormData = {
+            ...formData,
+            job_roles: formData.job_roles.filter(role => role.trim() !== ''),
+            selected_locations: formData.selected_locations.filter(location => location.trim() !== '')
+        };
 
         setLoading(true);
         try {
@@ -77,11 +129,28 @@ const CompleteProfilePage = () => {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/complete-profile`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(cleanedFormData),
             });
 
             const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Failed to complete profile');
+            if (!response.ok) {
+                // Handle validation errors from the API
+                if (data.errors) {
+                    const apiErrors = {};
+                    Object.entries(data.errors).forEach(([key, messages]) => {
+                        // Store the error message
+                        apiErrors[key] = Array.isArray(messages) ? messages[0] : messages;
+                        
+                        // Set the main error message to display in the alert
+                        setError(data.message || 'Validation failed. Please check the form fields.');
+                    });
+                    setFieldErrors(apiErrors);
+                    // Don't throw error here so we can display field-specific errors
+                    return;
+                } else {
+                    throw new Error(data.message || 'Failed to complete profile');
+                }
+            }
             console.log(data)
 
             if (data.token) {
@@ -205,6 +274,7 @@ const CompleteProfilePage = () => {
                                 }))}
                                 placeholder="Enter your first name"
                                 required={true}
+                                error={fieldErrors.first_name}
                             />
 
                             {/* Last Name */}
@@ -219,6 +289,7 @@ const CompleteProfilePage = () => {
                                 }))}
                                 placeholder="Enter your last name"
                                 required={true}
+                                error={fieldErrors.last_name}
                             />
 
                             {/* Phone Number (Optional) */}
@@ -229,7 +300,7 @@ const CompleteProfilePage = () => {
                                 value={formData.phone}
                                 onChange={(e) => {
                                     const value = e.target.value.replace(/\D/g, '');
-                                    if (value.length <= 10) {
+                                    if (value.length <= 12) {
                                         setFormData(prev => ({
                                             ...prev,
                                             phone: value
@@ -237,8 +308,8 @@ const CompleteProfilePage = () => {
                                     }
                                 }}
                                 placeholder="Enter your phone number"
-                                maxLength="10"
-                                error={formData.phone && !validatePhone(formData.phone) ? "Please enter a valid 10-digit phone number" : null}
+                                maxLength="12"
+                                error={formData.phone && !validatePhone(formData.phone) ? "Please enter a valid 12-digit phone number" : fieldErrors.phone}
                             />
                         </div>
 
@@ -281,63 +352,76 @@ const CompleteProfilePage = () => {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Desired Roles (Max 5)
                                 </label>
-                                {formData.job_roles
-                                    .map((role, index) => (
-                                        <div key={index} className="flex items-center gap-2 mb-2">
-                                            <div className="relative flex-1 rounded-md shadow-sm">
-                                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <Briefcase className="h-5 w-5 text-gray-400" />
-                                                </div>
-                                                <input
-                                                    type="text"
-                                                    value={role}
-                                                    onChange={(e) => {
-                                                        const newRoles = [...formData.job_roles
-                                                        ];
-                                                        newRoles[index] = e.target.value;
-                                                        setFormData(prev => ({
-                                                            ...prev, job_roles
-                                                                : newRoles
-                                                        }));
-                                                    }}
-                                                    className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                                    placeholder="e.g., Software Engineer"
-                                                />
+                                {formData.job_roles.map((role, index) => (
+                                    <div key={index} className="flex items-center gap-2 mb-2">
+                                        <div className="relative flex-1 rounded-md shadow-sm">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <Briefcase className="h-5 w-5 text-gray-400" />
                                             </div>
-                                            {formData.job_roles
-                                                .length > 1 && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            const newRoles = formData.job_roles
-                                                                .filter((_, i) => i !== index);
-                                                            setFormData(prev => ({
-                                                                ...prev, job_roles
-                                                                    : newRoles
-                                                            }));
-                                                        }}
-                                                        className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
-                                                    >
-                                                        ×
-                                                    </button>
-                                                )}
+                                            <input
+                                                type="text"
+                                                value={role}
+                                                onChange={(e) => {
+                                                    const newRoles = [...formData.job_roles];
+                                                    newRoles[index] = e.target.value;
+                                                    setFormData(prev => ({
+                                                        ...prev, 
+                                                        job_roles: newRoles
+                                                    }));
+                                                    // Clear all job_roles related field errors when user types
+                                                    const updatedErrors = {...fieldErrors};
+                                                    // Remove general job_roles error
+                                                    delete updatedErrors.job_roles;
+                                                    // Remove all indexed job_roles errors
+                                                    Object.keys(updatedErrors).forEach(key => {
+                                                        if (key.startsWith('job_roles.')) {
+                                                            delete updatedErrors[key];
+                                                        }
+                                                    });
+                                                    setFieldErrors(updatedErrors);
+                                                }}
+                                                className={`pl-10 block w-full rounded-md ${fieldErrors.job_roles || fieldErrors['job_roles.0'] || fieldErrors[`job_roles.${index}`] ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} shadow-sm sm:text-sm`}
+                                                placeholder="e.g., Software Engineer"
+                                            />
                                         </div>
-                                    ))}
-                                {formData.job_roles
-                                    .length < 5 && (
-                                        <button
-                                            type="button"
-                                            onClick={() => setFormData(prev => ({
-                                                ...prev,
-                                                job_roles
-                                                    : [...prev.job_roles
-                                                        , '']
-                                            }))}
-                                            className="mt-2 text-sm text-blue-500 hover:text-blue-700"
-                                        >
-                                            + Add another role
-                                        </button>
-                                    )}
+                                        {formData.job_roles.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newRoles = formData.job_roles.filter((_, i) => i !== index);
+                                                    setFormData(prev => ({
+                                                        ...prev, 
+                                                        job_roles: newRoles
+                                                    }));
+                                                }}
+                                                className="p-2 text-red-500 hover:text-red-700 rounded-md hover:bg-red-50"
+                                            >
+                                                ×
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                                {(fieldErrors.job_roles || Object.keys(fieldErrors).some(key => key.startsWith('job_roles.'))) && (
+                                    <div className="mt-1 text-sm text-red-600 flex items-center">
+                                        <AlertTriangle className="h-3 w-3 mr-1" />
+                                        {fieldErrors.job_roles || 
+                                         Object.entries(fieldErrors)
+                                            .filter(([key]) => key.startsWith('job_roles.'))
+                                            .map(([key, value]) => `${value}`)[0]}
+                                    </div>
+                                )}
+                                {formData.job_roles.length < 5 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setFormData(prev => ({
+                                            ...prev,
+                                            job_roles: [...prev.job_roles, '']
+                                        }))}
+                                        className="mt-2 text-sm text-blue-500 hover:text-blue-700"
+                                    >
+                                        + Add another role
+                                    </button>
+                                )}
                             </div>
 
                             <div>
@@ -357,8 +441,19 @@ const CompleteProfilePage = () => {
                                                     const newLocations = [...formData.selected_locations];
                                                     newLocations[index] = e.target.value;
                                                     setFormData(prev => ({ ...prev, selected_locations: newLocations }));
+                                                    // Clear all selected_locations related field errors when user types
+                                                    const updatedErrors = {...fieldErrors};
+                                                    // Remove general selected_locations error
+                                                    delete updatedErrors.selected_locations;
+                                                    // Remove all indexed selected_locations errors
+                                                    Object.keys(updatedErrors).forEach(key => {
+                                                        if (key.startsWith('selected_locations.')) {
+                                                            delete updatedErrors[key];
+                                                        }
+                                                    });
+                                                    setFieldErrors(updatedErrors);
                                                 }}
-                                                className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                                className={`pl-10 block w-full rounded-md ${fieldErrors.selected_locations || fieldErrors['selected_locations.0'] || fieldErrors[`selected_locations.${index}`] ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'} shadow-sm sm:text-sm`}
                                                 placeholder="e.g., London or Remote"
                                             />
                                         </div>
@@ -376,6 +471,15 @@ const CompleteProfilePage = () => {
                                         )}
                                     </div>
                                 ))}
+                                {(fieldErrors.selected_locations || Object.keys(fieldErrors).some(key => key.startsWith('selected_locations.'))) && (
+                                    <div className="mt-1 text-sm text-red-600 flex items-center">
+                                        <AlertTriangle className="h-3 w-3 mr-1" />
+                                        {fieldErrors.selected_locations || 
+                                         Object.entries(fieldErrors)
+                                            .filter(([key]) => key.startsWith('selected_locations.'))
+                                            .map(([key, value]) => `${value}`)[0]}
+                                    </div>
+                                )}
                                 {formData.selected_locations.length < 5 && (
                                     <button
                                         type="button"
