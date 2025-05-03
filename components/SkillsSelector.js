@@ -190,7 +190,7 @@ const SkillsSelector = ({
         setShowAiSuggestions(true);
         setAnimateIn(false);
         const promptType = customPrompt ||
-            `Generate a list of technical skills and tools as single words or short phrases (no descriptions or explanations). Focus on ${title}. Example format: JavaScript, React, Node.js`;
+            `Generate a list of technical skills and tools as single words (no descriptions or explanations). Focus on ${title}. Example format: JavaScript, React, Node.js`;
         generateSuggestions(title, promptType);
     }, [customPrompt, generateSuggestions, title]);
 

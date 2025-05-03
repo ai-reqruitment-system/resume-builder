@@ -268,6 +268,7 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                                 className="w-full px-3 sm:px-4 py-2.5 bg-white border border-gray-300 rounded-lgoutline-none transition-colors hover:border-blue-400 focus:border-blue-500 text-sm"
                                 onChange={(e) => {
                                     updateFormData('professional_summary', e.target.value);
+                                    updateFormData('occupation', e.target.value);
                                     if (e.target.value.length > 0) {
                                         const filtered = occupationTitles.titles.filter(title =>
                                             title.toLowerCase().includes(e.target.value.toLowerCase())

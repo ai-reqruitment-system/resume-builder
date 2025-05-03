@@ -21,7 +21,7 @@ const Skills = ({ formData, updateFormData }) => {
                         value={formData.skill ? formData.skill.map(skill => ({ name: skill, proficiency: 'Intermediate' })) : []}
                         onChange={handleSkillsChange}
                         title="Skills"
-                        customPrompt="Provide a comprehensive list of professional skills related to:"
+                        customPrompt="Generate a list of technical skills and tools as single words (no descriptions or explanations) in the form of list  Example format: JavaScript, React, Node.js"
                     />
                 </div>
 
