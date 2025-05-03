@@ -20,16 +20,27 @@ export const updateUserProfile = async (formData) => {
         fetchOptions.headers['Content-Type'] = 'application/json';
         fetchOptions.body = JSON.stringify(formData);
     }
-    const response = await fetch(`https://admin.resuming.io/api/auth/complete-profile`, fetchOptions);
-    const data = await response.json();
-    console.log(data, "from the update user profile api ");
-    if (data.token) {
-        // Store updated user data in localStorage
-        localStorage.setItem('userData', JSON.stringify(data.data));
-        return data.data;
-    } else {
-        console.log("Error in updating the profile");
-        return null;
+    try {
+        const response = await fetch(`https://admin.resuming.io/api/auth/complete-profile`, fetchOptions);
+        const data = await response.json();
+        console.log(data, "from the update user profile api ");
+        
+        // Check if the response contains an error message
+        if (data.success === false) {
+            // Return the error response to handle validation errors
+            console.log("Error in updating the profile:", data.message);
+            return data;
+        } else if (data.token) {
+            // Store updated user data in localStorage
+            localStorage.setItem('userData', JSON.stringify(data.data));
+            return data.data;
+        } else {
+            console.log("Error in updating the profile");
+            return { success: false, message: "An unexpected error occurred" };
+        }
+    } catch (error) {
+        console.error("API call error:", error);
+        return { success: false, message: "An error occurred while updating your profile" };
     }
 }
 
@@ -60,14 +71,23 @@ export function AuthProvider({ children }) {
     const handleUpdateUserProfile = async (formData) => {
         try {
             dispatch(setGlobalLoading({ isLoading: true, loadingMessage: 'Updating profile...' }))
-            const updatedUser = await updateUserProfile(formData)
-            if (updatedUser) {
-                setUser(updatedUser)
+            const result = await updateUserProfile(formData)
+            
+            // Check if the result is an error response
+            if (result && result.success === false) {
+                // Return the error response to be handled by the component
+                console.log('Error response from API:', result)
+                return result
             }
-            return updatedUser
+            
+            // If it's a successful response with user data
+            if (result) {
+                setUser(result)
+            }
+            return result
         } catch (error) {
             console.error('Error updating profile:', error)
-            return null
+            return { success: false, message: 'An unexpected error occurred' }
         } finally {
             dispatch(setGlobalLoading({ isLoading: false }))
         }

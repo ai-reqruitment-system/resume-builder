@@ -27,6 +27,8 @@ export default function Profile() {
     const [imagePreview, setImagePreview] = useState('');
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploadError, setUploadError] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
+    const [generalError, setGeneralError] = useState('');
     const fileInputRef = useRef(null);
     useEffect(() => {
         // First set form data from user context if available
@@ -123,6 +125,10 @@ export default function Profile() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSaveLoading(true);
+        // Clear previous errors
+        setFieldErrors({});
+        setGeneralError('');
+
         try {
             // Construct FormData for multipart/form-data
             const form = new FormData();
@@ -137,7 +143,9 @@ export default function Profile() {
             } else if (formData.profile_photo_url) {
                 // If no new file, but existing URL, send as string
                 formData.profile_photo_url = '';
+
                 form.append('profile_photo_url', formData.profile_photo_url);
+
             }
 
             // Debug: Log FormData contents
@@ -145,7 +153,21 @@ export default function Profile() {
                 console.log(pair[0] + ':', pair[1]);
             }
 
-            await updateUserProfile(form);
+            const result = await updateUserProfile(form);
+            console.log('Profile update result:', result);
+
+            // Check if there's an error response from the API
+            if (result && result.success === false) {
+                // Handle validation errors
+                if (result.errors) {
+                    setFieldErrors(result.errors);
+                    setGeneralError(result.message || 'Please check the form for errors');
+                } else {
+                    setGeneralError(result.message || 'An error occurred while updating your profile');
+                }
+                return; // Don't proceed if there are errors
+            }
+
             setIsEditing(false);
 
             // Refresh user data after successful update
@@ -168,6 +190,7 @@ export default function Profile() {
             }
         } catch (error) {
             console.error('Error updating profile:', error);
+            setGeneralError('An unexpected error occurred. Please try again.');
         } finally {
             setSaveLoading(false);
         }
@@ -275,8 +298,11 @@ export default function Profile() {
                                                 value={formData.first_name}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
+                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.first_name ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                             />
+                                            {fieldErrors.first_name && (
+                                                <p className="mt-1 text-sm text-red-600">{fieldErrors.first_name[0]}</p>
+                                            )}
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Last Name</label>
@@ -286,8 +312,11 @@ export default function Profile() {
                                                 value={formData.last_name}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
+                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.last_name ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                             />
+                                            {fieldErrors.last_name && (
+                                                <p className="mt-1 text-sm text-red-600">{fieldErrors.last_name[0]}</p>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
@@ -299,8 +328,11 @@ export default function Profile() {
                                                 value={formData.phone}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
+                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.phone ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                             />
+                                            {fieldErrors.phone && (
+                                                <p className="mt-1 text-sm text-red-600">{fieldErrors.phone[0]}</p>
+                                            )}
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
@@ -310,8 +342,11 @@ export default function Profile() {
                                                 value={formData.location}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
+                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.location ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                             />
+                                            {fieldErrors.location && (
+                                                <p className="mt-1 text-sm text-red-600">{fieldErrors.location[0]}</p>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="col-span-2">
@@ -322,8 +357,11 @@ export default function Profile() {
                                             value={formData.bio}
                                             onChange={handleChange}
                                             disabled={!isEditing}
-                                            className={`w - full px - 4 py - 3 rounded - lg border ${isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition - all duration - 200`}
+                                            className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.bio ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                         />
+                                        {fieldErrors.bio && (
+                                            <p className="mt-1 text-sm text-red-600">{fieldErrors.bio[0]}</p>
+                                        )}
                                     </div>
 
                                     {/* Image Upload Progress and Error */}
@@ -370,6 +408,22 @@ export default function Profile() {
                                     )}
                                 </div>
                             </div>
+
+                            {/* General Error Message */}
+                            {generalError && (
+                                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                                    <div className="flex">
+                                        <div className="flex-shrink-0">
+                                            <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="ml-3">
+                                            <p className="text-sm font-medium text-red-800">{generalError}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Save Button */}
                             {isEditing && (
