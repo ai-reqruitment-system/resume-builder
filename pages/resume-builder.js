@@ -27,9 +27,6 @@ const ResumeBuilder = () => {
     useEffect(() => {
         const initializeBuilder = async () => {
             try {
-                setInitialLoading(true);
-                setComponentLoading('builder', true);
-
                 // Check for authentication
                 const token = localStorage.getItem('token');
                 if (!token) {
@@ -37,33 +34,28 @@ const ResumeBuilder = () => {
                     return;
                 }
 
-                await withLoading(async () => {
-                    // Load user data and profile data
-                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-                    const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
+                // Load user data and profile data
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                const profileData = JSON.parse(localStorage.getItem('profileData') || '{}');
 
-                    dispatch(setUserData(userData));
-                    dispatch(setProfileData(profileData));
+                dispatch(setUserData(userData));
+                dispatch(setProfileData(profileData));
 
-                    // Set initial section
-                    dispatch(setCurrentSection('header'));
-                    dispatch(setCurrentSectionIndex(0));
+                // Set initial section
+                dispatch(setCurrentSection('header'));
+                dispatch(setCurrentSectionIndex(0));
 
-                    // Set template from query params if available
-                    if (router.isReady && router.query.templateId) {
-                        const template = router.query.templateId;
-                        dispatch(setSelectedTemplate(template));
-                    }
-                }, {
-                    component: 'builder',
-                    message: 'Loading resume builder...'
-                });
+                // Set template from query params if available
+                if (router.isReady && router.query.templateId) {
+                    const template = router.query.templateId;
+                    dispatch(setSelectedTemplate(template));
+                }
+
+                setInitialLoading(false);
             } catch (error) {
                 console.error('Error initializing resume builder:', error);
                 toast.error('Failed to load resume builder. Please try again.');
-            } finally {
                 setInitialLoading(false);
-                setComponentLoading('builder', false);
             }
         };
 

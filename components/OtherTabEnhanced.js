@@ -127,13 +127,13 @@ const OtherTabEnhanced = ({
                     gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
                 >
                     <Plus className="w-4 h-4" />
-                    Add Achievement
+                    Add
                 </button>
             </div>
             {formData.other_title.map((_, index) => (
                 <ContentItem
                     key={index}
-                    title={formData.other_title[index] || 'New Other Achievement'}
+                    title={formData.other_title[index] || 'New Other'}
                     isActive={activeIndex === index}
                     canDelete={formData.other_title.length > 1}
                     onDelete={(e) => removeItem(index, 'other', e)}
