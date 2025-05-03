@@ -33,11 +33,11 @@ const Layout = ({ children }) => {
         }
 
         // Short delay to prevent flash of loading state
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 300);
 
-        return () => clearTimeout(timer);
+        setIsLoading(false);
+
+
+
     }, [router.pathname]);
 
     // Handle route change start

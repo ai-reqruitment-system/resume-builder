@@ -37,11 +37,10 @@ const ResumeBuilderLayout = ({ onClose }) => {
     // Define the sections for the sidebar
     const sections = [
         { id: 'heading', title: 'Header', completed: false },
-
-        { id: 'education', title: 'Education', completed: false },
-        { id: 'experience', title: 'Experience', completed: false },
-        { id: 'skills', title: 'Skills', completed: false },
         { id: 'internship', title: 'Internship', completed: false },
+        { id: 'experience', title: 'Experience', completed: false },
+        { id: 'education', title: 'Education', completed: false },
+        { id: 'skills', title: 'Skills', completed: false },
         { id: 'certificates', title: 'certificates', completed: false },
         { id: 'additional', title: 'Additional', completed: false },
     ];
@@ -286,30 +285,7 @@ const ResumeBuilderLayout = ({ onClose }) => {
 
                         {/* AI Helper Icon */}
                         <div className="flex items-center space-x-2 lg:space-x-3 flex-wrap gap-2">
-                            <button
-                                onClick={() => {
-                                    setIsAiModalOpen(true);
-                                    // Set the current field based on the active section
-                                    if (currentSection === 'experience') setCurrentField('work experience');
-                                    else if (currentSection === 'education') setCurrentField('education');
-                                    else if (currentSection === 'skills') setCurrentField('skills');
-                                    else if (currentSection === 'internship') setCurrentField('internship experience');
-                                    else if (currentSection === 'summary') setCurrentField('professional summary');
-                                    else if (currentSection === 'additional') setCurrentField('additional information');
-                                    else setCurrentField('resume content');
-                                }}
-                                className="bg-white/10 backdrop-blur-sm p-2 lg:p-3 rounded-xl shadow-lg border border-blue-400/20 hover:bg-white/20 transition-colors cursor-pointer group flex-1 lg:flex-none"
-                            >
-                                {/*  <div className="flex items-center space-x-2">
-                                    <div className="bg-blue-500 p-2 rounded-lg shadow-inner group-hover:bg-blue-400 transition-colors">
-                                        <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-blue-900" />
-                                    </div>
-                                    <div className="text-xs md:text-sm">
-                                        <p className="font-medium">AI Assistant</p>
-                                        <p className="text-blue-100 text-[0.7rem] md:text-xs">Phrasing help</p>
-                                    </div>
-                                </div> */}
-                            </button>
+
 
                             {/* Preview Button */}
                             <button
