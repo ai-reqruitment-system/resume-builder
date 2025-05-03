@@ -263,22 +263,22 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                             <input
                                 value={formData.professional_summary}
                                 onFocus={() => setShowTitleSuggestions(true)}
-                                onBlur={() => setTimeout(() => setShowTitleSuggestions(false), 200)}
+                                onBlur={(e) => {
+                                    // Use a longer timeout to ensure click event is handled first
+                                    setTimeout(() => setShowTitleSuggestions(false), 300);
+                                }}
                                 placeholder="e.g., Working as full time backend developer."
-                                className="w-full px-3 sm:px-4 py-2.5 bg-white border border-gray-300 rounded-lgoutline-none transition-colors hover:border-blue-400 focus:border-blue-500 text-sm"
+                                className="w-full px-3 sm:px-4 py-2.5 bg-white border border-gray-300 rounded-lg outline-none transition-colors hover:border-blue-400 focus:border-blue-500 text-sm"
                                 onChange={(e) => {
-                                    updateFormData('professional_summary', e.target.value);
-                                    updateFormData('occupation', e.target.value);
-                                    if (e.target.value.length > 0) {
-                                        const filtered = occupationTitles.titles.filter(title =>
-                                            title.toLowerCase().includes(e.target.value.toLowerCase())
-                                        );
-                                        setFilteredTitles(filtered);
-                                        setShowTitleSuggestions(true);
-                                    } else {
-                                        setFilteredTitles([]);
-                                        setShowTitleSuggestions(false);
-                                    }
+                                    const value = e.target.value;
+                                    updateFormData('professional_summary', value);
+                                    updateFormData('occupation', value);
+                                    const filtered = value.length > 0
+                                        ? occupationTitles.titles.filter(title =>
+                                            title.toLowerCase().includes(value.toLowerCase()))
+                                        : [];
+                                    setFilteredTitles(filtered);
+                                    setShowTitleSuggestions(filtered.length > 0);
                                 }}
                             />
                             {showTitleSuggestions && filteredTitles.length > 0 && (

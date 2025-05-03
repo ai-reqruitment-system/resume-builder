@@ -189,9 +189,9 @@ const SkillsSelector = ({
         setIsGeneratingSuggestions(true);
         setShowAiSuggestions(true);
         setAnimateIn(false);
-        const promptType = customPrompt ||
-            `Generate a list of technical skills and tools as single words (no descriptions or explanations). Focus on ${title}. Example format: JavaScript, React, Node.js`;
-        generateSuggestions(title, promptType);
+        // Pass 'skills' as the context to get more relevant suggestions
+        const promptType = customPrompt || null; // Let the hook determine the appropriate prompt based on context
+        generateSuggestions(title, promptType, 'skills');
     }, [customPrompt, generateSuggestions, title]);
 
     // Create debounced search handler

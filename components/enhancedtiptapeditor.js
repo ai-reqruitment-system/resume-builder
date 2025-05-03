@@ -80,13 +80,187 @@ const EnhancedTipTapEditor = ({
         }
     };
 
+    // Enhanced context determination based on title, content, and parent component
+    const determineContext = () => {
+        const lowerTitle = title?.toLowerCase() || '';
+        const currentContent = value?.toLowerCase() || '';
+
+        // Primary context detection from title
+        if (lowerTitle.includes('experience') || lowerTitle.includes('job') || lowerTitle.includes('work')) {
+            // Determine experience level from content
+            if (currentContent.includes('senior') || currentContent.includes('lead') || currentContent.includes('manager')) {
+                return 'senior_experience';
+            } else if (currentContent.includes('junior') || currentContent.includes('entry')) {
+                return 'junior_experience';
+            }
+            return 'experience';
+        }
+
+        if (lowerTitle.includes('education') || lowerTitle.includes('degree') || lowerTitle.includes('academic')) {
+            // Determine education type
+            if (currentContent.includes('phd') || currentContent.includes('doctorate') || currentContent.includes('research')) {
+                return 'advanced_education';
+            } else if (currentContent.includes('master') || currentContent.includes('mba')) {
+                return 'graduate_education';
+            }
+            return 'education';
+        }
+
+        // Technical vs soft skills distinction
+        if (lowerTitle.includes('skill')) {
+            if (lowerTitle.includes('technical') || lowerTitle.includes('hard')) {
+                return 'technical_skills';
+            } else if (lowerTitle.includes('soft') || lowerTitle.includes('interpersonal')) {
+                return 'soft_skills';
+            }
+            return 'skills';
+        }
+
+        if (lowerTitle.includes('language')) return 'languages';
+
+        // More specific summary types
+        if (lowerTitle.includes('summary') || lowerTitle.includes('profile') || lowerTitle.includes('about')) {
+            if (currentContent.includes('year') && (currentContent.includes('experience') || currentContent.includes('professional'))) {
+                return 'experienced_summary';
+            } else if (currentContent.includes('graduate') || currentContent.includes('entry') || currentContent.includes('junior')) {
+                return 'entry_level_summary';
+            }
+            return 'summary';
+        }
+
+        if (lowerTitle.includes('certification') || lowerTitle.includes('certificate') || lowerTitle.includes('credential')) return 'certifications';
+        if (lowerTitle.includes('project') || lowerTitle.includes('portfolio')) return 'projects';
+        if (lowerTitle.includes('achievement') || lowerTitle.includes('award')) return 'achievements';
+        if (lowerTitle.includes('volunteer') || lowerTitle.includes('community')) return 'volunteer_work';
+        if (lowerTitle.includes('publication') || lowerTitle.includes('research')) return 'publications';
+        if (lowerTitle.includes('reference')) return 'references';
+
+        // If no specific context is found, return empty string
+        return '';
+    };
+
+
     const handleGenerateSuggestions = () => {
         setIsGeneratingSuggestions(true);
         setShowAiSuggestions(true);
         setAnimateIn(false);
-        const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional descriptions for this job title or search term:`;
-        generateSuggestions(title, promptType);
+
+        // Get the detailed context
+        const context = determineContext();
+
+        // Extract additional context information
+        const contextInfo = {
+            context: context,
+            title: title || '',
+            currentContent: value || '',
+            // Extract industry/domain information if available
+            industry: extractIndustryInfo(title, value),
+            // Extract experience level if available
+            experienceLevel: extractExperienceLevel(value),
+            // Extract education level if available
+            educationLevel: extractEducationLevel(value),
+            // Extract job function if available
+            jobFunction: extractJobFunction(title, value)
+        };
+
+        const promptType = customPrompt || null; // Let the hook determine the appropriate prompt based on context
+        generateSuggestions(title, promptType, contextInfo);
     };
+
+    // Helper functions to extract more detailed context information
+    const extractIndustryInfo = (title, content) => {
+        const combinedText = `${title || ''} ${content || ''}`.toLowerCase();
+
+        // Check for common industries
+        const industries = [
+            'technology', 'healthcare', 'finance', 'education', 'marketing',
+            'sales', 'engineering', 'manufacturing', 'retail', 'hospitality',
+            'construction', 'legal', 'media', 'design', 'consulting',
+            'automotive', 'aerospace', 'pharmaceutical', 'telecommunications'
+        ];
+
+        for (const industry of industries) {
+            if (combinedText.includes(industry)) {
+                return industry;
+            }
+        }
+
+        return '';
+    };
+
+    const extractExperienceLevel = (content) => {
+        if (!content) return '';
+
+        const contentLower = content.toLowerCase();
+
+        if (contentLower.includes('senior') || contentLower.includes('lead') ||
+            contentLower.includes('manager') || contentLower.includes('director') ||
+            contentLower.includes('head') || contentLower.match(/\b[5-9]\+?\s*years?\b/) ||
+            contentLower.match(/\b1[0-9]\+?\s*years?\b/)) {
+            return 'senior';
+        }
+
+        if (contentLower.includes('mid') || contentLower.includes('intermediate') ||
+            contentLower.match(/\b[2-4]\+?\s*years?\b/)) {
+            return 'mid';
+        }
+
+        if (contentLower.includes('junior') || contentLower.includes('entry') ||
+            contentLower.includes('intern') || contentLower.includes('graduate') ||
+            contentLower.match(/\b[0-1]\+?\s*years?\b/)) {
+            return 'junior';
+        }
+
+        return '';
+    };
+
+    const extractEducationLevel = (content) => {
+        if (!content) return '';
+
+        const contentLower = content.toLowerCase();
+
+        if (contentLower.includes('phd') || contentLower.includes('doctorate') ||
+            contentLower.includes('doctoral')) {
+            return 'doctorate';
+        }
+
+        if (contentLower.includes('master') || contentLower.includes('mba') ||
+            contentLower.includes('ms ') || contentLower.includes('ma ')) {
+            return 'masters';
+        }
+
+        if (contentLower.includes('bachelor') || contentLower.includes('bs ') ||
+            contentLower.includes('ba ') || contentLower.includes('undergraduate')) {
+            return 'bachelors';
+        }
+
+        if (contentLower.includes('associate') || contentLower.includes('diploma') ||
+            contentLower.includes('certificate')) {
+            return 'associate';
+        }
+
+        return '';
+    };
+
+    const extractJobFunction = (title, content) => {
+        const combinedText = `${title || ''} ${content || ''}`.toLowerCase();
+
+        // Check for common job functions
+        const functions = [
+            'developer', 'engineer', 'designer', 'manager', 'analyst',
+            'consultant', 'specialist', 'coordinator', 'administrator', 'director',
+            'assistant', 'representative', 'officer', 'technician', 'supervisor'
+        ];
+
+        for (const jobFunction of functions) {
+            if (combinedText.includes(jobFunction)) {
+                return jobFunction;
+            }
+        }
+
+        return '';
+    };
+
 
     // Create debounced search handler with 2 second delay
     const debouncedSearchHandler = useRef(
@@ -94,8 +268,27 @@ const EnhancedTipTapEditor = ({
             if (searchValue.trim().length > 2) {
                 setIsGeneratingSuggestions(true);
                 setShowAiSuggestions(true);
-                const promptType = customPrompt || `Provide a comprehensive list of at least 8-10 detailed professional descriptions related to this search term:`;
-                generateSuggestions(searchValue, promptType);
+
+                // Get the detailed context
+                const context = determineContext();
+
+                // Extract additional context information
+                const contextInfo = {
+                    context: context,
+                    title: title || '',
+                    currentContent: value || '',
+                    searchTerm: searchValue,
+                    industry: extractIndustryInfo(title, value),
+                    experienceLevel: extractExperienceLevel(value),
+                    educationLevel: extractEducationLevel(value),
+                    jobFunction: extractJobFunction(title, value)
+                };
+
+                // Create a more specific prompt based on the search term and context
+                const promptType = customPrompt ||
+                    `Provide a comprehensive list of at least 8-10 detailed professional descriptions related to "${searchValue}" in the context of ${title || 'a resume'}. ${contextInfo.industry ? `Focus on the ${contextInfo.industry} industry.` : ''} ${contextInfo.experienceLevel ? `Target ${contextInfo.experienceLevel}-level positions.` : ''}`;
+
+                generateSuggestions(searchValue, promptType, contextInfo);
             }
         }, 2000) // 2000ms (2 seconds) delay before triggering the search
     ).current;
