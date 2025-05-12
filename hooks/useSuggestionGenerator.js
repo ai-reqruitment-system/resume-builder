@@ -237,7 +237,7 @@ export const useSuggestionGenerator = () => {
         }, 2000); // 2 seconds delay
     }
 
-    // The public API that components will call
+    // Generate suggestions based on the provided context
     const generateSuggestions = useCallback((title, customPrompt, contextInfo) => {
         // Clear previous suggestions and show loading state immediately
         setSuggestions([]);
@@ -252,6 +252,200 @@ export const useSuggestionGenerator = () => {
     const memoizedSetSuggestions = useCallback((data) => {
         setSuggestions(data);
     }, []);
+
+    // Generate mock suggestions based on the context and title
+    const generateMockSuggestions = (searchTerm, context, title = '') => {
+        // Base suggestions that can work for most contexts
+        const baseSuggestions = [
+            "Developed and implemented innovative solutions that increased efficiency by 25%",
+            "Collaborated with cross-functional teams to deliver high-quality results on time and within budget",
+            "Managed multiple projects simultaneously while maintaining attention to detail and meeting all deadlines",
+            "Conducted thorough research and analysis to identify opportunities for improvement",
+            "Created comprehensive documentation and training materials for team members",
+            "Presented findings and recommendations to senior management with clear, actionable insights",
+            "Mentored junior team members, providing guidance and support for their professional development",
+            "Streamlined processes to reduce operational costs while maintaining quality standards"
+        ];
+
+        // Context-specific suggestions
+        const contextSuggestions = {
+            'experience': [
+                "Led a team of 5 professionals to successfully deliver a critical project ahead of schedule",
+                "Increased department productivity by 30% through implementation of new workflows and tools",
+                "Negotiated with vendors to reduce costs by 15% while improving service quality",
+                "Resolved complex customer issues, maintaining a 98% satisfaction rating",
+                "Pioneered new methodologies that became standard practice across the organization"
+            ],
+            'senior_experience': [
+                "Directed strategic initiatives that resulted in $1.2M annual cost savings",
+                "Led organizational transformation, aligning team objectives with company vision",
+                "Managed a department budget of $5M, consistently meeting financial targets",
+                "Developed and executed long-term strategic plans that increased market share by 15%",
+                "Mentored and developed 12 direct reports, with 4 achieving promotions to leadership roles"
+            ],
+            'junior_experience': [
+                "Assisted senior team members with research and data analysis for key projects",
+                "Participated in training programs to develop essential skills and industry knowledge",
+                "Contributed to team projects, taking responsibility for specific deliverables",
+                "Learned and applied new technologies to improve workflow efficiency",
+                "Received recognition for exceptional attention to detail and quality of work"
+            ],
+            'education': [
+                "Achieved Dean's List recognition for academic excellence for 6 consecutive semesters",
+                "Completed relevant coursework in advanced topics, maintaining a 3.8 GPA",
+                "Participated in research project examining industry trends and future developments",
+                "Selected for competitive academic program with a 15% acceptance rate",
+                "Balanced full course load while working part-time and participating in extracurricular activities"
+            ],
+            'skills': [
+                "Proficient in industry-standard software and tools with advanced certification",
+                "Excellent problem-solving abilities with a track record of innovative solutions",
+                "Strong analytical skills with experience in data-driven decision making",
+                "Effective communication skills, both written and verbal, across all organizational levels",
+                "Adaptable to changing priorities while maintaining focus on key objectives"
+            ],
+            'technical_skills': [
+                "Expert in programming languages including Python, JavaScript, and SQL",
+                "Experienced with cloud platforms (AWS, Azure) and containerization technologies",
+                "Skilled in data analysis using statistical methods and visualization tools",
+                "Proficient in project management methodologies including Agile and Scrum",
+                "Knowledge of cybersecurity best practices and compliance requirements"
+            ],
+            'soft_skills': [
+                "Exceptional interpersonal skills with ability to build strong professional relationships",
+                "Demonstrated leadership in cross-functional team environments",
+                "Excellent time management and organizational abilities",
+                "Strong negotiation and conflict resolution capabilities",
+                "Effective presentation and public speaking skills with executive audiences"
+            ],
+            'summary': [
+                "Results-driven professional with 7+ years of experience delivering innovative solutions",
+                "Detail-oriented team player with proven ability to optimize processes and increase efficiency",
+                "Strategic thinker who consistently identifies opportunities for improvement and growth",
+                "Dedicated professional committed to continuous learning and skill development",
+                "Versatile team member adaptable to changing priorities and business needs"
+            ],
+            'certifications': [
+                "Demonstrates comprehensive knowledge of industry best practices and standards",
+                "Validates expertise in specialized techniques and methodologies",
+                "Recognized credential that differentiates from peers in competitive job market",
+                "Represents commitment to professional development and continuous learning",
+                "Provides practical skills directly applicable to current industry challenges"
+            ],
+            'internship': [
+                "Assisted in the development of key projects under senior team supervision",
+                "Collaborated with cross-functional teams to deliver project components on schedule",
+                "Conducted research and data analysis to support decision-making processes",
+                "Participated in professional development workshops to enhance industry knowledge",
+                "Received mentorship from experienced professionals in the field"
+            ]
+        };
+
+        // Title-specific suggestions based on common job titles or education fields
+        const titleSuggestions = {};
+
+        // Generate title-specific suggestions if title is provided
+        if (title && title.trim().length > 0) {
+            const titleLower = title.toLowerCase();
+
+            // Developer/Engineer suggestions
+            if (titleLower.includes('developer') || titleLower.includes('engineer') || titleLower.includes('programming')) {
+                titleSuggestions[titleLower] = [
+                    `Developed and maintained ${titleLower.includes('front') ? 'user interfaces' : 'backend systems'} using modern technologies and best practices`,
+                    `Implemented efficient code that improved application performance by 30%`,
+                    `Collaborated with designers and product managers to deliver features that enhanced user experience`,
+                    `Participated in code reviews to ensure quality and knowledge sharing across the team`,
+                    `Debugged and resolved complex technical issues in production environments`
+                ];
+            }
+
+            // Designer suggestions
+            else if (titleLower.includes('design') || titleLower.includes('ux') || titleLower.includes('ui')) {
+                titleSuggestions[titleLower] = [
+                    `Created user-centered designs that increased user engagement by 40%`,
+                    `Conducted user research and usability testing to inform design decisions`,
+                    `Developed wireframes, prototypes, and high-fidelity mockups for web and mobile applications`,
+                    `Collaborated with developers to ensure design implementation met quality standards`,
+                    `Established design systems that improved consistency and development efficiency`
+                ];
+            }
+
+            // Management suggestions
+            else if (titleLower.includes('manager') || titleLower.includes('director') || titleLower.includes('lead')) {
+                titleSuggestions[titleLower] = [
+                    `Led a team of professionals to achieve quarterly targets consistently`,
+                    `Developed strategic plans that aligned with organizational objectives`,
+                    `Implemented process improvements that increased team productivity by 25%`,
+                    `Managed budget and resources effectively, delivering projects under budget`,
+                    `Mentored team members, resulting in improved performance and career advancement`
+                ];
+            }
+
+            // Marketing suggestions
+            else if (titleLower.includes('market') || titleLower.includes('brand') || titleLower.includes('content')) {
+                titleSuggestions[titleLower] = [
+                    `Developed marketing campaigns that increased customer acquisition by 35%`,
+                    `Created content strategy that improved engagement across digital channels`,
+                    `Analyzed market trends and competitor activities to inform strategic decisions`,
+                    `Managed social media presence, growing follower base by 50% in six months`,
+                    `Collaborated with sales team to develop materials that supported revenue growth`
+                ];
+            }
+
+            // Education-specific suggestions
+            else if (titleLower.includes('degree') || titleLower.includes('bachelor') || titleLower.includes('master') ||
+                titleLower.includes('phd') || titleLower.includes('study')) {
+                titleSuggestions[titleLower] = [
+                    `Completed advanced coursework in ${title} with exceptional academic standing`,
+                    `Conducted research project examining key aspects of ${title} and their practical applications`,
+                    `Participated in academic competitions related to ${title}, achieving recognition`,
+                    `Applied theoretical knowledge from ${title} studies in practical, real-world scenarios`,
+                    `Collaborated with peers on group projects that demonstrated mastery of ${title} concepts`
+                ];
+            }
+
+            // Certificate-specific suggestions
+            else if (titleLower.includes('certif') || titleLower.includes('credential')) {
+                titleSuggestions[titleLower] = [
+                    `Earned ${title} certification demonstrating expertise in industry-standard practices`,
+                    `Applied knowledge gained from ${title} certification to improve work processes`,
+                    `Maintained ${title} credential through continuing education and professional development`,
+                    `Leveraged ${title} certification to implement best practices within the organization`,
+                    `Recognized for specialized knowledge validated by ${title} certification`
+                ];
+            }
+        }
+
+        // Combine base suggestions with context-specific and title-specific ones if available
+        let combinedSuggestions = [...baseSuggestions];
+
+        // Add context-specific suggestions
+        if (context && contextSuggestions[context]) {
+            combinedSuggestions = [...contextSuggestions[context], ...combinedSuggestions];
+        }
+
+        // Add title-specific suggestions
+        if (title && titleSuggestions[title.toLowerCase()]) {
+            combinedSuggestions = [...titleSuggestions[title.toLowerCase()], ...combinedSuggestions];
+        }
+
+        // If search term is provided, filter or prioritize suggestions
+        if (searchTerm && searchTerm.trim().length > 0) {
+            const searchLower = searchTerm.toLowerCase();
+            // First include suggestions that contain the search term
+            const matchingSuggestions = combinedSuggestions.filter(s =>
+                s.toLowerCase().includes(searchLower)
+            );
+            // Then add other suggestions to maintain a good number of results
+            const otherSuggestions = combinedSuggestions.filter(s =>
+                !s.toLowerCase().includes(searchLower)
+            );
+            // Prioritize matching suggestions but keep a good total number
+            combinedSuggestions = [...matchingSuggestions, ...otherSuggestions].slice(0, 10);
+        }
+
+        return combinedSuggestions;
+    };
 
     // Clean up the debounced function on unmount
     useCallback(() => {

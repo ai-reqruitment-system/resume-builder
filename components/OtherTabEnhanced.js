@@ -142,7 +142,7 @@ const OtherTabEnhanced = ({
                     <div className="p-5 bg-white space-y-5">
                         <div className="grid grid-cols-1 gap-5 mb-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Achievement Title</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Other Title</label>
                                 <input
                                     value={formData.other_title[index] || ''}
                                     onChange={(e) => {

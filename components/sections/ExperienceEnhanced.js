@@ -300,7 +300,7 @@ const ExperienceEnhanced = ({ formData, updateFormData }) => {
                                             updateFormData('job_description', newArray);
                                         }}
                                         title={`Job Description`}
-                                        customPrompt="Provide a list of job responsibilities and achievements for a resume based on this role:"
+                                        customPrompt={`Provide a detailed list of professional achievements and responsibilities for a ${formData.job_title[index] || 'professional'} role${formData.employer[index] ? ` at ${formData.employer[index]}` : ''}, focusing on quantifiable results and key contributions:`}
                                         suggestions={jobSuggestions}
                                         onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
                                         onSuggestionUnselect={(suggestion) => handleSuggestionUnselect(suggestion, index)}

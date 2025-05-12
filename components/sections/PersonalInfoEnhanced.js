@@ -310,8 +310,8 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                     <EnhancedTipTapEditor
                         value={formData.professional_description || ''}
                         onChange={(e) => updateFormData('professional_description', e.target.value)}
-                        title={'Professional Summary'}
-                        customPrompt="provide a professional summary based on this title:"
+                        title={formData.professional_summary || formData.occupation || 'Professional Summary'}
+                        customPrompt={`Provide a comprehensive professional summary for your role as ${formData.professional_summary || formData.occupation || 'a professional'}:`}
                         suggestions={professionalSuggestions}
                         onSuggestionClick={handleSuggestionClick}
                         onSuggestionUnselect={handleSuggestionUnselect}

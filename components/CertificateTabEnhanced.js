@@ -130,7 +130,6 @@ const CertificateTabEnhanced = ({
                                         const newArray = [...formData.certificate_title];
                                         newArray[index] = e.target.value;
                                         updateFormData('certificate_title', newArray);
-                                        // Title has changed, this will trigger suggestion generation in EnhancedTipTapEditor
                                     }}
                                     placeholder="e.g., AWS Certified Solutions Architect"
                                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
@@ -138,7 +137,22 @@ const CertificateTabEnhanced = ({
                                 />
                             </div>
                         </div>
-
+                        {/*  */}
+                        {/* Description Editor Section */}
+                        {/*   <EnhancedTipTapEditor
+                            value={formData.certificate_description[index] || ''}
+                            onChange={(e) => {
+                                const newArray = [...formData.certificate_description];
+                                newArray[index] = e.target.value;
+                                updateFormData('certificate_description', newArray);
+                            }}
+                            title={formData.certificate_title[index] || 'Certificate Description'}
+                            customPrompt={`Provide detailed descriptions of the ${formData.certificate_title[index] || 'certificate'} and its value:`}
+                            suggestions={certificateSuggestions}
+                            onSuggestionClick={(suggestion) => handleSuggestionClick(suggestion, index)}
+                            isSuggestionSelected={(suggestion) => isSuggestionSelected(suggestion, index)}
+                            showWritingAssistant={true}
+                        /> */}
                     </div>
                 </ContentItem>
             ))}
