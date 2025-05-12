@@ -12,6 +12,8 @@ const InternshipTabEnhanced = ({
     setActiveIndex,
     step = 1
 }) => {
+    // State for tracking validation errors
+    const [errors, setErrors] = useState([]);
     // Common internship description suggestions
     const internshipSuggestions = [
         "Assisted in the development of...",
@@ -35,7 +37,9 @@ const InternshipTabEnhanced = ({
         if (!formData.internship_title?.length) {
             initializeEmptyInternship();
         }
-    }, []);
+        // Validate dates when form data changes
+        validateDates();
+    }, [formData]);
 
     const initializeEmptyInternship = () => {
         updateFormData('internship_title', ['']);
@@ -44,6 +48,48 @@ const InternshipTabEnhanced = ({
         updateFormData('internship_start_year', ['']);
         updateFormData('internship_end_month', ['']);
         updateFormData('internship_end_year', ['']);
+        setErrors([{ start_date: false, end_date: false, date_order: false }]);
+    };
+
+    // Validate date fields
+    const validateDates = () => {
+        if (!formData.internship_title?.length) return;
+
+        const newErrors = formData.internship_title.map((_, index) => {
+            const startMonth = formData.internship_start_month?.[index] || '';
+            const startYear = formData.internship_start_year?.[index] || '';
+            const endMonth = formData.internship_end_month?.[index] || '';
+            const endYear = formData.internship_end_year?.[index] || '';
+
+            // Check if start date is provided (required)
+            const startDateMissing = !startMonth || !startYear;
+
+            // Check date order only if both dates are provided
+            let dateOrderError = false;
+            if (startMonth && startYear && endMonth && endYear) {
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+                const startMonthIndex = months.indexOf(startMonth);
+                const endMonthIndex = months.indexOf(endMonth);
+
+                const startYearNum = parseInt(startYear);
+                const endYearNum = parseInt(endYear);
+
+                // Compare years first, then months if years are equal
+                if (endYearNum < startYearNum || (endYearNum === startYearNum && endMonthIndex < startMonthIndex)) {
+                    dateOrderError = true;
+                }
+            }
+
+            return {
+                start_date: startDateMissing,
+                end_date: false, // End date is not required (could be current position)
+                date_order: dateOrderError
+            };
+        });
+
+        setErrors(newErrors);
+        return !newErrors.some(error => error.start_date || error.date_order);
     };
 
     const handleSuggestionClick = (suggestion, index) => {
@@ -168,55 +214,66 @@ const InternshipTabEnhanced = ({
                             {/* Date Range Section */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <MonthYearSelector
-                                        label="Start Date"
-                                        value={`${formData.internship_start_month?.[index] || ''} ${formData.internship_start_year?.[index] || ''}`.trim()}
-                                        onChange={(value) => {
-                                            if (value) {
-                                                const [month, year] = value.split(' ');
-                                                const newMonthArray = [...(formData.internship_start_month || Array(formData.internship_title.length).fill(''))];
-                                                const newYearArray = [...(formData.internship_start_year || Array(formData.internship_title.length).fill(''))];
-                                                newMonthArray[index] = month;
-                                                newYearArray[index] = year;
-                                                updateFormData('internship_start_month', newMonthArray);
-                                                updateFormData('internship_start_year', newYearArray);
-                                            } else {
-                                                const newMonthArray = [...(formData.internship_start_month || Array(formData.internship_title.length).fill(''))];
-                                                const newYearArray = [...(formData.internship_start_year || Array(formData.internship_title.length).fill(''))];
-                                                newMonthArray[index] = '';
-                                                newYearArray[index] = '';
-                                                updateFormData('internship_start_month', newMonthArray);
-                                                updateFormData('internship_start_year', newYearArray);
-                                            }
-                                        }}
-                                        placeholder="Select start month"
-                                        required
-                                    />
+                                    <div className="relative">
+                                        <MonthYearSelector
+                                            label="Start Date"
+                                            value={`${formData.internship_start_month?.[index] || ''} ${formData.internship_start_year?.[index] || ''}`.trim()}
+                                            onChange={(value) => {
+                                                if (value) {
+                                                    const [month, year] = value.split(' ');
+                                                    const newMonthArray = [...(formData.internship_start_month || Array(formData.internship_title.length).fill(''))];
+                                                    const newYearArray = [...(formData.internship_start_year || Array(formData.internship_title.length).fill(''))];
+                                                    newMonthArray[index] = month;
+                                                    newYearArray[index] = year;
+                                                    updateFormData('internship_start_month', newMonthArray);
+                                                    updateFormData('internship_start_year', newYearArray);
+                                                } else {
+                                                    const newMonthArray = [...(formData.internship_start_month || Array(formData.internship_title.length).fill(''))];
+                                                    const newYearArray = [...(formData.internship_start_year || Array(formData.internship_title.length).fill(''))];
+                                                    newMonthArray[index] = '';
+                                                    newYearArray[index] = '';
+                                                    updateFormData('internship_start_month', newMonthArray);
+                                                    updateFormData('internship_start_year', newYearArray);
+                                                }
+                                            }}
+                                            placeholder="Select start month"
+                                            required
+                                            className={errors[index]?.start_date ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}
+                                        />
+                                        {errors[index]?.start_date && (
+                                            <p className="text-red-500 text-xs mt-1">Start date is required</p>
+                                        )}
+                                    </div>
                                 </div>
                                 <div>
-                                    <MonthYearSelector
-                                        label="End Date"
-                                        value={`${formData.internship_end_month?.[index] || ''} ${formData.internship_end_year?.[index] || ''}`.trim()}
-                                        onChange={(value) => {
-                                            if (value) {
-                                                const [month, year] = value.split(' ');
-                                                const newMonthArray = [...(formData.internship_end_month || Array(formData.internship_title.length).fill(''))];
-                                                const newYearArray = [...(formData.internship_end_year || Array(formData.internship_title.length).fill(''))];
-                                                newMonthArray[index] = month;
-                                                newYearArray[index] = year;
-                                                updateFormData('internship_end_month', newMonthArray);
-                                                updateFormData('internship_end_year', newYearArray);
-                                            } else {
-                                                const newMonthArray = [...(formData.internship_end_month || Array(formData.internship_title.length).fill(''))];
-                                                const newYearArray = [...(formData.internship_end_year || Array(formData.internship_title.length).fill(''))];
-                                                newMonthArray[index] = '';
-                                                newYearArray[index] = '';
-                                                updateFormData('internship_end_month', newMonthArray);
-                                                updateFormData('internship_end_year', newYearArray);
-                                            }
-                                        }}
-                                        placeholder="Select end month or leave empty for current position"
-                                    />
+                                    <div className="relative">
+                                        <MonthYearSelector
+                                            label="End Date"
+                                            value={`${formData.internship_end_month?.[index] || ''} ${formData.internship_end_year?.[index] || ''}`.trim()}
+                                            onChange={(value) => {
+                                                if (value) {
+                                                    const [month, year] = value.split(' ');
+                                                    const newMonthArray = [...(formData.internship_end_month || Array(formData.internship_title.length).fill(''))];
+                                                    const newYearArray = [...(formData.internship_end_year || Array(formData.internship_title.length).fill(''))];
+                                                    newMonthArray[index] = month;
+                                                    newYearArray[index] = year;
+                                                    updateFormData('internship_end_month', newMonthArray);
+                                                    updateFormData('internship_end_year', newYearArray);
+                                                } else {
+                                                    const newMonthArray = [...(formData.internship_end_month || Array(formData.internship_title.length).fill(''))];
+                                                    const newYearArray = [...(formData.internship_end_year || Array(formData.internship_title.length).fill(''))];
+                                                    newMonthArray[index] = '';
+                                                    newYearArray[index] = '';
+                                                    updateFormData('internship_end_month', newMonthArray);
+                                                    updateFormData('internship_end_year', newYearArray);
+                                                }
+                                            }}
+                                            placeholder="Select end month or leave empty for current position"
+                                        />
+                                        {errors[index]?.date_order && (
+                                            <p className="text-red-500 text-xs mt-1">End date must be after start date</p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
