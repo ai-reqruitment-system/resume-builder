@@ -4,7 +4,7 @@ import ResumeBuilderLayout from '@/components/ResumeBuilderLayout';
 import Layout from '@/components/Layout';
 import LoadingScreen from '@/components/LoadingScreen';
 import { useLoading } from '@/context/LoadingContext';
-import { useToast } from '@/components/ui/ToastProvider';
+import SweetAlert from '@/utils/sweetAlert';
 
 // Redux imports
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +17,6 @@ const ResumeBuilder = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { withLoading, setComponentLoading } = useLoading();
-    const toast = useToast();
     const [initialLoading, setInitialLoading] = useState(true);
 
     // Get state from Redux store
@@ -54,13 +53,13 @@ const ResumeBuilder = () => {
                 setInitialLoading(false);
             } catch (error) {
                 console.error('Error initializing resume builder:', error);
-                toast.error('Failed to load resume builder. Please try again.');
+                SweetAlert.error('Error', 'Failed to load resume builder. Please try again.');
                 setInitialLoading(false);
             }
         };
 
         initializeBuilder();
-    }, [router, dispatch, withLoading, setComponentLoading, toast]);
+    }, [router, dispatch, withLoading, setComponentLoading]);
 
     const handleClose = () => {
         router.push('/dashboard');

@@ -3,12 +3,19 @@ import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
 import Image from 'next/image';
+import PhoneInputComponent from '../components/PhoneInputComponent';
+import { useEffect as useLayoutEffect } from 'react';
+import { validateProfile } from '../utils/validation';
+import Swal from 'sweetalert2';
+
 
 export default function Profile() {
     const router = useRouter();
 
     const { user, loading, updateUserProfile, fetchUserDetail } = useAuth();
     const [userData, setUserData] = useState(null);
+
+    // Custom styles for phone input are now handled by the PhoneInputComponent
 
     // console.log(user, "from profile")
     const [formData, setFormData] = useState({
@@ -85,6 +92,13 @@ export default function Profile() {
         }));
     };
 
+    const handlePhoneChange = (value, country) => {
+        setFormData(prev => ({
+            ...prev,
+            phone: value
+        }));
+    };
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -129,12 +143,32 @@ export default function Profile() {
         setFieldErrors({});
         setGeneralError('');
 
+        // Validate required fields
+        const validationResult = validateProfile(formData);
+        if (!validationResult.success) {
+            setFieldErrors(validationResult.errors);
+            Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: 'Please fill in all required fields correctly',
+                customClass: {
+                    popup: 'swal-popup-error',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text',
+                    confirmButton: 'swal-button'
+                }
+            });
+            setSaveLoading(false);
+            return;
+        }
+
         try {
             // Construct FormData for multipart/form-data
             const form = new FormData();
             form.append('first_name', formData.first_name);
             form.append('last_name', formData.last_name);
             form.append('email', formData.email);
+            // Phone number is already formatted with country code by react-phone-input-2
             form.append('phone', formData.phone);
             form.append('location', formData.location);
             form.append('bio', formData.bio);
@@ -161,12 +195,45 @@ export default function Profile() {
                 // Handle validation errors
                 if (result.errors) {
                     setFieldErrors(result.errors);
-                    setGeneralError(result.message || 'Please check the form for errors');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Update Failed',
+                        text: result.message || 'Please check the form for errors',
+                        customClass: {
+                            popup: 'swal-popup-error',
+                            title: 'swal-title',
+                            htmlContainer: 'swal-text',
+                            confirmButton: 'swal-button'
+                        }
+                    });
                 } else {
                     setGeneralError(result.message || 'An error occurred while updating your profile');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: result.message || 'An error occurred while updating your profile',
+                        customClass: {
+                            popup: 'swal-popup-error',
+                            title: 'swal-title',
+                            htmlContainer: 'swal-text',
+                            confirmButton: 'swal-button'
+                        }
+                    });
                 }
                 return; // Don't proceed if there are errors
             }
+
+            // Show success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Profile updated successfully!',
+                customClass: {
+                    popup: 'swal-popup-success',
+                    title: 'swal-title',
+                    htmlContainer: 'swal-text'
+                }
+            });
 
             setIsEditing(false);
 
@@ -321,20 +388,6 @@ export default function Profile() {
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
-                                            <input
-                                                type="tel"
-                                                name="phone"
-                                                value={formData.phone}
-                                                onChange={handleChange}
-                                                disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.phone ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
-                                            />
-                                            {fieldErrors.phone && (
-                                                <p className="mt-1 text-sm text-red-600">{fieldErrors.phone[0]}</p>
-                                            )}
-                                        </div>
-                                        <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
                                             <input
                                                 type="text"
@@ -348,65 +401,82 @@ export default function Profile() {
                                                 <p className="mt-1 text-sm text-red-600">{fieldErrors.location[0]}</p>
                                             )}
                                         </div>
-                                    </div>
-                                    <div className="col-span-2">
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Occupation</label>
-                                        <input
-                                            type="text"
-                                            name="bio"
-                                            value={formData.bio}
-                                            onChange={handleChange}
-                                            disabled={!isEditing}
-                                            className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.bio ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
-                                        />
-                                        {fieldErrors.bio && (
-                                            <p className="mt-1 text-sm text-red-600">{fieldErrors.bio[0]}</p>
-                                        )}
-                                    </div>
-
-                                    {/* Image Upload Progress and Error */}
-                                    {isEditing && (
-                                        <div className="col-span-2">
-                                            {uploadProgress > 0 && uploadProgress < 100 && (
-                                                <div className="mt-2">
-                                                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                                        <div
-                                                            className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                                            style={{ width: `${uploadProgress} % ` }}
-                                                        ></div>
-                                                    </div>
-                                                    <p className="text-xs text-gray-500 mt-1">Uploading: {uploadProgress}%</p>
-                                                </div>
-                                            )}
-
-                                            {uploadError && (
-                                                <div className="mt-2 text-sm text-red-600">
-                                                    {uploadError}
-                                                </div>
-                                            )}
-
-                                            {imagePreview && (
-                                                <div className="mt-2 flex items-center space-x-2">
-                                                    <div className="w-10 h-10 rounded-full overflow-hidden">
-                                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                                    </div>
-                                                    <span className="text-sm text-gray-600">New profile photo selected</span>
-                                                    <button
-                                                        type="button"
-                                                        className="text-red-500 hover:text-red-700 text-sm"
-                                                        onClick={() => {
-                                                            setImageFile(null);
-                                                            setImagePreview('');
-                                                            setUploadProgress(0);
-                                                        }}
-                                                    >
-                                                        Remove
-                                                    </button>
-                                                </div>
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                                            <PhoneInputComponent
+                                                value={formData.phone}
+                                                onChange={handlePhoneChange}
+                                                disabled={!isEditing}
+                                                error={fieldErrors.phone ? fieldErrors.phone[0] : null}
+                                                inputClassName={`transition-all duration-200 ${fieldErrors.phone ? 'border-red-500' : ''}`}
+                                                preferredCountries={['us', 'gb', 'ca', 'au']}
+                                                enableSearch={true}
+                                                searchPlaceholder="Search country..."
+                                                autoFormat={true}
+                                            />
+                                            {fieldErrors.phone && (
+                                                <p className="mt-1 text-sm text-red-600">{fieldErrors.phone[0]}</p>
                                             )}
                                         </div>
+                                    </div>
+                                </div>
+                                <div className="col-span-2">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Occupation</label>
+                                    <input
+                                        type="text"
+                                        name="bio"
+                                        value={formData.bio}
+                                        onChange={handleChange}
+                                        disabled={!isEditing}
+                                        className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.bio ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                    />
+                                    {fieldErrors.bio && (
+                                        <p className="mt-1 text-sm text-red-600">{fieldErrors.bio[0]}</p>
                                     )}
                                 </div>
+
+                                {/* Image Upload Progress and Error */}
+                                {isEditing && (
+                                    <div className="col-span-2">
+                                        {uploadProgress > 0 && uploadProgress < 100 && (
+                                            <div className="mt-2">
+                                                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                                    <div
+                                                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                                        style={{ width: `${uploadProgress} % ` }}
+                                                    ></div>
+                                                </div>
+                                                <p className="text-xs text-gray-500 mt-1">Uploading: {uploadProgress}%</p>
+                                            </div>
+                                        )}
+
+                                        {uploadError && (
+                                            <div className="mt-2 text-sm text-red-600">
+                                                {uploadError}
+                                            </div>
+                                        )}
+
+                                        {imagePreview && (
+                                            <div className="mt-2 flex items-center space-x-2">
+                                                <div className="w-10 h-10 rounded-full overflow-hidden">
+                                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                </div>
+                                                <span className="text-sm text-gray-600">New profile photo selected</span>
+                                                <button
+                                                    type="button"
+                                                    className="text-red-500 hover:text-red-700 text-sm"
+                                                    onClick={() => {
+                                                        setImageFile(null);
+                                                        setImagePreview('');
+                                                        setUploadProgress(0);
+                                                    }}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             {/* General Error Message */}

@@ -4,7 +4,8 @@ import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import InputWithIcon from '@/components/InputWithIcon';
-import AlertMessage from '@/components/ui/AlertMessage';
+import PhoneInputComponent from '@/components/PhoneInputComponent';
+import SweetAlert from '@/utils/sweetAlert';
 
 const CompleteProfilePage = () => {
     const router = useRouter();
@@ -35,14 +36,15 @@ const CompleteProfilePage = () => {
     }, [router]);
 
     useEffect(() => {
-        if (error || success) {
-            setShowAlert(true);
-            const timer = setTimeout(() => {
-                setShowAlert(false);
-                setError('');
-                setSuccess('');
-            }, 5000);
-            return () => clearTimeout(timer);
+        if (error) {
+            SweetAlert.error('Error', error);
+            // Clear error after showing alert
+            setError('');
+        }
+        if (success) {
+            SweetAlert.success('Success', success);
+            // Clear success after showing alert
+            setSuccess('');
         }
     }, [error, success]);
 
@@ -54,35 +56,35 @@ const CompleteProfilePage = () => {
         // Reset previous errors
         setFieldErrors({});
         setError(''); // Clear any previous general error message
-        
+
         let isValid = true;
         const errors = {};
-        
+
         if (!formData.first_name.trim()) {
             setError('First name is required');
             errors.first_name = 'First name is required';
             isValid = false;
         }
-        
+
         if (!formData.last_name.trim()) {
             setError('Last name is required');
             errors.last_name = 'Last name is required';
             isValid = false;
         }
-        
+
         if (formData.phone && !validatePhone(formData.phone)) {
             setError('Please enter a valid 12-digit phone number');
             errors.phone = 'Please enter a valid 12-digit phone number';
             isValid = false;
         }
-        
+
         // Validate job roles - ensure none are empty if provided
         const validJobRoles = formData.job_roles.filter(role => role.trim() !== '');
         if (validJobRoles.length === 0) {
             errors.job_roles = 'At least one job role must be provided';
             isValid = false;
         }
-        
+
         // Check if any job role is empty (for backend validation format)
         formData.job_roles.forEach((role, index) => {
             if (!role.trim()) {
@@ -90,14 +92,14 @@ const CompleteProfilePage = () => {
                 isValid = false;
             }
         });
-        
+
         // Validate preferred locations - ensure none are empty if provided
         const validLocations = formData.selected_locations.filter(location => location.trim() !== '');
         if (validLocations.length === 0) {
             errors.selected_locations = 'At least one preferred location must be provided';
             isValid = false;
         }
-        
+
         // Check if any location is empty (for backend validation format)
         formData.selected_locations.forEach((location, index) => {
             if (!location.trim()) {
@@ -105,7 +107,7 @@ const CompleteProfilePage = () => {
                 isValid = false;
             }
         });
-        
+
         setFieldErrors(errors);
         return isValid;
     };
@@ -140,7 +142,7 @@ const CompleteProfilePage = () => {
                     Object.entries(data.errors).forEach(([key, messages]) => {
                         // Store the error message
                         apiErrors[key] = Array.isArray(messages) ? messages[0] : messages;
-                        
+
                         // Set the main error message to display in the alert
                         setError(data.message || 'Validation failed. Please check the form fields.');
                     });
@@ -242,8 +244,7 @@ const CompleteProfilePage = () => {
                         </p>
                     </div>
 
-                    {/* Alert Messages */}
-                    <AlertMessage error={error} success={success} showAlert={showAlert} />
+                    {/* Alert Messages removed - now using SweetAlert2 */}
 
                     <form onSubmit={handleCompleteProfile} className="space-y-8">
                         <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
@@ -293,24 +294,23 @@ const CompleteProfilePage = () => {
                             />
 
                             {/* Phone Number (Optional) */}
-                            <InputWithIcon
-                                label="Phone Number (Optional)"
-                                icon={Phone}
-                                type="tel"
-                                value={formData.phone}
-                                onChange={(e) => {
-                                    const value = e.target.value.replace(/\D/g, '');
-                                    if (value.length <= 12) {
-                                        setFormData(prev => ({
-                                            ...prev,
-                                            phone: value
-                                        }));
-                                    }
-                                }}
-                                placeholder="Enter your phone number"
-                                maxLength="12"
-                                error={formData.phone && !validatePhone(formData.phone) ? "Please enter a valid 12-digit phone number" : fieldErrors.phone}
-                            />
+                            <div className="space-y-1">
+                                <label className="block text-sm font-medium text-gray-700">Phone Number (Optional)</label>
+                                <div className="mt-1">
+                                    <PhoneInputComponent
+                                        value={formData.phone}
+                                        onChange={(value) => {
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                phone: value
+                                            }));
+                                        }}
+                                        error={formData.phone && !validatePhone(formData.phone) ? "Please enter a valid 12-digit phone number" : fieldErrors.phone}
+                                        placeholder="Enter your phone number"
+                                        preferredCountries={['us', 'gb', 'ca', 'au']}
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
@@ -365,11 +365,11 @@ const CompleteProfilePage = () => {
                                                     const newRoles = [...formData.job_roles];
                                                     newRoles[index] = e.target.value;
                                                     setFormData(prev => ({
-                                                        ...prev, 
+                                                        ...prev,
                                                         job_roles: newRoles
                                                     }));
                                                     // Clear all job_roles related field errors when user types
-                                                    const updatedErrors = {...fieldErrors};
+                                                    const updatedErrors = { ...fieldErrors };
                                                     // Remove general job_roles error
                                                     delete updatedErrors.job_roles;
                                                     // Remove all indexed job_roles errors
@@ -390,7 +390,7 @@ const CompleteProfilePage = () => {
                                                 onClick={() => {
                                                     const newRoles = formData.job_roles.filter((_, i) => i !== index);
                                                     setFormData(prev => ({
-                                                        ...prev, 
+                                                        ...prev,
                                                         job_roles: newRoles
                                                     }));
                                                 }}
@@ -404,10 +404,10 @@ const CompleteProfilePage = () => {
                                 {(fieldErrors.job_roles || Object.keys(fieldErrors).some(key => key.startsWith('job_roles.'))) && (
                                     <div className="mt-1 text-sm text-red-600 flex items-center">
                                         <AlertTriangle className="h-3 w-3 mr-1" />
-                                        {fieldErrors.job_roles || 
-                                         Object.entries(fieldErrors)
-                                            .filter(([key]) => key.startsWith('job_roles.'))
-                                            .map(([key, value]) => `${value}`)[0]}
+                                        {fieldErrors.job_roles ||
+                                            Object.entries(fieldErrors)
+                                                .filter(([key]) => key.startsWith('job_roles.'))
+                                                .map(([key, value]) => `${value}`)[0]}
                                     </div>
                                 )}
                                 {formData.job_roles.length < 5 && (
@@ -442,7 +442,7 @@ const CompleteProfilePage = () => {
                                                     newLocations[index] = e.target.value;
                                                     setFormData(prev => ({ ...prev, selected_locations: newLocations }));
                                                     // Clear all selected_locations related field errors when user types
-                                                    const updatedErrors = {...fieldErrors};
+                                                    const updatedErrors = { ...fieldErrors };
                                                     // Remove general selected_locations error
                                                     delete updatedErrors.selected_locations;
                                                     // Remove all indexed selected_locations errors
@@ -474,10 +474,10 @@ const CompleteProfilePage = () => {
                                 {(fieldErrors.selected_locations || Object.keys(fieldErrors).some(key => key.startsWith('selected_locations.'))) && (
                                     <div className="mt-1 text-sm text-red-600 flex items-center">
                                         <AlertTriangle className="h-3 w-3 mr-1" />
-                                        {fieldErrors.selected_locations || 
-                                         Object.entries(fieldErrors)
-                                            .filter(([key]) => key.startsWith('selected_locations.'))
-                                            .map(([key, value]) => `${value}`)[0]}
+                                        {fieldErrors.selected_locations ||
+                                            Object.entries(fieldErrors)
+                                                .filter(([key]) => key.startsWith('selected_locations.'))
+                                                .map(([key, value]) => `${value}`)[0]}
                                     </div>
                                 )}
                                 {formData.selected_locations.length < 5 && (

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Mail, ArrowRight, Loader2, ArrowLeft } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import SweetAlert from '@/utils/sweetAlert';
 
 const VerifyOtpPage = () => {
     const router = useRouter();
@@ -35,14 +35,15 @@ const VerifyOtpPage = () => {
     }, [timer]);
 
     useEffect(() => {
-        if (error || success) {
-            setShowAlert(true);
-            const timer = setTimeout(() => {
-                setShowAlert(false);
-                setError('');
-                setSuccess('');
-            }, 5000);
-            return () => clearTimeout(timer);
+        if (error) {
+            SweetAlert.error('Error', error);
+            // Clear error after showing alert
+            setError('');
+        }
+        if (success) {
+            SweetAlert.success('Success', success);
+            // Clear success after showing alert
+            setSuccess('');
         }
     }, [error, success]);
 
@@ -125,27 +126,7 @@ const VerifyOtpPage = () => {
                         </p>
                     </div>
 
-                    {/* Alert Messages */}
-                    <div className={`transition-all duration-300 ease-in-out mb-6 ${
-                        showAlert ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-                    }`}>
-                        {error && (
-                            <Alert variant="destructive">
-                                <AlertTitle className="flex items-center">
-                                    <span className="mr-2">⚠️</span> Error
-                                </AlertTitle>
-                                <AlertDescription>{error}</AlertDescription>
-                            </Alert>
-                        )}
-                        {success && (
-                            <Alert className="bg-green-50 text-green-700 border-green-200">
-                                <AlertTitle className="flex items-center">
-                                    <span className="mr-2">✅</span> Success
-                                </AlertTitle>
-                                <AlertDescription>{success}</AlertDescription>
-                            </Alert>
-                        )}
-                    </div>
+                    {/* Alert Messages removed - now using SweetAlert2 */}
 
                     <form onSubmit={handleVerifyOTP} className="space-y-6">
                         <div>

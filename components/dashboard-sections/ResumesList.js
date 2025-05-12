@@ -5,10 +5,11 @@ import { useState } from 'react';
 import { useToast } from '@/components/ui/ToastProvider';
 import FeedbackBanner, { FeedbackTypes } from '@/components/ui/FeedbackBanner';
 import { useRouter } from 'next/router';
+import SweetAlert from '@/utils/sweetAlert';
 
 
 export default function ResumesList({ profiles, isLoading, activeProfileId, handleActiveResume, handleDeleteResume, isDeleting, setShowBuilder }) {
-    const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+    // Removed deleteConfirmId state as we'll use SweetAlert2 instead
     const [hoveredCard, setHoveredCard] = useState(null);
     const toast = useToast();
     const router = useRouter();
@@ -50,7 +51,8 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                         other_description: [],
                     });
                     router.push('/resume-builder');
-                    toast.success('Creating new resume');
+                    // Using SweetAlert2 instead of toast for consistency
+                    SweetAlert.toast('Creating new resume', 'success');
                 }}
                 onMouseEnter={() => setHoveredCard('new')}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -89,7 +91,8 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                         onClick={() => {
                             handleActiveResume(profile);
                             router.push('/resume-builder');
-                            toast.success(`"${profile.first_name} ${profile.last_name}" resume activated`);
+                            // Removed toast notification as it will be handled in the resume builder
+                            SweetAlert.toast(`"${profile.first_name} ${profile.last_name}" resume activated`, 'success');
                         }}
                         onMouseEnter={() => setHoveredCard(profile.id)}
                         onMouseLeave={() => setHoveredCard(null)}
@@ -153,45 +156,32 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                                     <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
                                 </button>
 
-                                {deleteConfirmId === profile.id ? (
-                                    <div className="flex items-center space-x-2">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setDeleteConfirmId(null);
-                                            }}
-                                            className="px-3 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all duration-200 shadow-sm"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={(e) => {
-                                                handleDeleteResume(profile.id, e);
-                                                setDeleteConfirmId(null);
-                                            }}
-                                            disabled={isDeleting}
-                                            className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-red-500 to-red-600 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-                                        >
-                                            {isDeleting ? (
-                                                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
-                                            ) : (
-                                                'Confirm'
-                                            )}
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setDeleteConfirmId(profile.id);
-                                        }}
-                                        disabled={isDeleting}
-                                        className="inline-flex items-center p-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200 relative z-10 shadow-sm"
-                                        title="Delete Resume"
-                                    >
+                                <button
+                                    onClick={async (e) => {
+                                        e.stopPropagation();
+
+                                        // Use SweetAlert2 for delete confirmation
+                                        const isConfirmed = await SweetAlert.confirm(
+                                            'Delete Resume',
+                                            `Are you sure you want to delete "${profile.first_name} ${profile.last_name}" resume? This action cannot be undone.`,
+                                            'Yes, delete it',
+                                            'Cancel'
+                                        );
+
+                                        if (isConfirmed) {
+                                            handleDeleteResume(profile.id, e);
+                                        }
+                                    }}
+                                    disabled={isDeleting}
+                                    className="inline-flex items-center p-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200 relative z-10 shadow-sm"
+                                    title="Delete Resume"
+                                >
+                                    {isDeleting ? (
+                                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-700"></div>
+                                    ) : (
                                         <Trash2 className="h-5 w-5 transition-colors" />
-                                    </button>
-                                )}
+                                    )}
+                                </button>
                             </div>
                         </div>
                     </div>

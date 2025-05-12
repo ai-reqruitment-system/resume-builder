@@ -19,6 +19,7 @@ import { setCurrentSection, setCurrentSectionIndex, setIsModalOpen } from '@/sto
 import ResumeModal from './ResumeModal';
 import AiWritingAssistantModal from './AiWritingAssistantModal';
 import Skills from './sections/Skills';
+import SweetAlert from '@/utils/sweetAlert';
 
 const ResumeBuilderLayout = ({ onClose }) => {
     const dispatch = useDispatch();
@@ -99,16 +100,22 @@ const ResumeBuilderLayout = ({ onClose }) => {
         }
     };
 
-    // Simplified navigation handlers
+    // Enhanced navigation handlers with SweetAlert confirmations
     const handleNext = () => {
         const nextIndex = currentSectionIndex + 1;
         if (nextIndex < sections.length) {
             // If not on the last section, move to the next section
             dispatch(setCurrentSection(sections[nextIndex].id));
             dispatch(setCurrentSectionIndex(nextIndex));
+
+            // Show a toast notification when moving to next section
+            SweetAlert.toast(`Moving to ${sections[nextIndex].title} section`, 'info');
         } else {
             // If we're already at the last section or clicking Finish, show the preview modal
             dispatch(setIsModalOpen(true));
+
+            // Show a success message when completing all sections
+            SweetAlert.toast('Great job! Previewing your resume now', 'success');
         }
     };
 
@@ -117,6 +124,31 @@ const ResumeBuilderLayout = ({ onClose }) => {
         if (prevIndex >= 0) {
             dispatch(setCurrentSection(sections[prevIndex].id));
             dispatch(setCurrentSectionIndex(prevIndex));
+
+            // Show a toast notification when moving to previous section
+            SweetAlert.toast(`Returning to ${sections[prevIndex].title} section`, 'info');
+        }
+    };
+
+    // Function to handle section click with confirmation if needed
+    const handleSectionClick = (sectionId, index) => {
+        // If trying to jump multiple sections ahead, confirm with user
+        if (Math.abs(index - currentSectionIndex) > 1 && index > currentSectionIndex) {
+            SweetAlert.confirm(
+                'Skip Sections?',
+                'Are you sure you want to skip the sections in between? Any unsaved progress might be lost.',
+                'Yes, skip',
+                'Stay here'
+            ).then((confirmed) => {
+                if (confirmed) {
+                    dispatch(setCurrentSection(sectionId));
+                    dispatch(setCurrentSectionIndex(index));
+                }
+            });
+        } else {
+            // If moving to adjacent section or going back, no confirmation needed
+            dispatch(setCurrentSection(sectionId));
+            dispatch(setCurrentSectionIndex(index));
         }
     };
 
@@ -307,15 +339,15 @@ const ResumeBuilderLayout = ({ onClose }) => {
                 </div>
 
                 {/* Form Content */}
-                <div className="flex-1 p-2 sm:p-4 pb-16 sm:pb-20 overflow-auto bg-gray-50/50">
+                <div className="flex-1 p-2 sm:p-4 pb-24 sm:pb-28 overflow-auto bg-gray-50/50">
                     <div className="w-full bg-white rounded-lg md:rounded-xl shadow-sm">
                         {renderSection()}
                     </div>
                 </div>
 
-                {/* Navigation Buttons - Made sticky */}
-                <div className="p-2 sm:p-4 border-t border-gray-200 bg-white shadow-md z-10 sticky bottom-0 left-0 right-0">
-                    <div className="w-full flex justify-between space-x-2">
+                {/* Navigation Buttons - Fixed at bottom */}
+                <div className="p-2 sm:p-4 border-t border-gray-200 bg-white shadow-lg z-20 fixed bottom-0 left-0 right-0 md:left-52">
+                    <div className="w-full max-w-screen-xl mx-auto flex justify-between space-x-2">
                         <button
                             onClick={handlePrevious}
                             disabled={currentSectionIndex === 0}

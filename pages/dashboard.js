@@ -12,6 +12,7 @@ import ProfileCompletionIndicator from '@/components/ProfileCompletionIndicator'
 import { useRouter } from 'next/router';
 import { formatDate } from '@/lib/utils';
 import { CheckCircle2, Clock, ExternalLink } from 'lucide-react';
+import SweetAlert from '@/utils/sweetAlert';
 export default function Home() {
     const router = useRouter()
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -85,7 +86,15 @@ export default function Home() {
     const handleDeleteResume = async (resumeId, e) => {
         e.stopPropagation(); // Prevent triggering the card click event
 
-        if (window.confirm('Are you sure you want to delete this resume?')) {
+        // Use SweetAlert confirmation instead of window.confirm
+        const isConfirmed = await SweetAlert.confirm(
+            'Delete Resume',
+            'Are you sure you want to delete this resume? This action cannot be undone.',
+            'Yes, delete it',
+            'Cancel'
+        );
+
+        if (isConfirmed) {
             setIsDeleting(true);
             try {
                 const token = localStorage.getItem('token');
@@ -112,9 +121,13 @@ export default function Home() {
                     localStorage.removeItem('profileData');
                     setActiveProfileId(null);
                 }
+
+                // Show success message
+                SweetAlert.toast('Resume deleted successfully', 'success');
             } catch (error) {
                 console.error('Error deleting resume:', error);
-                alert('Failed to delete resume. Please try again.');
+                // Use SweetAlert error instead of alert
+                SweetAlert.error('Delete Failed', 'Failed to delete resume. Please try again.');
             } finally {
                 setIsDeleting(false);
             }

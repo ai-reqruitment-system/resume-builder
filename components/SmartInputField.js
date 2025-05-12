@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSuggestionGenerator } from '@/hooks/useSuggestionGenerator';
 import { Plus, Loader2, Check, Search, X } from 'lucide-react';
-import { useToast } from '@/components/ui/ToastProvider';
+import SweetAlert from '@/utils/sweetAlert';
 
 const SmartInputField = ({
     value = '',
@@ -22,7 +22,6 @@ const SmartInputField = ({
     const [searchTerm, setSearchTerm] = useState('');
     const inputRef = useRef(null);
     const suggestionsRef = useRef(null);
-    const toast = useToast();
 
     const {
         suggestions,
@@ -74,7 +73,7 @@ const SmartInputField = ({
                 newValue = updatedContent;
             }
 
-            toast.info('Item removed from description');
+            SweetAlert.toast('Item removed from description', 'info');
         } else {
             // Add the suggestion as a list item
             const listItem = `<li>${suggestion}</li>`;
@@ -98,7 +97,7 @@ const SmartInputField = ({
                 newValue = newContent;
             }
 
-            toast.success('Item added to description');
+            SweetAlert.toast('Item added to description', 'success');
         }
 
         onDescriptionChange({ target: { value: newValue } });

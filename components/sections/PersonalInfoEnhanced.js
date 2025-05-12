@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useLoading } from '@/context/LoadingContext';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import occupationTitles from '@/data/occupationTitles.json';
+import PhoneInputComponent from '@/components/PhoneInputComponent';
 
 const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
     const [filteredTitles, setFilteredTitles] = useState([]);
@@ -211,14 +212,14 @@ const PersonalInfoEnhanced = ({ formData, updateFormData }) => {
                             />
                         </div>
                         <div className="relative">
-                            <FormField
-                                label="Phone"
-                                type="tel"
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+                            <PhoneInputComponent
                                 value={formData.phone}
-                                onChange={(e) => handleFieldChange('phone', e.target.value)}
+                                onChange={(value) => handleFieldChange('phone', value)}
                                 placeholder="e.g., +1 234 567 8900"
-                                required
-                                className={`bg-white w-full`}
+                                error={errors.phone ? "Phone number is required" : null}
+                                inputClassName={`bg-white w-full`}
+                                preferredCountries={['us', 'gb', 'ca', 'au']}
                             />
                         </div>
                     </div>

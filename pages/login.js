@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Mail, ArrowRight, Loader2 } from 'lucide-react';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import Layout from '@/components/Layout';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import SweetAlert from '@/utils/sweetAlert';
 import InputWithIcon from '@/components/InputWithIcon';
-import AlertMessage from '@/components/ui/AlertMessage';
+
 
 const LoginPage = () => {
     const router = useRouter();
@@ -15,15 +16,15 @@ const LoginPage = () => {
     const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
-
-        if (error || success) {
-            setShowAlert(true);
-            const timer = setTimeout(() => {
-                setShowAlert(false);
-                setError('');
-                setSuccess('');
-            }, 5000);
-            return () => clearTimeout(timer);
+        if (error) {
+            SweetAlert.error('Error', error);
+            // Clear error after showing alert
+            setError('');
+        }
+        if (success) {
+            SweetAlert.success('Success', success);
+            // Clear success after showing alert
+            setSuccess('');
         }
     }, [error, success]);
 
@@ -72,8 +73,7 @@ const LoginPage = () => {
                         </p>
                     </div>
 
-                    {/* Alert Messages */}
-                    <AlertMessage error={error} success={success} showAlert={showAlert} />
+                    {/* Alert Messages removed - now using SweetAlert2 */}
 
                     <form onSubmit={handleSendOTP} className="space-y-5">
                         <InputWithIcon

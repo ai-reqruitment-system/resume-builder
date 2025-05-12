@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import '@/styles/sweetalert.css';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
 import { AuthProvider } from '@/context/AuthContext';

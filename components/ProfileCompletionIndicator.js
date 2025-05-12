@@ -4,6 +4,7 @@ import { UserCircle2, AlertCircle, CheckCircle } from 'lucide-react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { useDispatch } from 'react-redux';
 import { setActiveTab } from '@/store/slices/uiSlice';
+import SweetAlert from '@/utils/sweetAlert';
 
 const ProfileCompletionIndicator = ({ userData, onTabChange }) => {
     const router = useRouter();
@@ -122,32 +123,26 @@ const ProfileCompletionIndicator = ({ userData, onTabChange }) => {
 
                 {/* Action buttons */}
                 <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
-                    {/* <button
-                        onClick={() => {
-                            dispatch(setActiveTab('Profile Settings'));
-                            if (onTabChange) {
-                                alert("tab changed")
-                                // If onTabChange prop is provided, use it to change tab within dashboard
-                                onTabChange('Profile Settings');
 
-                            } else {
-                                // Fallback to direct navigation if not in dashboard context
-                                router.push('/dashboard');
-                                // Use Redux to set the active tab using the proper action
-                                dispatch(setActiveTab('Profile Settings'));
-                            }
-                        }}
-                        className="w-full sm:flex-1 py-1.5 sm:py-2 px-3 sm:px-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md text-xs sm:text-sm font-medium hover:shadow-md transition-all duration-300 hover:from-blue-700 hover:to-purple-700 flex items-center justify-center gap-1.5 sm:gap-2"
-                    >
-                        <UserCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                        Complete Profile
-                    </button> */}
                     <button
-                        onClick={(e) => {
+                        onClick={async (e) => {
                             e.stopPropagation();
-                            setIsVisible(false);
-                            // Save dismissed state to localStorage
-                            localStorage.setItem('profileIndicatorDismissed', 'true');
+
+                            // Use SweetAlert2 for confirmation
+                            const isConfirmed = await SweetAlert.confirm(
+                                'Dismiss Notification',
+                                'Are you sure you want to dismiss the profile completion indicator? You can always update your profile later.',
+                                'Yes, dismiss it',
+                                'Keep it visible'
+                            );
+
+                            if (isConfirmed) {
+                                setIsVisible(false);
+                                // Save dismissed state to localStorage
+                                localStorage.setItem('profileIndicatorDismissed', 'true');
+                                // Show a toast notification
+                                SweetAlert.toast('Profile indicator dismissed', 'info');
+                            }
                         }}
                         className="w-full sm:w-auto py-1.5 sm:py-2 px-3 border border-gray-300 text-gray-600 text-xs sm:text-sm rounded-md hover:bg-gray-50 transition-colors duration-300"
                     >
