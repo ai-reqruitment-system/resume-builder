@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 export default function Profile() {
     const router = useRouter();
 
-    const { user, loading, updateUserProfile, fetchUserDetail } = useAuth();
+    const { user, loading, updateUserProfile, updateProfileImage, fetchUserDetail } = useAuth();
     const [userData, setUserData] = useState(null);
 
     // Custom styles for phone input are now handled by the PhoneInputComponent
@@ -132,6 +132,62 @@ export default function Profile() {
             setUploadProgress(100);
         };
         reader.readAsDataURL(file);
+
+        // Upload image immediately regardless of edit mode
+        handleImageUpload(file);
+    };
+
+    // Separate function to handle image upload
+    const handleImageUpload = async (file) => {
+        if (!file) return;
+
+        try {
+            setSaveLoading(true);
+            const result = await updateProfileImage(file);
+
+            if (result && result.success === false) {
+                setUploadError(result.message || 'Failed to upload image');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Image Upload Failed',
+                    text: result.message || 'Failed to upload image',
+                    customClass: {
+                        popup: 'swal-popup-error',
+                        title: 'swal-title',
+                        htmlContainer: 'swal-text',
+                        confirmButton: 'swal-button'
+                    }
+                });
+                return;
+            }
+
+            // Update the form data with the new image URL if available
+            if (result && result.data && result.data.profile_photo_url) {
+                setFormData(prev => ({
+                    ...prev,
+                    profile_photo_url: result.data.profile_photo_url
+                }));
+
+                // Reset image file state since it's been uploaded
+                setImageFile(null);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Profile image updated successfully!',
+                    customClass: {
+                        popup: 'swal-popup-success',
+                        title: 'swal-title',
+                        htmlContainer: 'swal-text'
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error uploading profile image:', error);
+            setUploadError('An unexpected error occurred while uploading the image');
+        } finally {
+            setSaveLoading(false);
+        }
     };
 
 
@@ -163,7 +219,7 @@ export default function Profile() {
         }
 
         try {
-            // Construct FormData for multipart/form-data
+            // Construct FormData for profile data (excluding image)
             const form = new FormData();
             form.append('first_name', formData.first_name);
             form.append('last_name', formData.last_name);
@@ -172,15 +228,9 @@ export default function Profile() {
             form.append('phone', formData.phone);
             form.append('location', formData.location);
             form.append('bio', formData.bio);
-            if (imageFile) {
-                form.append('profile_photo_url', imageFile);
-            } else if (formData.profile_photo_url) {
-                // If no new file, but existing URL, send as string
-                formData.profile_photo_url = '';
 
-                form.append('profile_photo_url', formData.profile_photo_url);
-
-            }
+            // We no longer include the profile image in the main profile update
+            // The image is handled separately by handleImageUpload
 
             // Debug: Log FormData contents
             for (let pair of form.entries()) {
@@ -250,10 +300,11 @@ export default function Profile() {
                     bio: updatedUser.bio || '',
                     profile_photo_url: updatedUser.profile_photo_url || ''
                 });
-                // Reset image states
-                setImageFile(null);
-                setImagePreview('');
-                setUploadProgress(0);
+                // Reset image states if no separate image upload was done
+                if (!imageFile) {
+                    setImagePreview('');
+                    setUploadProgress(0);
+                }
             }
         } catch (error) {
             console.error('Error updating profile:', error);
@@ -286,32 +337,28 @@ export default function Profile() {
                                                     alt="Profile"
                                                     className="h-full w-full object-cover"
                                                 />
-                                                {isEditing && (
-                                                    <div
-                                                        className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
-                                                        onClick={() => fileInputRef.current.click()}
-                                                    >
-                                                        <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        </svg>
-                                                    </div>
-                                                )}
+                                                <div
+                                                    className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+                                                    onClick={() => fileInputRef.current.click()}
+                                                >
+                                                    <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                         ) : (
                                             <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-3xl sm:text-4xl font-bold ring-4 ring-white shadow-xl relative">
                                                 {formData.first_name ? formData.first_name[0].toUpperCase() : 'U'}
-                                                {isEditing && (
-                                                    <div
-                                                        className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 rounded-full cursor-pointer"
-                                                        onClick={() => fileInputRef.current.click()}
-                                                    >
-                                                        <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                        </svg>
-                                                    </div>
-                                                )}
+                                                <div
+                                                    className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 rounded-full cursor-pointer"
+                                                    onClick={() => fileInputRef.current.click()}
+                                                >
+                                                    <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                         )}
                                         {!isEditing && (
@@ -436,89 +483,87 @@ export default function Profile() {
                                 </div>
 
                                 {/* Image Upload Progress and Error */}
-                                {isEditing && (
-                                    <div className="col-span-2">
-                                        {uploadProgress > 0 && uploadProgress < 100 && (
-                                            <div className="mt-2">
-                                                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                                                    <div
-                                                        className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
-                                                        style={{ width: `${uploadProgress} % ` }}
-                                                    ></div>
-                                                </div>
-                                                <p className="text-xs text-gray-500 mt-1">Uploading: {uploadProgress}%</p>
+                                <div className="col-span-2">
+                                    {uploadProgress > 0 && uploadProgress < 100 && (
+                                        <div className="mt-2">
+                                            <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                                <div
+                                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                                    style={{ width: `${uploadProgress} % ` }}
+                                                ></div>
                                             </div>
-                                        )}
+                                            <p className="text-xs text-gray-500 mt-1">Uploading: {uploadProgress}%</p>
+                                        </div>
+                                    )}
 
-                                        {uploadError && (
-                                            <div className="mt-2 text-sm text-red-600">
-                                                {uploadError}
-                                            </div>
-                                        )}
+                                    {uploadError && (
+                                        <div className="mt-2 text-sm text-red-600">
+                                            {uploadError}
+                                        </div>
+                                    )}
 
-                                        {imagePreview && (
-                                            <div className="mt-2 flex items-center space-x-2">
-                                                <div className="w-10 h-10 rounded-full overflow-hidden">
-                                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                                </div>
-                                                <span className="text-sm text-gray-600">New profile photo selected</span>
-                                                <button
-                                                    type="button"
-                                                    className="text-red-500 hover:text-red-700 text-sm"
-                                                    onClick={() => {
-                                                        setImageFile(null);
-                                                        setImagePreview('');
-                                                        setUploadProgress(0);
-                                                    }}
-                                                >
-                                                    Remove
-                                                </button>
+                                    {imagePreview && (
+                                        <div className="mt-2 flex items-center space-x-2">
+                                            <div className="w-10 h-10 rounded-full overflow-hidden">
+                                                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                                             </div>
-                                        )}
+                                            <span className="text-sm text-gray-600">New profile photo selected</span>
+                                            <button
+                                                type="button"
+                                                className="text-red-500 hover:text-red-700 text-sm"
+                                                onClick={() => {
+                                                    setImageFile(null);
+                                                    setImagePreview('');
+                                                    setUploadProgress(0);
+                                                }}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* General Error Message */}
+                                {generalError && (
+                                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                                        <div className="flex">
+                                            <div className="flex-shrink-0">
+                                                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <div className="ml-3">
+                                                <p className="text-sm font-medium text-red-800">{generalError}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
-                            </div>
 
-                            {/* General Error Message */}
-                            {generalError && (
-                                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
-                                    <div className="flex">
-                                        <div className="flex-shrink-0">
-                                            <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <div className="ml-3">
-                                            <p className="text-sm font-medium text-red-800">{generalError}</p>
-                                        </div>
+                                {/* Save Button */}
+                                {isEditing && (
+                                    <div className="flex justify-end pt-4">
+                                        <button
+                                            type="submit"
+                                            disabled={saveLoading}
+                                            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:shadow-none"
+                                        >
+                                            {saveLoading ? (
+                                                <>
+                                                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
+                                                    <span>Saving...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    <span>Save Changes</span>
+                                                </>
+                                            )}
+                                        </button>
                                     </div>
-                                </div>
-                            )}
-
-                            {/* Save Button */}
-                            {isEditing && (
-                                <div className="flex justify-end pt-4">
-                                    <button
-                                        type="submit"
-                                        disabled={saveLoading}
-                                        className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:shadow-none"
-                                    >
-                                        {saveLoading ? (
-                                            <>
-                                                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                                                <span>Saving...</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                                </svg>
-                                                <span>Save Changes</span>
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
-                            )}
+                                )}
+                            </div> {/* This closes the div started at line 450 or similar */}
                         </form>
                     </div>
                 )}

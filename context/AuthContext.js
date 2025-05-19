@@ -24,7 +24,7 @@ export const updateUserProfile = async (formData) => {
         const response = await fetch(`https://admin.resuming.io/api/auth/complete-profile`, fetchOptions);
         const data = await response.json();
         console.log(data, "from the update user profile api ");
-        
+
         // Check if the response contains an error message
         if (data.success === false) {
             // Return the error response to handle validation errors
@@ -41,6 +41,44 @@ export const updateUserProfile = async (formData) => {
     } catch (error) {
         console.error("API call error:", error);
         return { success: false, message: "An error occurred while updating your profile" };
+    }
+}
+
+export const updateProfileImage = async (imageFile) => {
+    if (!imageFile) {
+        return { success: false, message: "No image file provided" };
+    }
+
+    const formData = new FormData();
+    formData.append('profile_photo_url', imageFile);
+
+    try {
+        const response = await fetch('https://admin.resuming.io/api/profile/image/update', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + (localStorage.getItem('token'))
+            },
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log(data, "from the update profile image api");
+
+        if (data.success === false) {
+            console.log("Error in updating the profile image:", data.message);
+            return data;
+        } else {
+            // If the API returns updated user data, update localStorage
+            if (data.data) {
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                userData.profile_photo_url = data.data.profile_photo_url || userData.profile_photo_url;
+                localStorage.setItem('userData', JSON.stringify(userData));
+            }
+            return data;
+        }
+    } catch (error) {
+        console.error("API call error:", error);
+        return { success: false, message: "An error occurred while updating your profile image" };
     }
 }
 
@@ -72,14 +110,14 @@ export function AuthProvider({ children }) {
         try {
             dispatch(setGlobalLoading({ isLoading: true, loadingMessage: 'Updating profile...' }))
             const result = await updateUserProfile(formData)
-            
+
             // Check if the result is an error response
             if (result && result.success === false) {
                 // Return the error response to be handled by the component
                 console.log('Error response from API:', result)
                 return result
             }
-            
+
             // If it's a successful response with user data
             if (result) {
                 setUser(result)
@@ -87,6 +125,34 @@ export function AuthProvider({ children }) {
             return result
         } catch (error) {
             console.error('Error updating profile:', error)
+            return { success: false, message: 'An unexpected error occurred' }
+        } finally {
+            dispatch(setGlobalLoading({ isLoading: false }))
+        }
+    }
+
+    // Wrapper for updateProfileImage to update local state
+    const handleUpdateProfileImage = async (imageFile) => {
+        try {
+            dispatch(setGlobalLoading({ isLoading: true, loadingMessage: 'Updating profile image...' }))
+            const result = await updateProfileImage(imageFile)
+
+            // Check if the result is an error response
+            if (result && result.success === false) {
+                console.log('Error response from API:', result)
+                return result
+            }
+
+            // If it's a successful response, update the user state with the new image URL
+            if (result && result.data && result.data.profile_photo_url) {
+                setUser(prev => ({
+                    ...prev,
+                    profile_photo_url: result.data.profile_photo_url
+                }))
+            }
+            return result
+        } catch (error) {
+            console.error('Error updating profile image:', error)
             return { success: false, message: 'An unexpected error occurred' }
         } finally {
             dispatch(setGlobalLoading({ isLoading: false }))
@@ -144,7 +210,13 @@ export function AuthProvider({ children }) {
 
 
     return (
-        <AuthContext.Provider value={{ user, loading, updateUserProfile: handleUpdateUserProfile, fetchUserDetail }}>
+        <AuthContext.Provider value={{
+            user,
+            loading,
+            updateUserProfile: handleUpdateUserProfile,
+            updateProfileImage: handleUpdateProfileImage,
+            fetchUserDetail
+        }}>
             {children}
         </AuthContext.Provider>
     )
