@@ -21,6 +21,12 @@ const ResumeModal = ({
     defaultData,
     onDownload
 }) => {
+
+    let resume_id1 = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+    console.log("Resume ID from profileData:", resume_id1);
+    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+    let resume_id = userData.id || "";
+    console.log("Resume ID from userData:", resume_id);
     const [profilePhoto, setProfilePhoto] = useState(null);
     const { fetchUserDetail } = useAuth();
     const getUserDetails = async () => {
@@ -88,8 +94,15 @@ const ResumeModal = ({
             // Validate form data
             if (!validateFormData(setSaveError)) return;
 
-            const resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
-            console.log(localStorage.getItem("profileData"), "from the Resume Modal compnent ")
+            // Prepare payload with all required fields from the API
+            // Get resume_id from profileData in localStorage
+            let resume_id = "";
+            try {
+                resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+                console.log("Resume ID from profileData (save):", resume_id);
+            } catch (error) {
+                console.error("Error parsing resume_id from localStorage (save):", error);
+            }
 
             // Prepare payload with all required fields from the API
             const payload = {
@@ -222,21 +235,13 @@ const ResumeModal = ({
             if (!validateFormData(setDownloadError)) return;
 
             // Prepare payload - ensure we get the resume_id correctly
-            // First try to get from profileData, then from localStorage directly
+            // Get resume_id from profileData in localStorage
             let resume_id = "";
             try {
-                // Try to get from profileData first (same as in handleSaveResume)
                 resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
-                console.log("Resume ID from profileData:", resume_id);
-
-                // If not found, try to get from userData as fallback
-                if (!resume_id) {
-                    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-                    resume_id = userData.id || "";
-                    console.log("Resume ID from userData:", resume_id);
-                }
+                console.log("Resume ID from profileData (download):", resume_id);
             } catch (error) {
-                console.error("Error parsing resume_id from localStorage:", error);
+                console.error("Error parsing resume_id from localStorage (download):", error);
             }
 
             const payload = {

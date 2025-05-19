@@ -264,6 +264,7 @@ const SkillsEnhanced = ({ formData, updateFormData }) => {
                     />
                 </div>
             </div>
+
         </div >
     );
 };
