@@ -78,35 +78,33 @@ const CompleteProfilePage = () => {
             isValid = false;
         }
 
-        // Validate job roles - ensure none are empty if provided
+        // Job roles are now optional, but if provided, they shouldn't be empty
         const validJobRoles = formData.job_roles.filter(role => role.trim() !== '');
-        if (validJobRoles.length === 0) {
-            errors.job_roles = 'At least one job role must be provided';
-            isValid = false;
+
+        // Only validate job roles if the user has entered something
+        if (formData.job_roles.length > 1 || (formData.job_roles.length === 1 && formData.job_roles[0].trim() !== '')) {
+            // Check if any job role is empty (for backend validation format)
+            formData.job_roles.forEach((role, index) => {
+                if (!role.trim()) {
+                    errors[`job_roles.${index}`] = `The job role field must not be empty`;
+                    isValid = false;
+                }
+            });
         }
 
-        // Check if any job role is empty (for backend validation format)
-        formData.job_roles.forEach((role, index) => {
-            if (!role.trim()) {
-                errors[`job_roles.${index}`] = `The job role field must not be empty`;
-                isValid = false;
-            }
-        });
-
-        // Validate preferred locations - ensure none are empty if provided
+        // Preferred locations are now optional, but if provided, they shouldn't be empty
         const validLocations = formData.selected_locations.filter(location => location.trim() !== '');
-        if (validLocations.length === 0) {
-            errors.selected_locations = 'At least one preferred location must be provided';
-            isValid = false;
-        }
 
-        // Check if any location is empty (for backend validation format)
-        formData.selected_locations.forEach((location, index) => {
-            if (!location.trim()) {
-                errors[`selected_locations.${index}`] = `The location field must not be empty`;
-                isValid = false;
-            }
-        });
+        // Only validate locations if the user has entered something
+        if (formData.selected_locations.length > 1 || (formData.selected_locations.length === 1 && formData.selected_locations[0].trim() !== '')) {
+            // Check if any location is empty (for backend validation format)
+            formData.selected_locations.forEach((location, index) => {
+                if (!location.trim()) {
+                    errors[`selected_locations.${index}`] = `The location field must not be empty`;
+                    isValid = false;
+                }
+            });
+        }
 
         setFieldErrors(errors);
         return isValid;
@@ -350,7 +348,7 @@ const CompleteProfilePage = () => {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Desired Roles (Max 5)
+                                    Desired Roles (Optional, Max 5)
                                 </label>
                                 {formData.job_roles.map((role, index) => (
                                     <div key={index} className="flex items-center gap-2 mb-2">
@@ -426,7 +424,7 @@ const CompleteProfilePage = () => {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Preferred Locations (Max 5)
+                                    Preferred Locations (Optional, Max 5)
                                 </label>
                                 {formData.selected_locations.map((location, index) => (
                                     <div key={index} className="flex items-center gap-2 mb-2">
