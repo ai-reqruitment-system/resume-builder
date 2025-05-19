@@ -11,7 +11,7 @@ const SkillsEnhanced = ({ formData, updateFormData }) => {
     const [loadingSkills, setLoadingSkills] = useState(false);
     const [errorSkills, setErrorSkills] = useState(null);
 
-    // State for languages
+    // State for languages - hardcoded list only, no AI generation
     const [languages] = useState([
         "English", "Hindi", "Gujarati", "Marathi", "Tamil",
         "Bengali", "Arabic", "Spanish", "French", "German"
