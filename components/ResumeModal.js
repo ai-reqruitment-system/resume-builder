@@ -221,15 +221,34 @@ const ResumeModal = ({
             // Validate form data
             if (!validateFormData(setDownloadError)) return;
 
-            // Prepare payload
-            const resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+            // Prepare payload - ensure we get the resume_id correctly
+            // First try to get from profileData, then from localStorage directly
+            let resume_id = "";
+            try {
+                // Try to get from profileData first (same as in handleSaveResume)
+                resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+                console.log("Resume ID from profileData:", resume_id);
+
+                // If not found, try to get from userData as fallback
+                if (!resume_id) {
+                    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+                    resume_id = userData.id || "";
+                    console.log("Resume ID from userData:", resume_id);
+                }
+            } catch (error) {
+                console.error("Error parsing resume_id from localStorage:", error);
+            }
+
             const payload = {
                 ...formData,
                 ...fontStyles,
                 profile_photo_url: profilePhoto ? profilePhoto : null,
                 templateName: parentSelectedTemplate,
                 resume_id: resume_id,
+                unique_id: formData.unique_id || "1",
             };
+
+            console.log("Download payload with resume_id:", payload);
 
             // Send request to generate PDF
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/generate-resume`, {

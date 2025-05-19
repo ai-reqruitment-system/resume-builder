@@ -37,7 +37,10 @@ export default function Home() {
                 },
             });
 
-            if (!response.ok) throw new Error('Failed to fetch profiles');
+            if (!response.ok) {
+                router.push("/login")
+            };
+
 
             const data = await response.json();
             console.log(data, "form all")
