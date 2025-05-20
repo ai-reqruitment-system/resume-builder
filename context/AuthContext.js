@@ -8,6 +8,7 @@ const AuthContext = createContext()
 
 export const updateUserProfile = async (formData) => {
     console.log(formData, "from the update user profile api ");
+    console.log("hello for testing purpose")
     let fetchOptions = {
         method: 'POST',
         headers: {
