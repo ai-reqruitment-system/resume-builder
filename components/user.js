@@ -22,7 +22,7 @@ const ProfilePage = () => {
                         <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
                         <button
                             onClick={() => setIsEditing(!isEditing)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
                         >
                             {isEditing ? 'Cancel' : 'Edit Profile'}
                         </button>
@@ -37,7 +37,7 @@ const ProfilePage = () => {
                                     value={profileData.name}
                                     onChange={(e) => setProfileData({...profileData, name: e.target.value})}
                                     disabled={!isEditing}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
                                 />
                             </div>
 
@@ -48,7 +48,7 @@ const ProfilePage = () => {
                                     value={profileData.email}
                                     onChange={(e) => setProfileData({...profileData, email: e.target.value})}
                                     disabled={!isEditing}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
                                 />
                             </div>
 
@@ -59,7 +59,7 @@ const ProfilePage = () => {
                                     value={profileData.phone}
                                     onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
                                     disabled={!isEditing}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
                                 />
                             </div>
 
@@ -67,7 +67,7 @@ const ProfilePage = () => {
                                 <div className="flex justify-end">
                                     <button
                                         type="submit"
-                                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                        className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
                                     >
                                         Save Changes
                                     </button>

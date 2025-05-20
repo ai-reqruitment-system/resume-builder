@@ -11,7 +11,7 @@ const TipTapEditor = ({ value, onChange, className, toolbarButtons }) => {
             Link.configure({
                 openOnClick: false,
                 HTMLAttributes: {
-                    class: 'text-blue-500 underline cursor-pointer hover:text-blue-700 transition-colors',
+                    class: 'text-teal-500 underline cursor-pointer hover:text-teal-700 transition-colors',
                 },
             }),
         ],
@@ -98,14 +98,14 @@ const TipTapEditor = ({ value, onChange, className, toolbarButtons }) => {
 
                     <button
                         onClick={toggleBold}
-                        className={`p-1.5 rounded ${editor.isActive('bold') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        className={`p-1.5 rounded ${editor.isActive('bold') ? 'bg-teal-100 text-teal-600' : 'hover:bg-gray-200'} transition-colors`}
                         title="Bold"
                     >
                         <Bold className="w-4 h-4" />
                     </button>
                     <button
                         onClick={toggleItalic}
-                        className={`p-1.5 rounded ${editor.isActive('italic') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        className={`p-1.5 rounded ${editor.isActive('italic') ? 'bg-teal-100 text-teal-600' : 'hover:bg-gray-200'} transition-colors`}
                         title="Italic"
                     >
                         <Italic className="w-4 h-4" />
@@ -115,14 +115,14 @@ const TipTapEditor = ({ value, onChange, className, toolbarButtons }) => {
 
                     <button
                         onClick={toggleBulletList}
-                        className={`p-1.5 rounded ${editor.isActive('bulletList') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        className={`p-1.5 rounded ${editor.isActive('bulletList') ? 'bg-teal-100 text-teal-600' : 'hover:bg-gray-200'} transition-colors`}
                         title="Bullet List"
                     >
                         <List className="w-4 h-4" />
                     </button>
                     <button
                         onClick={toggleOrderedList}
-                        className={`p-1.5 rounded ${editor.isActive('orderedList') ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-200'} transition-colors`}
+                        className={`p-1.5 rounded ${editor.isActive('orderedList') ? 'bg-teal-100 text-teal-600' : 'hover:bg-gray-200'} transition-colors`}
                         title="Numbered List"
                     >
                         <ListOrdered className="w-4 h-4" />
@@ -141,7 +141,7 @@ const TipTapEditor = ({ value, onChange, className, toolbarButtons }) => {
 
             <EditorContent
                 editor={editor}
-                className="p-2 sm:p-3 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all duration-300 prose prose-xs max-w-none focus:outline-none h-full overflow-y-auto"
+                className="p-2 sm:p-3 focus-within:ring-2 focus-within:ring-teal-500/20 focus-within:border-teal-500 transition-all duration-300 prose prose-xs max-w-none focus:outline-none h-full overflow-y-auto"
             />
 
             <style jsx global>{`

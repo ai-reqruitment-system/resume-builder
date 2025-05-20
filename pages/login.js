@@ -90,7 +90,7 @@ const LoginPage = () => {
                         <button
                             type="submit"
                             disabled={loading || !validateEmail(email)}
-                            className="w-full py-2.5 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600
+                            className="w-full py-2.5 px-4 bg-teal-500 text-white rounded-lg hover:bg-teal-600
                                     transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
                                     flex items-center justify-center space-x-2 shadow-sm hover:shadow transform hover:translate-y-[-1px]"
                         >
@@ -107,9 +107,9 @@ const LoginPage = () => {
 
                     <p className="mt-6 text-center text-xs text-gray-600">
                         By continuing, you agree to our{' '}
-                        <a href="#" className="text-blue-500 hover:underline">Terms of Service</a>
+                        <a href="#" className="text-teal-500 hover:underline">Terms of Service</a>
                         {' '}and{' '}
-                        <a href="#" className="text-blue-500 hover:underline">Privacy Policy</a>
+                        <a href="#" className="text-teal-500 hover:underline">Privacy Policy</a>
                     </p>
                 </div>
             </div>

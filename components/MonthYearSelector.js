@@ -50,8 +50,8 @@ const MonthYearSelector = ({ value, onChange, label, placeholder = "Select month
                     }}
                     className={`w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm
                         bg-white appearance-none cursor-pointer truncate
-                        focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
-                        hover:border-blue-400 transition-colors ${className}`}
+                        focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500
+                        hover:border-teal-400 transition-colors ${className}`}
                     style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,<svg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\" fill=\"gray\"/></svg>')", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', paddingRight: '2rem' }}
                 >
                     <option value="" className="text-gray-500">{placeholder}</option>
@@ -69,8 +69,8 @@ const MonthYearSelector = ({ value, onChange, label, placeholder = "Select month
                     }}
                     className={`w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm
                         bg-white appearance-none cursor-pointer truncate
-                        focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
-                        hover:border-blue-400 transition-colors ${className}`}
+                        focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500
+                        hover:border-teal-400 transition-colors ${className}`}
                     style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,<svg width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\" fill=\"gray\"/></svg>')", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', paddingRight: '2rem' }}
                 >
                     <option value="" className="text-gray-500">Select year</option>

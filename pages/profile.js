@@ -321,7 +321,7 @@ export default function Profile() {
             <div className="w-full sm:w-[600px] lg:w-[800px] xl:w-[900px]">
                 {isLoading ? (
                     <div className="flex justify-center items-center h-64">
-                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-teal-500 border-t-transparent"></div>
                     </div>
                 ) : (
                     <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -348,7 +348,7 @@ export default function Profile() {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white text-3xl sm:text-4xl font-bold ring-4 ring-white shadow-xl relative">
+                                            <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full bg-gradient-to-r from-teal-500 to-purple-500 flex items-center justify-center text-white text-3xl sm:text-4xl font-bold ring-4 ring-white shadow-xl relative">
                                                 {formData.first_name ? formData.first_name[0].toUpperCase() : 'U'}
                                                 <div
                                                     className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 rounded-full cursor-pointer"
@@ -412,7 +412,7 @@ export default function Profile() {
                                                 value={formData.first_name}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.first_name ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.first_name ? 'border-red-500' : isEditing ? 'border-teal-300 focus:ring-2 focus:ring-teal-200 focus:border-teal-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                             />
                                             {fieldErrors.first_name && (
                                                 <p className="mt-1 text-sm text-red-600">{fieldErrors.first_name[0]}</p>
@@ -426,7 +426,7 @@ export default function Profile() {
                                                 value={formData.last_name}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.last_name ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.last_name ? 'border-red-500' : isEditing ? 'border-teal-300 focus:ring-2 focus:ring-teal-200 focus:border-teal-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                             />
                                             {fieldErrors.last_name && (
                                                 <p className="mt-1 text-sm text-red-600">{fieldErrors.last_name[0]}</p>
@@ -442,7 +442,7 @@ export default function Profile() {
                                                 value={formData.location}
                                                 onChange={handleChange}
                                                 disabled={!isEditing}
-                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.location ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                                className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.location ? 'border-red-500' : isEditing ? 'border-teal-300 focus:ring-2 focus:ring-teal-200 focus:border-teal-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                             />
                                             {fieldErrors.location && (
                                                 <p className="mt-1 text-sm text-red-600">{fieldErrors.location[0]}</p>
@@ -475,7 +475,7 @@ export default function Profile() {
                                         value={formData.bio}
                                         onChange={handleChange}
                                         disabled={!isEditing}
-                                        className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.bio ? 'border-red-500' : isEditing ? 'border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
+                                        className={`w-full px-4 py-3 rounded-lg border ${fieldErrors.bio ? 'border-red-500' : isEditing ? 'border-teal-300 focus:ring-2 focus:ring-teal-200 focus:border-teal-400' : 'border-gray-200 bg-gray-50'} transition-all duration-200`}
                                     />
                                     {fieldErrors.bio && (
                                         <p className="mt-1 text-sm text-red-600">{fieldErrors.bio[0]}</p>
@@ -488,7 +488,7 @@ export default function Profile() {
                                         <div className="mt-2">
                                             <div className="w-full bg-gray-200 rounded-full h-2.5">
                                                 <div
-                                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                                    className="bg-teal-600 h-2.5 rounded-full transition-all duration-300"
                                                     style={{ width: `${uploadProgress} % ` }}
                                                 ></div>
                                             </div>
@@ -545,7 +545,7 @@ export default function Profile() {
                                         <button
                                             type="submit"
                                             disabled={saveLoading}
-                                            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 disabled:hover:shadow-none"
+                                            className="px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-teal-600 disabled:hover:shadow-none"
                                         >
                                             {saveLoading ? (
                                                 <>

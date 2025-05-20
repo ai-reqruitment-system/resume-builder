@@ -75,7 +75,7 @@ const ProfessionalSummaryModal = ({ isOpen, onClose, value, onChange }) => {
                                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                     className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border
                                         border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2
-                                        focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                                        focus:ring-offset-2 focus:ring-teal-500 transition-colors"
                                 >
                                     Choose a Template
                                     <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
@@ -92,8 +92,8 @@ const ProfessionalSummaryModal = ({ isOpen, onClose, value, onChange }) => {
                                                         <button
                                                             key={templateIdx}
                                                             onClick={() => handleTemplateSelect(template)}
-                                                            className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-blue-50
-                                                                hover:text-blue-600 transition-colors"
+                                                            className="w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-teal-50
+                                                                hover:text-teal-600 transition-colors"
                                                         >
                                                             {template}
                                                         </button>
@@ -113,7 +113,7 @@ const ProfessionalSummaryModal = ({ isOpen, onClose, value, onChange }) => {
                                 value={value}
                                 onChange={onChange}
                                 className="w-full min-h-[300px] border border-gray-200 rounded-lg
-                                    focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500"
+                                    focus-within:ring-1 focus-within:ring-teal-500 focus-within:border-teal-500"
                             />
                         </div>
                     </div>
@@ -125,15 +125,15 @@ const ProfessionalSummaryModal = ({ isOpen, onClose, value, onChange }) => {
                         onClick={onClose}
                         className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300
                             rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2
-                            focus:ring-blue-500 transition-colors"
+                            focus:ring-teal-500 transition-colors"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent
-                            rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2
-                            focus:ring-blue-500 transition-colors"
+                        className="px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent
+                            rounded-lg hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2
+                            focus:ring-teal-500 transition-colors"
                     >
                         Save Changes
                     </button>

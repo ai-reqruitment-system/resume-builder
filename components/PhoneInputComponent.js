@@ -62,7 +62,7 @@ const PhoneInputComponent = ({
         } else if (disabled) {
             return `${baseClass} border-gray-200 bg-gray-50`;
         } else {
-            return `${baseClass} border-blue-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-400`;
+            return `${baseClass} border-teal-300 focus:ring-2 focus:ring-teal-200 focus:border-teal-400`;
         }
     };
 

@@ -20,7 +20,7 @@ const SuggestionGenerator = ({
             <button
                 onClick={() => generateSuggestions(customPrompt)}
                 disabled={isLoading}
-                className="w-full px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                className="w-full px-4 py-3 bg-teal-500 text-white rounded-lg hover:bg-teal-600 disabled:bg-teal-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-sm font-medium"
             >
                 <Sparkles className="w-4 h-4" />
                 {isLoading ? 'Generating suggestions...' : 'Generate suggestions'}
@@ -41,11 +41,11 @@ const SuggestionGenerator = ({
                             <button
                                 key={index}
                                 onClick={() => onSelect(suggestion)}
-                                className="w-full px-4 py-3 flex items-start gap-3 hover:bg-blue-50/50 transition-colors group text-left"
+                                className="w-full px-4 py-3 flex items-start gap-3 hover:bg-teal-50/50 transition-colors group text-left"
                             >
                                 <div className="flex-shrink-0 mt-0.5">
-                                    <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                                        <Plus className="w-3.5 h-3.5 text-blue-600" />
+                                    <div className="w-5 h-5 rounded-full bg-teal-100 flex items-center justify-center group-hover:bg-teal-200 transition-colors">
+                                        <Plus className="w-3.5 h-3.5 text-teal-600" />
                                     </div>
                                 </div>
                                 <p className="text-sm text-gray-600 group-hover:text-gray-900 flex-1 transition-colors">

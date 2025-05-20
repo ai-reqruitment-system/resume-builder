@@ -21,7 +21,7 @@ const NavigationButtons = ({
                         transition-all duration-200 ease-in-out
                         ${isFirstSection
                         ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-blue-600'
+                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100 hover:text-teal-600'
                     }
                     `}
                 >
@@ -50,8 +50,8 @@ const NavigationButtons = ({
                 ) : (
                     <button
                         onClick={() => handleNavigation('next')}
-                        className="relative group p-3 rounded-full bg-blue-500 text-white
-                            hover:bg-blue-600 transition-all duration-200 ease-in-out"
+                        className="relative group p-3 rounded-full bg-teal-500 text-white
+                            hover:bg-teal-600 transition-all duration-200 ease-in-out"
                     >
                         <ChevronRight className="w-6 h-6" />
                         {/* Tooltip */}

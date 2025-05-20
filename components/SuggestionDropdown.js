@@ -63,7 +63,7 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={handleDropdownToggle}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-teal-600 bg-teal-50 rounded-lg hover:bg-teal-100 transition-all duration-300"
                 aria-expanded={isDropdownOpen}
                 aria-haspopup="true"
             >
@@ -90,7 +90,7 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                             </div>
                             <input
                                 type="text"
-                                className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
                                 placeholder="Search suggestions..."
                                 value={searchTerm}
                                 onChange={(e) => {
@@ -112,7 +112,7 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                     <div className="p-2 space-y-1 max-h-60 overflow-y-auto">
                         {isLoading ? (
                             <div className="flex justify-center items-center py-4">
-                                <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
+                                <Loader2 className="w-5 h-5 text-teal-500 animate-spin" />
                                 <span className="ml-2 text-sm text-gray-600">Generating suggestions...</span>
                             </div>
                         ) : suggestions.length > 0 ? (
@@ -125,9 +125,9 @@ export default function SuggestionDropdown({ onSuggestionClick, title = 'profess
                                         key={index}
                                         onClick={() => onSuggestionClick(suggestion)}
                                         className={`w-full text-left px-3 py-2 text-sm rounded-md transition-colors duration-200 flex items-center gap-2
-                                            ${isSuggestionSelected ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'}`}
+                                            ${isSuggestionSelected ? 'text-teal-600 bg-teal-50' : 'text-gray-700 hover:bg-teal-50 hover:text-teal-600'}`}
                                     >
-                                        <Plus className={`w-3 h-3 ${isSuggestionSelected ? 'text-blue-600' : 'text-blue-500'}`} />
+                                        <Plus className={`w-3 h-3 ${isSuggestionSelected ? 'text-teal-600' : 'text-teal-500'}`} />
                                         {suggestion}
                                     </button>
                                 ))

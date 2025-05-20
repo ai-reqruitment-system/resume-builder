@@ -345,7 +345,7 @@ const ResumeModal = ({
                         <button
                             onClick={handleSaveResume}
                             disabled={isSaving}
-                            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-xs sm:text-sm ${isSaving ? 'opacity-75 cursor-not-allowed' : ''}`}
+                            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors text-xs sm:text-sm ${isSaving ? 'opacity-75 cursor-not-allowed' : ''}`}
                         >
                             <Save className={`w-3 h-3 sm:w-4 sm:h-4 ${isSaving ? 'animate-bounce' : ''}`} />
                             <span>{isSaving ? 'Saving...' : 'Save'}</span>
@@ -353,7 +353,7 @@ const ResumeModal = ({
                         <button
                             onClick={handleDirectDownload}
                             disabled={isDownloading}
-                            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-xs sm:text-sm ${isDownloading ? 'opacity-75 cursor-not-allowed' : ''}`}
+                            className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors text-xs sm:text-sm ${isDownloading ? 'opacity-75 cursor-not-allowed' : ''}`}
                         >
                             <Download className={`w-3 h-3 sm:w-4 sm:h-4 ${isDownloading ? 'animate-bounce' : ''}`} />
                             <span>{isDownloading ? 'Downloading...' : 'Download'}</span>
@@ -409,7 +409,7 @@ const ResumeModal = ({
                                             flex-1 py-1.5 xl:py-2 px-2 xl:px-4 rounded-md font-medium 
                                             transition-all capitalize text-sm xl:text-base
                                             ${mobileView === view
-                                                ? 'bg-white text-blue-600 shadow'
+                                                ? 'bg-white text-teal-600 shadow'
                                                 : 'text-gray-600 hover:bg-white/50'
                                             }`}
                                     >
@@ -510,7 +510,7 @@ const ResumeModal = ({
                                         flex flex-col items-center py-1.5 sm:py-2 px-0.5 sm:px-1 rounded-lg
                                         transition-all
                                         ${mobileView === id
-                                            ? 'bg-white text-blue-600 shadow-sm'
+                                            ? 'bg-white text-teal-600 shadow-sm'
                                             : 'text-gray-600 hover:bg-white/50'
                                         }`}
                                 >

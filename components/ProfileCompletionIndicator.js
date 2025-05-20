@@ -90,7 +90,7 @@ const ProfileCompletionIndicator = ({ userData, onTabChange }) => {
             className={`relative bg-white shadow-md rounded-lg overflow-hidden border border-gray-200 transition-all duration-500 w-full max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto ${isAnimating ? 'transform scale-[1.02] shadow-lg' : ''}`}
         >
             {/* Header with gradient background */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 sm:p-3 md:p-4 text-white">
+            <div className="bg-gradient-to-r from-teal-600 to-purple-600 p-2 sm:p-3 md:p-4 text-white">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1 sm:gap-2">
                         <UserCircle2 className="h-4 w-4 sm:h-5 sm:w-5" />

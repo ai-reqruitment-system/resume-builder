@@ -5,11 +5,7 @@ import Image from 'next/image';
 import ProfileCompletionIndicator from './ProfileCompletionIndicator';
 
 import {
-    Menu,
-    X,
     UserCircle2,
-    CheckCircle2,
-    ExternalLink
 } from 'lucide-react';
 
 const Navbar = () => {
@@ -82,7 +78,7 @@ const Navbar = () => {
         return (
             <div className="relative">
                 <div className="flex items-center space-x-2 p-2 rounded-full">
-                    <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
+                    <div className="h-8 w-8 rounded-full bg-teal-500 flex items-center justify-center">
                         <UserCircle2 className="h-5 w-5 text-white" />
                     </div>
                     <span className="text-sm font-medium text-gray-700">{userName}</span>
@@ -105,8 +101,9 @@ const Navbar = () => {
                     {/* Logo Section */}
                     <div className="flex items-center text-3xl font-bold">
                         <Link href="/dashboard" className="flex items-center space-x-2 group">
-                            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-blue-600 transition-all duration-300 transform group-hover:scale-105">
-                                <Image src="/ResuLogo.png" width={150} height={100} />
+                            <span className="bg-gradient-to-r from-teal-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-teal-600 transition-all duration-300 transform group-hover:scale-105">
+                                {/* <Image src="/ResuLogo.png" width={150} height={100} /> */}
+                                <Image src="/logoHireme1.png" width={150} height={100} />
                             </span>
                         </Link>
                     </div>

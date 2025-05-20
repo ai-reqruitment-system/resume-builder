@@ -249,7 +249,7 @@ const SkillsSelector = ({
                         <button
                             onClick={handleGenerateSuggestions}
                             disabled={isGeneratingSuggestions}
-                            className="flex items-center gap-0.5 xxs:gap-1 px-1 xxs:px-1.5 sm:px-2 py-0.5 text-[8px] xxs:text-[9px] sm:text-xs font-medium text-blue-600 bg-blue-50 rounded-full hover:bg-blue-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex items-center gap-0.5 xxs:gap-1 px-1 xxs:px-1.5 sm:px-2 py-0.5 text-[8px] xxs:text-[9px] sm:text-xs font-medium text-teal-600 bg-teal-50 rounded-full hover:bg-teal-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isGeneratingSuggestions ? (
                                 <>
@@ -272,7 +272,7 @@ const SkillsSelector = ({
                         <input
                             ref={searchInputRef}
                             type="text"
-                            className="block w-full pl-6 xxs:pl-7 sm:pl-8 pr-2 xxs:pr-2.5 sm:pr-3 py-0.5 xxs:py-1 sm:py-1.5 text-[8px] xxs:text-[10px] sm:text-xs border border-gray-200 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                            className="block w-full pl-6 xxs:pl-7 sm:pl-8 pr-2 xxs:pr-2.5 sm:pr-3 py-0.5 xxs:py-1 sm:py-1.5 text-[8px] xxs:text-[10px] sm:text-xs border border-gray-200 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-200"
                             placeholder={`Search skills...`}
                             value={searchTerm}
                             onChange={(e) => {
@@ -293,12 +293,12 @@ const SkillsSelector = ({
                                     key={index}
                                     onClick={() => !isSelected && handleSuggestionClick(suggestion)}
                                     className={`group flex items-center gap-0.5 xxs:gap-1 sm:gap-2 px-1.5 xxs:px-2 sm:px-3 py-1 xxs:py-1.5 sm:py-2 rounded-lg text-[8px] xxs:text-[10px] sm:text-xs cursor-pointer transition-all duration-200 transform hover:translate-x-1 ${isSelected
-                                        ? 'bg-blue-100 text-blue-700 border-l-4 border-blue-500'
+                                        ? 'bg-teal-100 text-teal-700 border-l-4 border-teal-500'
                                         : 'bg-white text-gray-700 hover:bg-gray-100 border-l-4 border-transparent'
                                         } ${isAiSuggestion ? 'animate-fadeIn' : ''}`}
                                 >
                                     <div
-                                        className={`flex-shrink-0 w-3 h-3 xxs:w-4 xxs:h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center ${isSelected ? 'bg-blue-200 text-blue-700' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
+                                        className={`flex-shrink-0 w-3 h-3 xxs:w-4 xxs:h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center ${isSelected ? 'bg-teal-200 text-teal-700' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
                                             } transition-colors`}
                                     >
                                         {isSelected ? (
@@ -309,7 +309,7 @@ const SkillsSelector = ({
                                     </div>
                                     <span className="flex-1 line-clamp-2">{suggestion}</span>
                                     {isAiSuggestion && (
-                                        <span className="px-1 xxs:px-1.5 py-0.5 text-[6px] xxs:text-[8px] sm:text-[10px] font-medium bg-blue-50 text-blue-600 rounded-full">AI</span>
+                                        <span className="px-1 xxs:px-1.5 py-0.5 text-[6px] xxs:text-[8px] sm:text-[10px] font-medium bg-teal-50 text-teal-600 rounded-full">AI</span>
                                     )}
                                 </div>
                             );

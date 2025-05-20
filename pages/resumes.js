@@ -93,10 +93,10 @@ const Resumes = () => {
                 <div className="min-h-screen pt-20 px-4">
                     <div className="max-w-7xl mx-auto">
                         <div className="flex items-center justify-center py-12">
-                            <div className="flex items-center space-x-2 text-blue-600">
-                                <div className="w-3 h-3 rounded-full animate-pulse bg-blue-600"></div>
-                                <div className="w-3 h-3 rounded-full animate-pulse bg-blue-600 delay-75"></div>
-                                <div className="w-3 h-3 rounded-full animate-pulse bg-blue-600 delay-150"></div>
+                            <div className="flex items-center space-x-2 text-teal-600">
+                                <div className="w-3 h-3 rounded-full animate-pulse bg-teal-600"></div>
+                                <div className="w-3 h-3 rounded-full animate-pulse bg-teal-600 delay-75"></div>
+                                <div className="w-3 h-3 rounded-full animate-pulse bg-teal-600 delay-150"></div>
                             </div>
                         </div>
                     </div>
@@ -121,8 +121,8 @@ const Resumes = () => {
                     <div className="flex items-center">
                         {activeProfileId === profile.id ? (
                             <div className="flex items-center">
-                                <CheckCircle2 className="h-5 w-5 text-blue-600 mr-2" />
-                                <span className="text-xs font-medium text-blue-600 px-2 py-0.5 bg-blue-50 rounded-full">
+                                <CheckCircle2 className="h-5 w-5 text-teal-600 mr-2" />
+                                <span className="text-xs font-medium text-teal-600 px-2 py-0.5 bg-teal-50 rounded-full">
                                     Active
                                 </span>
                             </div>
@@ -149,7 +149,7 @@ const Resumes = () => {
                     <Link
                         href={`/builder?userProfileId=${profile.id}`}
                         onClick={() => handleActiveResume(profile)}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200"
+                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-teal-600 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors duration-200"
                     >
                         Use Resume
                         <ExternalLink className="ml-2 h-4 w-4" />
@@ -173,7 +173,7 @@ const Resumes = () => {
                             </div>
                             <Link
                                 href="/builder?templateId=modern"
-                                className="inline-flex items-center px-4 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition-colors duration-200"
+                                className="inline-flex items-center px-4 py-2.5 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 shadow-sm transition-colors duration-200"
                             >
                                 <Plus className="w-4 h-4 mr-2" />
                                 Create New Resume
@@ -188,13 +188,13 @@ const Resumes = () => {
                                     placeholder="Search your resumes..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                                 />
                             </div>
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                className="px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white"
                             >
                                 <option value="name">Sort by Name</option>
                                 <option value="date">Sort by Last Updated</option>
@@ -222,7 +222,7 @@ const Resumes = () => {
                                 {!searchTerm && (
                                     <Link
                                         href="/builder?templateId=modern"
-                                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700"
                                     >
                                         <Plus className="w-4 h-4 mr-2" />
                                         Create New Resume

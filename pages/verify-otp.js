@@ -142,7 +142,7 @@ const VerifyOtpPage = () => {
                                         if (value.length <= 6) setOtp(value);
                                     }}
                                     className="w-full px-4 py-3.5 text-center text-2xl tracking-[1em] border rounded-lg
-                                    outline-none transition-colors hover:border-blue-400 focus:border-blue-500
+                                    outline-none transition-colors hover:border-teal-400 focus:border-teal-500
                                     text-gray-900"
                                     placeholder="······"
                                     maxLength="6"
@@ -155,7 +155,7 @@ const VerifyOtpPage = () => {
                                     type="button"
                                     onClick={handleResendOTP}
                                     disabled={timer > 0 || loading}
-                                    className="text-blue-500 hover:text-blue-600 text-sm disabled:text-gray-400"
+                                    className="text-teal-500 hover:text-teal-600 text-sm disabled:text-gray-400"
                                 >
                                     {timer > 0 ? (
                                         <span>Resend OTP in {timer}s</span>
@@ -167,7 +167,7 @@ const VerifyOtpPage = () => {
                         <button
                             type="submit"
                             disabled={loading || otp.length !== 6}
-                            className="w-full py-3.5 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600
+                            className="w-full py-3.5 px-4 bg-teal-500 text-white rounded-lg hover:bg-teal-600
                             transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
                             flex items-center justify-center space-x-2"
                         >
@@ -186,7 +186,7 @@ const VerifyOtpPage = () => {
                         Didn't receive the code?{' '}
                         <button
                             onClick={() => router.push('/login')}
-                            className="text-blue-500 hover:underline"
+                            className="text-teal-500 hover:underline"
                         >
                             Change email address
                         </button>

@@ -122,8 +122,8 @@ const OtherTabEnhanced = ({
 
                 <button
                     onClick={addOther}
-                    className="w-full sm:w-auto px-4 py-2 bg-blue-50 text-blue-600 rounded-lg
-                    hover:bg-blue-100 transition-all duration-300 flex items-center justify-center
+                    className="w-full sm:w-auto px-4 py-2 bg-teal-50 text-teal-600 rounded-lg
+                    hover:bg-teal-100 transition-all duration-300 flex items-center justify-center
                     gap-2 text-sm font-medium shadow-sm hover:shadow transform hover:scale-[1.02]"
                 >
                     <Plus className="w-4 h-4" />
@@ -152,7 +152,7 @@ const OtherTabEnhanced = ({
                                     }}
                                     placeholder="e.g., Leadership Award"
                                     className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg
-                                    outline-none transition-colors hover:border-blue-400 focus:border-blue-500"
+                                    outline-none transition-colors hover:border-teal-400 focus:border-teal-500"
                                 />
                             </div>
                         </div>

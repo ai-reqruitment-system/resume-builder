@@ -15,7 +15,7 @@ const LoadingScreen = ({ message = 'Loading...', size = 'full', showLogo = true 
             {showLogo && (
                 <div className="mb-6">
                     <Image
-                        src="/Resubol.png"
+                        src="/logoHireme1.png"
                         alt="Logo"
                         width={100}
                         height={100}
@@ -25,7 +25,7 @@ const LoadingScreen = ({ message = 'Loading...', size = 'full', showLogo = true 
             )}
 
             <div className="flex items-center justify-center space-x-2">
-                <Loader2 className="h-8 w-8 text-blue-500 animate-spin" />
+                <Loader2 className="h-8 w-8 text-teal-500 animate-spin" />
                 <span className="text-gray-700 font-medium">{message}</span>
             </div>
         </div>

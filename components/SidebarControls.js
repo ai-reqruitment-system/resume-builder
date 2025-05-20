@@ -13,9 +13,9 @@ const fontOptions = [
 const colorOptions = [
     "#000000", // Black
     "#6B7280", // Gray
-    "#1E40AF", // Dark Blue
-    "#4F46E5", // Blue
-    "#7DD3FC", // Light Blue
+    "#1E40AF", // Dark teal
+    "#4F46E5", // teal
+    "#7DD3FC", // Light teal
     "#047857", // Green
     "#FB923C", // Orange
     "#E11D48", // Red
@@ -83,14 +83,14 @@ export default function SidebarControls({ fontStyles: propFontStyles, updateFont
                 <div className="flex gap-2">
                     <button
                         onClick={() => updateFontStyles({ is_font_bold: !fontStyles.is_font_bold })}
-                        className={`flex-1 p-2 rounded-lg transition-colors ${fontStyles.is_font_bold ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
+                        className={`flex-1 p-2 rounded-lg transition-colors ${fontStyles.is_font_bold ? 'bg-teal-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
                             }`}
                     >
                         <FaBold />
                     </button>
                     <button
                         onClick={() => updateFontStyles({ is_font_italic: !fontStyles.is_font_italic })}
-                        className={`flex-1 p-2 rounded-lg transition-colors ${fontStyles.is_font_italic ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
+                        className={`flex-1 p-2 rounded-lg transition-colors ${fontStyles.is_font_italic ? 'bg-teal-500 text-white' : 'bg-gray-100 hover:bg-gray-200'
                             }`}
                     >
                         <FaItalic />
@@ -111,7 +111,7 @@ export default function SidebarControls({ fontStyles: propFontStyles, updateFont
                         >
                             <div
                                 className={`w-full h-full rounded-full border transition-all ${fontStyles.font_color === color
-                                        ? 'ring-2 ring-offset-2 ring-blue-500 scale-90'
+                                        ? 'ring-2 ring-offset-2 ring-teal-500 scale-90'
                                         : 'hover:ring-2 hover:ring-offset-2 hover:ring-gray-300 hover:scale-90'
                                     }`}
                                 style={{ backgroundColor: color }}
