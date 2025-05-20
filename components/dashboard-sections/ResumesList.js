@@ -160,17 +160,10 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                                     onClick={async (e) => {
                                         e.stopPropagation();
 
-                                        // Use SweetAlert2 for delete confirmation
-                                        const isConfirmed = await SweetAlert.confirm(
-                                            'Delete Resume',
-                                            `Are you sure you want to delete "${profile.first_name} ${profile.last_name}" resume? This action cannot be undone.`,
-                                            'Yes, delete it',
-                                            'Cancel'
-                                        );
 
-                                        if (isConfirmed) {
-                                            handleDeleteResume(profile.id, e);
-                                        }
+
+                                        handleDeleteResume(profile.id, e);
+
                                     }}
                                     disabled={isDeleting}
                                     className="inline-flex items-center p-2.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-200 relative z-10 shadow-sm"
