@@ -1,5 +1,5 @@
 // pages/builder.js or pages/builder.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 // Icons
@@ -27,13 +27,17 @@ import {
 } from '@/store/slices/uiSlice';
 import { setSelectedTemplate } from '@/store/slices/templateSlice';
 
-export default function Builder() {
+// Client-side only component
+function Builder() {
     const dispatch = useDispatch();
     const router = useRouter();
     // Redux States
     const { formData, profileData, userData, defaultData } = useSelector(state => state.resume);
     const { currentSection, currentSectionIndex, isModalOpen, showDownloadSection, isMobileMenuOpen } = useSelector(state => state.ui);
     const { selectedTemplate, fontStyles } = useSelector(state => state.template);
+
+    // Add state to track if component is mounted (client-side)
+    const [isMounted, setIsMounted] = useState(false);
 
     const sections = [
         { id: 'personal', title: 'Personal Info', icon: UserCircle2 },
@@ -80,6 +84,11 @@ export default function Builder() {
         );
     };
 
+    // Set mounted state when component mounts (client-side only)
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
     // Load templateId from URL
     useEffect(() => {
         if (router.isReady && router.query.templateId) {
@@ -90,9 +99,10 @@ export default function Builder() {
         }
     }, [router.isReady, router.query.templateId, selectedTemplate, dispatch]);
 
-    // Load user and profile data
+    // Load user and profile data - only run on client side
     useEffect(() => {
-        if (typeof window !== 'undefined') {
+        // Only run if component is mounted (client-side)
+        if (isMounted) {
             const token = localStorage.getItem('token');
             if (!token) {
                 router.push('/login');
@@ -103,7 +113,7 @@ export default function Builder() {
             dispatch(setUserData(userData));
             dispatch(setProfileData(profileData));
         }
-    }, [router, dispatch]);
+    }, [isMounted, router, dispatch]);
 
     // Update templateName in formData
     useEffect(() => {
@@ -111,6 +121,11 @@ export default function Builder() {
             dispatch(updateFormField({ field: 'templateName', value: selectedTemplate }));
         }
     }, [selectedTemplate, formData, dispatch]);
+
+    // Don't render anything during SSR
+    if (!isMounted) {
+        return null;
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -149,77 +164,96 @@ export default function Builder() {
                                                 : 'text-gray-500 hover:bg-teal-200'}
                   `}
                                 >
-                                    <Icon className="w-4 h-4" />
-                                    <span className="text-sm">{section.title}</span>
-                                    {isCompleted && <Check className="w-3 h-3 text-green-500" />}
+                                    {isCompleted ? (
+                                        <Check className="w-5 h-5 text-teal-600" />
+                                    ) : (
+                                        <Icon className="w-5 h-5" />
+                                    )}
+                                    <span>{section.title}</span>
                                 </button>
                             );
                         })}
-                        {/* Mobile Preview Button */}
-                        <div className="flex flex-col md:hidden w-full">
-                            <button
-                                onClick={() => {
-                                    dispatch(setIsModalOpen(true));
-                                    dispatch(setIsMobileMenuOpen(false));
-                                }}
-                                className="mt-2 flex items-center justify-center gap-2 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm text-gray-700 font-medium"
-                            >
-                                <Eye className="w-4 h-4" />
-                                Preview
-                            </button>
-                        </div>
                     </div>
-                    {/* Desktop Preview Button */}
-                    <div className="hidden md:flex gap-2">
+                    {/* Action Buttons */}
+                    <div className="flex items-center space-x-3">
                         <button
                             onClick={() => dispatch(setIsModalOpen(true))}
-                            className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm text-gray-700 font-medium"
+                            className="flex items-center gap-1.5 py-2 px-4 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all"
                         >
                             <Eye className="w-4 h-4" />
-                            Preview
+                            <span>Preview</span>
+                        </button>
+                        <button
+                            onClick={() => dispatch(setShowDownloadSection(true))}
+                            className="flex items-center gap-1.5 py-2 px-4 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-all"
+                        >
+                            <Download className="w-4 h-4" />
+                            <span>Download</span>
                         </button>
                     </div>
                 </div>
             </nav>
+
             {/* Main Content */}
-            <div className="w-full mx-auto p-4">
-                {formData && renderSection()}
-            </div>
-            {/* Download Section Modal */}
-            {showDownloadSection && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg w-full max-w-md">
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h3 className="text-lg font-medium">Download Resume</h3>
-                            <button
-                                onClick={() => dispatch(setShowDownloadSection(false))}
-                                className="text-gray-400 hover:text-gray-600"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
+            <div className="container mx-auto px-4 py-6 md:px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    {/* Form Section */}
+                    <div className="lg:col-span-7 xl:col-span-8">
+                        <div className="bg-white rounded-xl shadow-sm p-6">
+                            {renderSection()}
                         </div>
-                        <DownloadSection
-                            formData={formData}
-                            fontStyles={fontStyles}
-                            templateName={selectedTemplate}
-                        />
+                    </div>
+
+                    {/* Preview Section */}
+                    <div className="lg:col-span-5 xl:col-span-4">
+                        <div className="sticky top-24">
+                            <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+                                <h2 className="text-lg font-medium text-gray-800 mb-4">Template</h2>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {['modern', 'professional', 'creative', 'minimalist'].map((template) => (
+                                        <button
+                                            key={template}
+                                            onClick={() => handleTemplateChange(template)}
+                                            className={`p-2 rounded-lg border-2 transition-all ${selectedTemplate === template ? 'border-teal-500' : 'border-gray-200 hover:border-gray-300'}`}
+                                        >
+                                            <div className="aspect-[3/4] bg-gray-100 rounded flex items-center justify-center">
+                                                <span className="capitalize text-xs font-medium text-gray-600">{template}</span>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Preview Modal */}
+            {isModalOpen && (
+                <ResumeModal
+                    onClose={() => dispatch(setIsModalOpen(false))}
+                    formData={formData}
+                    template={selectedTemplate}
+                />
             )}
-            {/* Resume Preview Modal */}
-            <ResumeModal
-                isOpen={isModalOpen}
-                onRequestClose={() => dispatch(setIsModalOpen(false))}
-                formData={formData}
-                fontStyles={fontStyles}
-                defaultData={defaultData}
-                selectedTemplate={selectedTemplate}
-                onTemplateChange={handleTemplateChange}
-                onDownload={() => {
-                    dispatch(setIsModalOpen(false));
-                    dispatch(setShowDownloadSection(true));
-                }}
-            />
+
+            {/* Download Section */}
+            {showDownloadSection && (
+                <DownloadSection
+                    onClose={() => dispatch(setShowDownloadSection(false))}
+                    formData={formData}
+                    template={selectedTemplate}
+                />
+            )}
         </div>
     );
 }
+
+// Use dynamic import with SSR disabled
+import dynamic from 'next/dynamic';
+
+const BuilderWithNoSSR = dynamic(() => Promise.resolve(Builder), {
+    ssr: false
+});
+
+export default BuilderWithNoSSR;
