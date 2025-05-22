@@ -16,11 +16,11 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Expose port
-EXPOSE 3000
-
-# Install serve package
+# Install serve globally
 RUN npm install -g serve
 
-# Start the application using serve
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Expose the default port (optional, can be overwritten)
+EXPOSE 3000
+
+# Use dynamic port
+CMD sh -c "serve -s build -l ${PORT:-3000}"
