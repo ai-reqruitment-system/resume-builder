@@ -11,6 +11,7 @@ const Layout = ({ children }) => {
     const { user, loading: authLoading } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     const [pageTransition, setPageTransition] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     // List of public routes that don't require authentication
     const publicRoutes = [
@@ -20,12 +21,20 @@ const Layout = ({ children }) => {
         '/unauthorized'
     ];
 
+    // Set mounted state when component mounts (client-side only)
     useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        // Only run if component is mounted (client-side)
+        if (!isMounted) return;
+
         // Check if the current route is a public route
         const isPublicRoute = publicRoutes.some(route => router.pathname === route);
 
         // If it's not a public route, check for authentication
-        if (!isPublicRoute && typeof window !== 'undefined') {
+        if (!isPublicRoute) {
             const token = localStorage.getItem('token');
             if (!token) {
                 router.push('/login');
@@ -33,15 +42,14 @@ const Layout = ({ children }) => {
         }
 
         // Short delay to prevent flash of loading state
-
         setIsLoading(false);
 
-
-
-    }, [router.pathname]);
+    }, [router.pathname, isMounted]);
 
     // Handle route change start
     useEffect(() => {
+        if (!isMounted) return;
+
         const handleStart = () => {
             setPageTransition(true);
         };
@@ -59,10 +67,10 @@ const Layout = ({ children }) => {
             router.events.off('routeChangeComplete', handleComplete);
             router.events.off('routeChangeError', handleComplete);
         };
-    }, [router]);
+    }, [router, isMounted]);
 
-    // Don't render anything while checking authentication
-    if ((isLoading || authLoading) && router.pathname !== '/login') {
+    // Don't render anything during SSR or while checking authentication
+    if (!isMounted || ((isLoading || authLoading) && router.pathname !== '/login')) {
         return <LoadingScreen />;
     }
 
