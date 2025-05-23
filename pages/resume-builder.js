@@ -18,12 +18,22 @@ const ResumeBuilder = () => {
     const router = useRouter();
     const { withLoading, setComponentLoading } = useLoading();
     const [initialLoading, setInitialLoading] = useState(true);
+    // Add state to track if component is mounted (client-side)
+    const [isMounted, setIsMounted] = useState(false);
 
     // Get state from Redux store
     const { formData, profileData, userData } = useSelector(state => state.resume);
     const { selectedTemplate } = useSelector(state => state.template);
 
+    // Set mounted state when component mounts (client-side only)
     useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        // Only run if component is mounted (client-side)
+        if (!isMounted) return;
+
         const initializeBuilder = async () => {
             try {
                 // Check for authentication
@@ -59,11 +69,16 @@ const ResumeBuilder = () => {
         };
 
         initializeBuilder();
-    }, [router, dispatch, withLoading, setComponentLoading]);
+    }, [router, dispatch, withLoading, setComponentLoading, isMounted]);
 
     const handleClose = () => {
         router.push('/dashboard');
     };
+
+    // Don't render anything during SSR
+    if (!isMounted) {
+        return null;
+    }
 
     return (
         <Layout>
@@ -76,4 +91,11 @@ const ResumeBuilder = () => {
     );
 };
 
-export default ResumeBuilder;
+// Use dynamic import with SSR disabled
+import dynamic from 'next/dynamic';
+
+const ResumeBuilderWithNoSSR = dynamic(() => Promise.resolve(ResumeBuilder), {
+    ssr: false
+});
+
+export default ResumeBuilderWithNoSSR;
