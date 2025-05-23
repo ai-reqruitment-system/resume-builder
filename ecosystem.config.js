@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "Resuming.io",
+      name: "hireme",
       script: "./node_modules/next/dist/bin/next", // Directly reference the JS file
       args: "start",
       watch: true,
