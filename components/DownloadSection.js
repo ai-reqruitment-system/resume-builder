@@ -1,9 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Download, X, AlertCircle } from 'lucide-react';
+import PaymentModal from './PaymentModal';
 
 const DownloadSection = ({ formData, fontStyles, templateName }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isSubscribed, setIsSubscribed] = useState(false); // Set to true if user has subscribed
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+    // Debug log to track showPaymentModal state changes
+    useEffect(() => {
+        console.log('showPaymentModal state changed:', showPaymentModal);
+    }, [showPaymentModal]);
 
     const validateFormData = () => {
         if (!formData) return "Please fill in the resume details";
@@ -16,9 +24,18 @@ const DownloadSection = ({ formData, fontStyles, templateName }) => {
 
     const downloadPDF = async () => {
         try {
+            console.log('downloadPDF function called');
             const validationError = validateFormData();
             if (validationError) {
                 setError(validationError);
+                return;
+            }
+
+            // Check if user is subscribed
+            console.log('User subscription status:', isSubscribed);
+            if (!isSubscribed) {
+                console.log('Setting showPaymentModal to true');
+                setShowPaymentModal(true);
                 return;
             }
 
@@ -119,7 +136,10 @@ const DownloadSection = ({ formData, fontStyles, templateName }) => {
             )}
 
             <button
-                onClick={downloadPDF}
+                onClick={() => {
+                    console.log('Download button clicked');
+                    downloadPDF();
+                }}
                 disabled={isLoading}
                 className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg 
                    flex items-center justify-center space-x-2 transition-all duration-200
@@ -130,6 +150,12 @@ const DownloadSection = ({ formData, fontStyles, templateName }) => {
                 <Download className={`w-5 h-5 ${isLoading ? 'animate-bounce' : ''}`} />
                 <span>{isLoading ? 'Generating PDF...' : 'Download PDF'}</span>
             </button>
+
+            {/* Payment Modal */}
+            <PaymentModal
+                isOpen={showPaymentModal}
+                onClose={() => setShowPaymentModal(false)}
+            />
         </div>
     );
 };

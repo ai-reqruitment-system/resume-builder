@@ -4,6 +4,7 @@ import { templates } from "@/lib/constants/templates";
 import TemplateSelector from "@/components/TemplateSelector";
 import SidebarControls from "@/components/SidebarControls";
 import DownloadSection from "@/components/DownloadSection";
+import PaymentModal from "@/components/PaymentModal";
 import { useRouter } from "next/router";
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
@@ -234,14 +235,33 @@ const ResumeModal = ({
         }
     };
 
+    // State for payment modal in desktop view
+    const [isSubscribed, setIsSubscribed] = useState(false); // Set to true if user has subscribed
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+
+    // Debug log to track showPaymentModal state changes
+    useEffect(() => {
+        console.log('ResumeModal showPaymentModal state changed:', showPaymentModal);
+    }, [showPaymentModal]);
+
     // Direct download function
     const handleDirectDownload = async () => {
         try {
+            console.log('handleDirectDownload function called');
             setIsDownloading(true);
             setDownloadError(null);
 
             // Validate form data
             if (!validateFormData(setDownloadError)) return;
+
+            // Check if user is subscribed
+            console.log('User subscription status in ResumeModal:', isSubscribed);
+            if (!isSubscribed) {
+                console.log('Setting showPaymentModal to true in ResumeModal');
+                setIsDownloading(false); // Reset loading state
+                setShowPaymentModal(true);
+                return;
+            }
 
             // Get resume_id from Redux state or localStorage as fallback
             let resume_id = profileData?.id || "";
@@ -336,9 +356,9 @@ const ResumeModal = ({
 
     const PreviewContent = () => {
         return (
-            <div className="h-full flex flex-col bg-gray-50">
+            <div className="flex flex-col bg-gray-50 max-h-[90vh] overflow-y-auto px-[20px]">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-3 sm:px-4 md:px-3 py-3 sm:py-4 bg-white border-b">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between px-3 sm:px-4 md:px-3 py-3 sm:py-4 bg-white border-b sticky top-0 z-10">
                     <div className="mb-2 sm:mb-0 w-full sm:w-auto">
                         {saveSuccess && (
                             <span className="text-green-500 text-sm">Resume saved successfully!</span>
@@ -403,9 +423,9 @@ const ResumeModal = ({
     };
 
     return (
-        <div className="fixed inset-0 bg-black/50 z-50 overflow-hidden">
-            <div className="h-screen w-screen mx-auto">
-                <div className="h-full flex flex-col lg:flex-row">
+        <div className="fixed inset-0 bg-black/50 z-50 overflow-y-auto">
+            <div className="min-h-screen w-screen mx-auto">
+                <div className="min-h-full flex flex-col lg:flex-row">
                     {/* Sidebar */}
                     <div className="hidden lg:flex w-64 xl:w-80 flex-shrink-0 flex-col bg-white border-r">
                         <div className="p-3 xl:p-4 border-b">
@@ -531,6 +551,12 @@ const ResumeModal = ({
                     </div>
                 </nav>
             </div>
+
+            {/* Payment Modal for desktop view */}
+            <PaymentModal
+                isOpen={showPaymentModal}
+                onClose={() => setShowPaymentModal(false)}
+            />
         </div>
     );
 };
