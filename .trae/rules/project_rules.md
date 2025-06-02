@@ -1,0 +1,1 @@
+for any project do not use the npm run dev command because i am already running the project on the server

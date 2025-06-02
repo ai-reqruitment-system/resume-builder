@@ -6,14 +6,52 @@ import { useToast } from '@/components/ui/ToastProvider';
 import FeedbackBanner, { FeedbackTypes } from '@/components/ui/FeedbackBanner';
 import { useRouter } from 'next/router';
 import SweetAlert from '@/utils/sweetAlert';
+// Import Redux hooks and actions
+import { useSelector, useDispatch } from 'react-redux';
+import { setProfileData, setActiveProfileId, deleteResume } from '@/store/slices/resumeSlice';
 
 
-export default function ResumesList({ profiles, isLoading, activeProfileId, handleActiveResume, handleDeleteResume, isDeleting, setShowBuilder }) {
-    // Removed deleteConfirmId state as we'll use SweetAlert2 instead
+export default function ResumesList() {
+    // Get state from Redux store
+    const resumeList = useSelector(state => state.resume.resumeList);
+    const isLoadingList = useSelector(state => state.resume.isLoadingList);
+    const isDeleting = useSelector(state => state.resume.isDeleting);
+    const activeProfileId = useSelector(state => state.resume.activeProfileId);
+
     const [hoveredCard, setHoveredCard] = useState(null);
     const toast = useToast();
     const router = useRouter();
-    console.log(Object(profiles), "from teh Resume List")
+    const dispatch = useDispatch();
+
+    // Handle setting active resume
+    const handleActiveResume = async (profile) => {
+        // Set profile data in Redux
+        dispatch(setProfileData(profile));
+        // Set active profile ID in Redux
+        dispatch(setActiveProfileId(profile.id));
+        // Store in localStorage for backward compatibility
+        localStorage.setItem('profileData', JSON.stringify(profile));
+    };
+
+    // Handle deleting a resume
+    const handleDeleteResume = async (resumeId, e) => {
+        if (e) e.stopPropagation();
+
+        // Show confirmation dialog using the correct method
+        const result = await SweetAlert.confirm(
+            'Are you sure?',
+            "You won't be able to revert this!",
+            'Yes, delete it!',
+            'Cancel'
+        );
+
+        if (result) {
+            // Dispatch delete action
+            dispatch(deleteResume(resumeId));
+        }
+    };
+
+    console.log(Object(resumeList), "from teh Resume List")
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto px-2 sm:px-0">
             {/* New Resume Card - Enhanced with better visuals */}
@@ -80,12 +118,12 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                 <div className={`absolute inset-0 bg-gradient-to-br from-blue-50/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}></div>
             </div>
 
-            {isLoading ? (
+            {isLoadingList ? (
                 <div className="col-span-full flex justify-center items-center py-12">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-300"></div>
                 </div>
             ) : (
-                profiles.map((profile) => (
+                resumeList.map((profile) => (
                     <div
                         key={profile.id}
                         onClick={() => {
@@ -159,9 +197,6 @@ export default function ResumesList({ profiles, isLoading, activeProfileId, hand
                                 <button
                                     onClick={async (e) => {
                                         e.stopPropagation();
-
-
-
                                         handleDeleteResume(profile.id, e);
                                     }}
                                     disabled={isDeleting}

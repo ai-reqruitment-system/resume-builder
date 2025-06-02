@@ -8,67 +8,41 @@ import JobTracker from '@/components/dashboard-sections/JobTracker';
 import InterviewPrep from '@/components/dashboard-sections/InterviewPrep';
 import SalaryAnalyzer from '@/components/dashboard-sections/SalaryAnalyzer';
 import Profile from '@/pages/profile';
-import ProfileCompletionIndicator from '@/components/ProfileCompletionIndicator';
 import { useRouter } from 'next/router';
-import { formatDate } from '@/lib/utils';
-import { CheckCircle2, Clock, ExternalLink } from 'lucide-react';
-import SweetAlert from '@/utils/sweetAlert';
+// Import Redux hooks and actions
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchResumes, setUserData } from '@/store/slices/resumeSlice';
+
 export default function Home() {
-    const router = useRouter()
+    const router = useRouter();
+    const dispatch = useDispatch();
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showBuilder, setShowBuilder] = useState(false);
     const dropdownRef = useRef(null);
-    const [profiles, setProfiles] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [activeProfileId, setActiveProfileId] = useState(null);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [userData, setUserData] = useState(null);
 
-    const fetchProfiles = async () => {
-        setIsLoading(true);
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) return router.push('/login');
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-resume`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-            });
-
-            if (!response.ok) {
-                router.push("/login")
-            };
-
-
-            const data = await response.json();
-            console.log(data, "form all")
-            if (data && Array.isArray(data.data)) {
-                setProfiles(data.data);
-                // Set active profile from localStorage if exists
-                const storedProfile = JSON.parse(localStorage.getItem('profileData') || '{}');
-                if (storedProfile.id) {
-                    setActiveProfileId(storedProfile.id);
-                }
-            }
-        } catch (error) {
-            console.error('Error fetching profiles:', error);
-            setProfiles([]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    // Get user data and resume list from Redux
+    const userData = useSelector(state => state.resume.userData);
+    const resumeList = useSelector(state => state.resume.resumeList);
+    const isLoadingList = useSelector(state => state.resume.isLoadingList);
 
     useEffect(() => {
-        fetchProfiles();
+        // Fetch resumes using Redux action
+        dispatch(fetchResumes()).catch(error => {
+            console.error('Error fetching resumes:', error);
+            // If token is missing or invalid, redirect to login
+            if (error.message === 'Authentication token is missing') {
+                router.push('/login');
+            }
+        });
 
-        // Get user data from localStorage
+        // Get user data from localStorage and store in Redux
         const storedUserData = JSON.parse(localStorage.getItem('userData') || '{}');
         if (Object.keys(storedUserData).length > 0) {
-            setUserData(storedUserData);
+            // Store in Redux for other components to use
+            dispatch(setUserData(storedUserData));
         }
-    }, []);
+    }, [dispatch, router]);
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -80,67 +54,6 @@ export default function Home() {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const handleActiveResume = (profile) => {
-        localStorage.setItem('profileData', JSON.stringify(profile));
-        setActiveProfileId(profile.id);
-        setActiveTab('Builder');
-    };
-
-    const handleDeleteResume = async (resumeId, e) => {
-        e.stopPropagation(); // Prevent triggering the card click event
-
-        // Use SweetAlert confirmation instead of window.confirm
-        const isConfirmed = await SweetAlert.confirm(
-            'Delete Resume',
-            'Are you sure you want to delete this resume? This action cannot be undone.',
-            'Yes, delete it',
-            'Cancel'
-        );
-
-        if (isConfirmed) {
-            setIsDeleting(true);
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) return router.push('/login');
-
-                const formData = new FormData();
-                formData.append('resume_id', resumeId);
-
-                const response = await fetch('https://admin.resuming.io/api/delete-resume', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) throw new Error('Failed to delete resume');
-
-                // Refresh the profiles list after successful deletion
-                await fetchProfiles();
-
-                // If the deleted resume was active, clear the active profile
-                if (activeProfileId === resumeId) {
-                    localStorage.removeItem('profileData');
-                    setActiveProfileId(null);
-                }
-
-                // Show success message
-                SweetAlert.toast('Resume deleted successfully', 'success');
-            } catch (error) {
-                console.error('Error deleting resume:', error);
-                // Use SweetAlert error instead of alert
-                SweetAlert.error('Delete Failed', 'Failed to delete resume. Please try again.');
-            } finally {
-                setIsDeleting(false);
-            }
-        }
-    };
-
-    // Using formatDate from utils.js instead of defining it inline
-
-    const [activeTab, setActiveTab] = useState('Dashboard');
-
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userData');
@@ -148,15 +61,14 @@ export default function Home() {
         router.push('/login');
     };
 
-    // Sidebar is now handled by the Sidebar component
-
-
     // We no longer need this block as we're using the new resume-builder page
     // The showBuilder state is kept for backward compatibility
     if (showBuilder) {
         router.push('/resume-builder');
         return null;
     }
+
+    const [activeTab, setActiveTab] = useState('Dashboard');
 
     return (
         <Layout>
@@ -177,7 +89,6 @@ export default function Home() {
                                 case 'Dashboard':
                                     return (
                                         <div>
-
                                             <div className="mb-6">
                                                 <h2 className="text-2xl font-semibold mb-4">Resumes</h2>
                                                 <div className="border-b">
@@ -187,13 +98,7 @@ export default function Home() {
                                                 </div>
                                             </div>
 
-                                            <ResumesList
-                                                activeProfileId={activeProfileId}
-                                                handleActiveResume={handleActiveResume}
-                                                handleDeleteResume={handleDeleteResume}
-                                                setShowBuilder={setShowBuilder}
-                                                profiles={profiles}
-                                            />
+                                            <ResumesList />
                                         </div>
                                     );
                                 case 'Jobs':

@@ -1,5 +1,66 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { uuid } from 'uuidv4';
+
+// Async thunk for fetching resumes
+export const fetchResumes = createAsyncThunk(
+    'resume/fetchResumes',
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) throw new Error('Authentication token is missing');
+
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/get-resume`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch resumes');
+            }
+
+            const data = await response.json();
+            return data.data || [];
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+// Async thunk for deleting a resume
+export const deleteResume = createAsyncThunk(
+    'resume/deleteResume',
+    async (resumeId, { dispatch, rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) throw new Error('Authentication token is missing');
+
+            const formData = new FormData();
+            formData.append('resume_id', resumeId);
+
+            const response = await fetch('https://admin.resuming.io/api/delete-resume', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete resume');
+            }
+
+            // Fetch updated resume list after deletion
+            dispatch(fetchResumes());
+
+            return resumeId;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 const initialState = {
     formData: {
@@ -47,6 +108,10 @@ const initialState = {
     userData: {},
     resumeList: [],
     isResumeListUpdated: false,
+    isLoadingList: false,
+    isDeleting: false,
+    error: null,
+    activeProfileId: null,
     defaultData: {
         first_name: "John",
         last_name: "Doe",
@@ -175,7 +240,43 @@ export const resumeSlice = createSlice({
         resetResumeListUpdateFlag: (state) => {
             state.isResumeListUpdated = false;
         },
+        setActiveProfileId: (state, action) => {
+            state.activeProfileId = action.payload;
+        },
     },
+    extraReducers: (builder) => {
+        builder
+            // Handle fetchResumes
+            .addCase(fetchResumes.pending, (state) => {
+                state.isLoadingList = true;
+                state.error = null;
+            })
+            .addCase(fetchResumes.fulfilled, (state, action) => {
+                state.isLoadingList = false;
+                state.resumeList = action.payload;
+            })
+            .addCase(fetchResumes.rejected, (state, action) => {
+                state.isLoadingList = false;
+                state.error = action.payload;
+            })
+            // Handle deleteResume
+            .addCase(deleteResume.pending, (state) => {
+                state.isDeleting = true;
+                state.error = null;
+            })
+            .addCase(deleteResume.fulfilled, (state, action) => {
+                state.isDeleting = false;
+                // The actual removal of the resume from the list is handled by the fetchResumes call in the thunk
+                // Check if the deleted resume was the active one
+                if (state.activeProfileId === action.payload) {
+                    state.activeProfileId = null;
+                }
+            })
+            .addCase(deleteResume.rejected, (state, action) => {
+                state.isDeleting = false;
+                state.error = action.payload;
+            });
+    }
 });
 
 export const {
@@ -186,7 +287,8 @@ export const {
     setResumeList,
     updateResumeList,
     markResumeListAsUpdated,
-    resetResumeListUpdateFlag
+    resetResumeListUpdateFlag,
+    setActiveProfileId
 } = resumeSlice.actions;
 
 export default resumeSlice.reducer;

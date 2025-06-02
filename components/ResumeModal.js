@@ -8,7 +8,13 @@ import { useRouter } from "next/router";
 // Import Redux hooks
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsModalOpen } from '@/store/slices/uiSlice';
-import { updateResumeList, markResumeListAsUpdated } from '@/store/slices/resumeSlice';
+import {
+    updateResumeList,
+    markResumeListAsUpdated,
+    setProfileData,
+    updateFormField,
+    setFormData
+} from '@/store/slices/resumeSlice';
 import { useAuth } from '@/context/AuthContext';
 
 const ResumeModal = ({
@@ -21,26 +27,26 @@ const ResumeModal = ({
     defaultData,
     onDownload
 }) => {
+    // Get profile data from Redux
+    const dispatch = useDispatch();
+    const profileData = useSelector(state => state.resume.profileData);
+    const userData = useSelector(state => state.resume.userData);
 
-    let resume_id1 = JSON.parse(localStorage.getItem("profileData"))?.id || "";
-    console.log("Resume ID from profileData:", resume_id1);
-    const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-    let resume_id = userData.id || "";
-    console.log("Resume ID from userData:", resume_id);
+    // Fallback to localStorage for backward compatibility
+    let resume_id = profileData?.id || JSON.parse(localStorage.getItem("profileData") || "{}")?.id || "";
+
     const [profilePhoto, setProfilePhoto] = useState(null);
     const { fetchUserDetail } = useAuth();
     const getUserDetails = async () => {
         const userFound = await fetchUserDetail();
-
-        // Don't modify the data prop directly
         console.log(userFound.profile_photo_url, "profile photo");
         setProfilePhoto(userFound.profile_photo_url ?? null);
     }
+
     useEffect(() => {
         getUserDetails();
     }, []);
 
-    const dispatch = useDispatch();
     const [fontStyles, setFontStyles] = useState(initialFontStyles);
     const [mobileView, setMobileView] = useState('preview');
     const [isDownloading, setIsDownloading] = useState(false);
@@ -94,14 +100,14 @@ const ResumeModal = ({
             // Validate form data
             if (!validateFormData(setSaveError)) return;
 
-            // Prepare payload with all required fields from the API
-            // Get resume_id from profileData in localStorage
-            let resume_id = "";
-            try {
-                resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
-                console.log("Resume ID from profileData (save):", resume_id);
-            } catch (error) {
-                console.error("Error parsing resume_id from localStorage (save):", error);
+            // Get resume_id from Redux state or localStorage as fallback
+            let resume_id = profileData?.id || "";
+            if (!resume_id) {
+                try {
+                    resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+                } catch (error) {
+                    console.error("Error parsing resume_id from localStorage (save):", error);
+                }
             }
 
             // Prepare payload with all required fields from the API
@@ -205,11 +211,14 @@ const ResumeModal = ({
             const data = await response.json();
 
             // Update the Redux store with the saved resume data
-            // This will ensure the dashboard is updated without requiring a refresh
             if (data && data.data) {
                 // Update the Redux store with the updated resume
                 dispatch(updateResumeList(data.data));
                 dispatch(markResumeListAsUpdated());
+                // Also update the profile data in Redux
+                dispatch(setProfileData(data.data));
+                // Store in localStorage for backward compatibility
+                localStorage.setItem('profileData', JSON.stringify(data.data));
             }
 
             // Show success message
@@ -234,14 +243,14 @@ const ResumeModal = ({
             // Validate form data
             if (!validateFormData(setDownloadError)) return;
 
-            // Prepare payload - ensure we get the resume_id correctly
-            // Get resume_id from profileData in localStorage
-            let resume_id = "";
-            try {
-                resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
-                console.log("Resume ID from profileData (download):", resume_id);
-            } catch (error) {
-                console.error("Error parsing resume_id from localStorage (download):", error);
+            // Get resume_id from Redux state or localStorage as fallback
+            let resume_id = profileData?.id || "";
+            if (!resume_id) {
+                try {
+                    resume_id = JSON.parse(localStorage.getItem("profileData"))?.id || "";
+                } catch (error) {
+                    console.error("Error parsing resume_id from localStorage (download):", error);
+                }
             }
 
             const payload = {
