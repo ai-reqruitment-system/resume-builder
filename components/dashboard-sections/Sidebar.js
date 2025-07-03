@@ -19,6 +19,31 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
     const router = useRouter();
     const { isRightSidebarOpen } = useSelector(state => state.ui);
 
+    const handleInterviewPrep = async () => {
+        try {
+            const token = localStorage.getItem('token'); // Adjust based on your token storage
+            const proxyRes = await fetch('https://interview.resuming.io/api/auth/token', {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token }),
+            });
+
+            if (!proxyRes.ok) {
+                router.push("/dasbhoard");
+            }
+
+            if (proxyRes.ok) {
+                window.location.href = 'https://interview.resuming.io';
+            }
+        } catch (error) {
+            console.error('Interview prep redirect failed:', error);
+            router.push("/dashboard");
+        }
+    };
+
     const navigationItems = [
         { icon: LayoutDashboard, text: 'Dashboard' },
         { icon: Briefcase, text: 'Jobs' },
@@ -45,8 +70,12 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
                         key={index}
                         href="#"
                         onClick={() => {
-                            setActiveTab(item.text);
-                            setShowBuilder(false);
+                            if (item.text === 'Interview Prep') {
+                                handleInterviewPrep();
+                            } else {
+                                setActiveTab(item.text);
+                                setShowBuilder(false);
+                            }
                         }}
                         className={`flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-2 sm:px-3 py-3 rounded-lg ${activeTab === item.text ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium shadow-md' : 'text-gray-600 hover:bg-gray-100'} mx-1 sm:mx-2 md:mx-0 mb-1 md:mb-0 transition-all duration-300 ease-in-out transform hover:scale-[1.02]`}
                     >
