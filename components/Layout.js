@@ -77,10 +77,10 @@ const Layout = ({ children }) => {
     return (
         <div className="min-h-screen bg-gray-50">
             <Head>
-                <title>HireMeAI - Create Professional Resumes</title>
+                <title>HireMeAI</title>
                 <meta name="description" content="Create professional resumes with our easy-to-use builder" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
+                <link rel="icon" href="/logoHireme1.png" className='w-[200px]' />
             </Head>
 
             <Navbar />
