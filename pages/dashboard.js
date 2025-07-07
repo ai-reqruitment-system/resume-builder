@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 // Import Redux hooks and actions
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchResumes, setUserData } from '@/store/slices/resumeSlice';
+import Logout_api from './logout_api';
 
 export default function Home() {
     const router = useRouter();
@@ -55,10 +56,7 @@ export default function Home() {
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userData');
-        localStorage.removeItem('profileData');
-        router.push('/login');
+        router.push("/logout_api");
     };
 
     // We no longer need this block as we're using the new resume-builder page
