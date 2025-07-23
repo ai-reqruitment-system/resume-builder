@@ -46,7 +46,7 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
 
     const navigationItems = [
         { icon: LayoutDashboard, text: 'Dashboard' },
-        { icon: Briefcase, text: 'Jobs' },
+        { icon: Briefcase, text: 'Jobs',hidden:true },
         { icon: LineChart, text: 'Job Tracker', hidden: true },
         { icon: GraduationCap, text: 'Interview Prep' },
         { icon: FileOutput, text: 'Cover Letters', hidden: true },
@@ -56,7 +56,7 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
     const sidebarItems = [
         { id: 'Dashboard', label: 'Dashboard', icon: Home },
         { id: 'Builder', label: 'Resume Builder', icon: FileText },
-        { id: 'Jobs', label: 'Jobs', icon: Briefcase },
+        { id: 'Jobs', label: 'Jobs', icon: Briefcase ,hidden:true},
         { id: 'Job Tracker', label: 'Job Tracker', icon: CheckSquare },
         { id: 'Interview Prep', label: 'Interview Prep', icon: MessageSquare },
         { id: 'Salary Analyzer', label: 'Salary Analyzer', icon: DollarSign },
@@ -66,9 +66,9 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
 
             <nav className="flex justify-center md:justify-start md:flex-col overflow-x-auto md:overflow-x-visible md:space-y-4 px-2 py-2 md:p-0 bg-transparent scrollbar-none">
                 {navigationItems.map((item, index) => (
-                    <a
+                    <button
                         key={index}
-                        href="#"
+                        type="button"
                         onClick={() => {
                             if (item.text === 'Interview Prep') {
                                 handleInterviewPrep();
@@ -81,16 +81,16 @@ export default function Sidebar({ activeTab, setActiveTab, setShowBuilder, handl
                     >
                         <item.icon size={20} className={`${activeTab === item.text ? 'text-white' : ''} sm:w-6 sm:h-6 md:w-5 md:h-5 lg:w-6 lg:h-6`} />
                         <span className={`text-xs mt-1 md:hidden ${isRightSidebarOpen ? 'lg:hidden' : 'lg:inline-block'} lg:text-sm lg:mt-0 font-medium`}>{item.text}</span>
-                    </a>
+                    </button>
                 ))}
-                <a
-                    href="#"
+                <button
+                    type="button"
                     onClick={handleLogout}
                     className="flex-shrink-0 flex flex-col md:flex-row items-center md:justify-center lg:justify-start md:gap-3 px-2 sm:px-3 py-3 rounded-lg text-gray-600 hover:bg-red-100 hover:text-red-600 mx-1 sm:mx-2 md:mx-0 mt-auto md:mt-10 transition-all duration-300"
                 >
                     <LogOut size={20} className="sm:w-6 sm:h-6 md:w-5 md:h-5 lg:w-6 lg:h-6" />
                     <span className={`text-xs mt-1 md:hidden ${isRightSidebarOpen ? 'lg:hidden' : 'lg:inline-block'} lg:text-sm lg:mt-0 font-medium`}>Logout</span>
-                </a>
+                </button>
             </nav>
         </aside>
     );
