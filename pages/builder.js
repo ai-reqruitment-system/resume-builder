@@ -105,7 +105,8 @@ function Builder() {
         if (isMounted) {
             const token = localStorage.getItem('token');
             if (!token) {
-                router.push('/login');
+                // router.push('https://resuming.io/');
+                window.location.href = "https://resuming.io/";
                 return;
             }
             const userData = JSON.parse(localStorage.getItem('userData') || '{}');
