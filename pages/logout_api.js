@@ -8,7 +8,7 @@ export default function Logout_api() {
         localStorage.removeItem('token');
         localStorage.removeItem('userData');
         localStorage.removeItem('profileData');
-        window.location.href = "https://interview.resuming.io/";
+        window.location.href = "https://resuming.io/";
     };
     useEffect(() => {
         handleLogout();
