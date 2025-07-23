@@ -12,8 +12,6 @@ import { useRouter } from 'next/router';
 // Import Redux hooks and actions
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchResumes, setUserData } from '@/store/slices/resumeSlice';
-v
-
 export default function Home() {
     const router = useRouter();
     const dispatch = useDispatch();
